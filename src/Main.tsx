@@ -16,10 +16,38 @@ function generatePointsInterleaved(count: number, width?: number, height?: numbe
    return result
 }
 
+function Logo() {
+   const points = useMemo(() => generatePointsInterleaved(5), [])
+   return (
+      <Wideline
+         position={[0, 1, 0]}
+         rotation={[0, 0, 0]}
+         scale={[1, 1, 1]}
+         points={points}
+         attr={[
+            {
+               color: "black",
+               width: 0.22,
+            },
+            {
+               color: "yellow",
+               width: 0.2,
+            },
+            {
+               color: "red",
+               width: 0.15,
+            },
+         ]}
+         join={"Round"}
+         capsStart={"Round"}
+         capsEnd={"Top"}
+      />
+   )
+}
+
 function Three() {
    const p4 = useMemo(() => generatePointsInterleaved(4), [])
    const p6 = useMemo(() => generatePointsInterleaved(6), [])
-   const p6f = useMemo(() => generatePointsInterleaved(6, 3, 1), [])
 
    const lines = useMemo(() => {
       const arrowGeometry = {
@@ -93,26 +121,7 @@ function Three() {
          <ambientLight />
          <pointLight position={[10, 10, 10]} />
          {lines}
-         <Wideline
-            position={[0, 1, 0]}
-            rotation={[0, 0, 0]}
-            scale={[1, 1, 1]}
-            points={p6f}
-            attr={[
-               {
-                  color: "pink",
-                  width: 0.2,
-               },
-               {
-                  color: "brown",
-                  //offals: "yellow",
-                  width: 0.15,
-               },
-            ]}
-            join={"Round"}
-            capsStart={"Top"}
-            capsEnd={"Top"}
-         />
+         <Logo />
       </Canvas>
    )
 }
