@@ -1,34 +1,89 @@
-import { useRef, useState } from "react"
-import { Canvas, useFrame, MeshProps } from "@react-three/fiber"
-import { Mesh } from "three"
+import { useMemo } from "react"
+import { Canvas } from "@react-three/fiber"
+import { Vector2, Color } from "three"
+import { Wideline } from "./Wideline"
 
-function Box(props: MeshProps) {
-   // This reference gives us direct access to the THREE.Mesh object
-   const ref = useRef<Mesh | undefined>(undefined)
-   // Hold state for hovered and clicked events
-   const [hovered, hover] = useState(false)
-   const [clicked, click] = useState(false)
-   // Subscribe this component to the render-loop, rotate the mesh every frame
-   useFrame(() => {
-      if (ref.current !== undefined) ref.current.rotation.x += 0.01
-   })
-   // Return the view, these are regular Threejs elements expressed in JSX
-   return (
-      <mesh
-         {...props}
-         ref={ref}
-         scale={clicked ? 1.5 : 1}
-         onClick={() => click(!clicked)}
-         onPointerOver={() => hover(true)}
-         onPointerOut={() => hover(false)}
-      >
-         <boxGeometry args={[1, 1, 1]} />
-         <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
-      </mesh>
-   )
+function generatePointsInterleaved(count: number, width?: number, height?: number) {
+   const xscale = width ? width * 0.5 : 0.5
+   const yscale = height ? height * 0.5 : 0.5
+   const stepx = (2 * xscale) / count
+   let y = yscale
+   const result: number[] = []
+   for (let x = 0; x < count; x++) {
+      result.push(-xscale + x * stepx, y)
+      y *= -1
+   }
+   return result
 }
 
 function Three() {
+   const p4 = useMemo(() => generatePointsInterleaved(4), [])
+   const p6 = useMemo(() => generatePointsInterleaved(6), [])
+   const p6f = useMemo(() => generatePointsInterleaved(6, 3, 1), [])
+
+   const lines = useMemo(() => {
+      const arrowGeometry = {
+         positions: [
+            [0.2, -0.5, 0],
+            [0.8, 0.0, 0],
+            [0.2, 0.5, 0],
+         ],
+         cells: [[0, 1, 2]],
+      }
+      const myArrow = { scheme: { color: new Color("blue"), width: 0.1 }, geometry: arrowGeometry }
+
+      return [-1, 1].map((e, i) => (
+         <group key={i}>
+            <Wideline
+               position={[e * 2, 2, 0]}
+               points={p4}
+               opacity={i === 0 ? undefined : 0.5}
+               attr={{
+                  color: "red",
+                  width: 0.2,
+               }}
+               join={"Miter"}
+               capsStart={"Round"}
+               capsEnd={"Square"}
+               custom={[myArrow]}
+            />
+            <Wideline
+               position={[e * 2, 0, 0]}
+               points={p6}
+               opacity={i === 0 ? undefined : 0.5}
+               attr={{
+                  color: "green",
+                  width: 0.2,
+               }}
+               join={"Bevel"}
+               capsStart={"Round"}
+               capsEnd={"Square"}
+            />
+            <Wideline
+               position={[e * 2.5 - 3, -2.1, 0]}
+               points={[
+                  new Vector2(1, 0),
+                  new Vector2(1, -1),
+                  new Vector2(2, 0.75),
+                  new Vector2(4, 1),
+                  new Vector2(5.0, 0),
+                  new Vector2(4.1, 0.4),
+               ]}
+               scale={[1, 1, 1]}
+               opacity={i === 0 ? undefined : 0.5}
+               attr={{
+                  color: "yellow",
+                  offals: "red",
+                  width: 0.5,
+               }}
+               join={"Round"}
+               capsStart={"Round"}
+               capsEnd={"Square"}
+            />
+         </group>
+      ))
+   }, [])
+
    return (
       <Canvas
          style={{
@@ -37,13 +92,32 @@ function Three() {
       >
          <ambientLight />
          <pointLight position={[10, 10, 10]} />
-         <Box position={[-1.2, 0, 0]} />
-         <Box position={[1.2, 0, 0]} />{" "}
+         {lines}
+         <Wideline
+            position={[0, 1, 0]}
+            rotation={[0, 0, 0]}
+            scale={[1, 1, 1]}
+            points={p6f}
+            attr={[
+               {
+                  color: "pink",
+                  width: 0.2,
+               },
+               {
+                  color: "brown",
+                  //offals: "yellow",
+                  width: 0.15,
+               },
+            ]}
+            join={"Round"}
+            capsStart={"Top"}
+            capsEnd={"Top"}
+         />
       </Canvas>
    )
 }
 
-export default function Main() {
+export function Main() {
    return (
       <div
          style={{
@@ -59,9 +133,6 @@ export default function Main() {
       >
          <p>BLA</p>
          <Three />
-         <p>BLA</p>
-         <Three />
-         <p>BLA</p>
       </div>
    )
 }
