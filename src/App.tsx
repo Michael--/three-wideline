@@ -1,14 +1,12 @@
-import React from 'react'
-import './App.css'
-import { Main } from "./Main"
+import Main from "./Main"
+import "./App.css"
 
 export function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <Main/>
-      </header>
-    </div>
-  )
+   return (
+      <div className="App">
+         <header className="App-header">
+            <Main />
+         </header>
+      </div>
+   )
 }
-
