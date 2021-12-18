@@ -2,48 +2,8 @@ import { useMemo } from "react"
 import { Canvas } from "@react-three/fiber"
 import { Vector2, Color } from "three"
 import { Wideline } from "./Wideline"
-
-function generatePointsInterleaved(count: number, width?: number, height?: number) {
-   const xscale = width ? width * 0.5 : 0.5
-   const yscale = height ? height * 0.5 : 0.5
-   const stepx = (2 * xscale) / count
-   let y = yscale
-   const result: number[] = []
-   for (let x = 0; x < count; x++) {
-      result.push(-xscale + x * stepx, y)
-      y *= -1
-   }
-   return result
-}
-
-function Logo() {
-   const points = useMemo(() => generatePointsInterleaved(5), [])
-   return (
-      <Wideline
-         position={[0, 1, 0]}
-         rotation={[0, 0, 0]}
-         scale={[1, 1, 1]}
-         points={points}
-         attr={[
-            {
-               color: "black",
-               width: 0.22,
-            },
-            {
-               color: "yellow",
-               width: 0.2,
-            },
-            {
-               color: "red",
-               width: 0.15,
-            },
-         ]}
-         join={"Round"}
-         capsStart={"Round"}
-         capsEnd={"Top"}
-      />
-   )
-}
+import { Logo } from "./Logo"
+import { generatePointsInterleaved } from "./Wideline"
 
 function Three() {
    const p4 = useMemo(() => generatePointsInterleaved(4), [])
