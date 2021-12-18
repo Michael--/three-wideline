@@ -1,14 +1,28 @@
+* {
+   user-select: none;
+}
+
 .App {
-   text-align: center;
+   display: inherit;
 }
 
 .App-header {
-   background-color: #262626;
-   min-height: 100vh;
+   background-color: whitesmoke;
    display: flex;
    flex-direction: column;
-   align-items: center;
-   justify-content: center;
-   font-size: calc(10px + 2vmin);
-   color: white;
+}
+
+.App-logo {
+   height: 60px;
+   pointer-events: none;
+}
+
+p {
+   pointer-events: none;
+   margin: 0 4px 0 4px;
+}
+
+h3 {
+   pointer-events: none;
+   margin: 0 8px 0 8px;
 }

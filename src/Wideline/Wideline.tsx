@@ -167,11 +167,12 @@ export function Wideline(
       })
       const count = plength * countPositions
       const fa = new Float32Array(pointA)
-      return { position, cx, count, fa, offset: countPositions * 3, groups, materials: materials.flat() }
-   }, [])
+      const key = Math.random()
+      return { key, position, cx, count, fa, offset: countPositions * 3, groups, materials: materials.flat() }
+   }, [props])
 
    return (
-      <group {...props}>
+      <group key={attr.key} {...props}>
          <mesh>
             <bufferGeometry attach="geometry" groups={attr.groups}>
                <bufferAttribute

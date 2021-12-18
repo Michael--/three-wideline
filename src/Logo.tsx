@@ -6,23 +6,12 @@ export function Logo() {
    const points = useMemo(() => generatePointsInterleaved(5), [])
    return (
       <Wideline
-         position={[0, 1, 0]}
-         rotation={[0, 0, 0]}
          scale={[1, 1, 1]}
          points={points}
          attr={[
-            {
-               color: "black",
-               width: 0.22,
-            },
-            {
-               color: "yellow",
-               width: 0.2,
-            },
-            {
-               color: "red",
-               width: 0.15,
-            },
+            { color: "black", width: 0.22 },
+            { color: "yellow", width: 0.2 },
+            { color: "red", width: 0.15 },
          ]}
          join={"Round"}
          capsStart={"Round"}
