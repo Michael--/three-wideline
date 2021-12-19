@@ -1,23 +1,27 @@
 import { useMemo, useState, CSSProperties } from "react"
-import { Wideline } from "./Wideline"
+import { IAttribute, Wideline } from "./Wideline"
 import { generatePointsInterleaved } from "./Wideline"
 import { SketchPicker } from "react-color"
-import { Popover, HBox, VBox, Body, Button } from "./Gui"
+import { Popover, HBox, VBox, Body, Button, Checkbox } from "./Gui"
 import { ThreeCanvas } from "./ThreeCanvas"
 
 export function SampleConstruction() {
    const [edges, setEdges] = useState(8)
    const [dimension, setDimension] = useState(5)
    const [width, setWidth] = useState(0.2)
-   const [checked, setChecked] = useState(false)
+   const [width2, setWidth2] = useState(0.1)
+   const [second, setSecond] = useState(false)
    const [color1, setColor1] = useState("red")
-   const [picker, setPicker] = useState({ show: false, x: 0, y: 0 })
+   const [color2, setColor2] = useState("yellow")
+   const [picker, setPicker] = useState({ show: -1, x: 0, y: 0 })
 
-   const styleColor: CSSProperties = {
-      borderRadius: "4px",
-      padding: "4px",
-      backgroundColor: color1,
-      // color: e.g. inverse of color1,
+   const styleColor = (color: string): CSSProperties => {
+      return {
+         borderRadius: "4px",
+         padding: "4px",
+         backgroundColor: color,
+         // color: e.g. inverse of color,
+      }
    }
 
    const styleCover: CSSProperties = {
@@ -30,18 +34,42 @@ export function SampleConstruction() {
    }
 
    const points = useMemo(() => generatePointsInterleaved(edges + 1, dimension), [edges, dimension])
+   const attr = useMemo(() => {
+      const attr: IAttribute[] = [
+         {
+            color: color1,
+            width: width,
+         },
+      ]
+      if (second) {
+         attr.push({
+            color: color2,
+            width: width2,
+         })
+      }
+      return attr
+   }, [second, color1, color2, width, width2])
 
    return (
       <HBox>
          <VBox>
             <HBox>
-               <Button onClick={(x, y) => setPicker({ show: true, x, y })}>
-                  <p style={styleColor}>Color</p>
+               <Checkbox checked={second} onChange={c => setSecond(c)}>
+                  <p>2nd Attribute</p>
+               </Checkbox>
+               <Button onClick={(x, y) => setPicker({ show: 0, x, y })}>
+                  <p style={styleColor(color1)}>Color</p>
                </Button>
-               {picker.show ? (
+               <Button onClick={(x, y) => setPicker({ show: 1, x, y })}>
+                  <p style={styleColor(color2)}>Color2</p>
+               </Button>
+               {picker.show >= 0 ? (
                   <Popover x={picker.x} y={picker.y}>
-                     <Button style={styleCover} onClick={(x, y) => setPicker({ show: false, x, y })}></Button>
-                     <SketchPicker color={color1} onChange={c => setColor1(c.hex)} />
+                     <Button style={styleCover} onClick={(x, y) => setPicker({ show: -1, x, y })}></Button>
+                     <SketchPicker
+                        color={picker.show === 0 ? color1 : color2}
+                        onChange={c => (picker.show === 0 ? setColor1(c.hex) : setColor2(c.hex))}
+                     />
                   </Popover>
                ) : undefined}
                <Body />
@@ -64,31 +92,18 @@ export function SampleConstruction() {
                      <Button onClick={() => setWidth(Math.min(width + 0.1, 1))}>▲</Button>
                      <Button onClick={() => setWidth(Math.max(width - 0.1, 0.1))}>▼</Button>
                      <p>Width: {width.toFixed(1)}</p>
-                     <Body />
+                     <Body style={{ marginLeft: "40px" }} />
+                     <Button onClick={() => setWidth2(Math.min(width2 + 0.1, 1))}>▲</Button>
+                     <Button onClick={() => setWidth2(Math.max(width2 - 0.1, 0.1))}>▼</Button>
+                     <p>Width2: {width2.toFixed(1)}</p>
                   </HBox>
                </VBox>
-               <VBox>
-                  {false && (
-                     <HBox>
-                        <input type="checkbox" checked={checked} onClick={() => setChecked(!checked)} />
-                        <label>2nd</label>
-                     </HBox>
-                  )}
-               </VBox>
+               <Body />
             </HBox>
          </VBox>
          <Body />
          <ThreeCanvas scale={4} width={"600px"} height={"200px"}>
-            <Wideline
-               points={points}
-               attr={{
-                  color: color1,
-                  width: width ?? 0.2,
-               }}
-               join={"Miter"}
-               capsStart={"Round"}
-               capsEnd={"Square"}
-            />
+            <Wideline points={points} attr={attr} join={"Miter"} capsStart={"Round"} capsEnd={"Square"} />
          </ThreeCanvas>
       </HBox>
    )

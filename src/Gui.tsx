@@ -28,16 +28,8 @@ export function Flex(props: { children?: ReactNode }) {
    )
 }
 
-export function Body(props: { children?: ReactNode }) {
-   return (
-      <div
-         style={{
-            flex: 1,
-         }}
-      >
-         {props.children}
-      </div>
-   )
+export function Body(props: { style?: React.CSSProperties; children?: ReactNode }) {
+   return <div style={{ flex: 1, ...props.style }}>{props.children}</div>
 }
 
 export function Border() {
@@ -104,5 +96,25 @@ export function Button(props: {
       >
          {props.children}
       </div>
+   )
+}
+
+export function Checkbox(props: {
+   checked: boolean
+   style?: React.CSSProperties
+   children?: ReactNode
+   onChange?: (checked: boolean) => void
+}) {
+   return (
+      <HBox>
+         <input
+            style={props.style}
+            type="checkbox"
+            checked={props.checked}
+            onClick={() => props.onChange?.(!props.checked)}
+            onChange={() => null}
+         />
+         {props.children}
+      </HBox>
    )
 }
