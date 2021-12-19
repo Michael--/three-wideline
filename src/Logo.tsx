@@ -9,7 +9,7 @@ export function Logo() {
          scale={[1, 1, 1]}
          points={points}
          attr={[
-            { color: "black", width: 0.22 },
+            { color: "black", width: 0.25 },
             { color: "yellow", width: 0.2 },
             { color: "red", width: 0.15 },
          ]}
