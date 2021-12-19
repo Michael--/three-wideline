@@ -7,9 +7,9 @@ import { SampleLogo } from "./SampleLogo"
 function Title() {
    return (
       <HBox>
-         <img src={svglogo} className="App-logo" />
          <Body />
-         <h1>Three-Wideline drawn itself</h1>
+         <img style={{ paddingRight: "20px" }} src={svglogo} className="App-logo" />
+         <h1>Three-Wideline</h1>
          <Body />
       </HBox>
    )

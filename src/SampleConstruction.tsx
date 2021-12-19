@@ -1,9 +1,20 @@
 import { useMemo, useState, CSSProperties } from "react"
-import { IAttribute, Wideline } from "./Wideline"
+import { IAttribute, Wideline, Joins, JoinsList, Caps, CapsList } from "./Wideline"
 import { generatePointsInterleaved } from "./Wideline"
 import { SketchPicker } from "react-color"
 import { Popover, HBox, VBox, Body, Button, Checkbox } from "./Gui"
 import { ThreeCanvas } from "./ThreeCanvas"
+import Select from "react-select"
+
+type JoinItem = {
+   value: Joins
+   label: string
+}
+
+type CapsItem = {
+   value: Caps
+   label: string
+}
 
 export function SampleConstruction() {
    const [edges, setEdges] = useState(8)
@@ -14,6 +25,26 @@ export function SampleConstruction() {
    const [color1, setColor1] = useState("red")
    const [color2, setColor2] = useState("yellow")
    const [picker, setPicker] = useState({ show: -1, x: 0, y: 0 })
+
+   const joinlist = useMemo(
+      () =>
+         JoinsList.map(e => {
+            const a: JoinItem = { value: e, label: e }
+            return a
+         }),
+      [],
+   )
+   const capslist = useMemo(
+      () =>
+         CapsList.map(e => {
+            const a: CapsItem = { value: e, label: e }
+            return a
+         }),
+      [],
+   )
+   const [join, setJoin] = useState(joinlist[0])
+   const [capsStart, setCapsStart] = useState(capslist[0])
+   const [capsEnd, setCapsEnd] = useState(capslist[0])
 
    const styleColor = (color: string): CSSProperties => {
       return {
@@ -75,6 +106,15 @@ export function SampleConstruction() {
                <Body />
             </HBox>
             <HBox>
+               <p>Join</p>
+               <Select value={join} onChange={e => setJoin({ ...join, ...e })} options={joinlist} />
+               <p>Start</p>
+               <Select value={capsStart} onChange={e => setCapsStart({ ...capsStart, ...e })} options={capslist} />
+               <p>End</p>
+               <Select value={capsEnd} onChange={e => setCapsEnd({ ...capsEnd, ...e })} options={capslist} />
+               <Body />
+            </HBox>
+            <HBox>
                <VBox>
                   <HBox>
                      <Button onClick={() => setEdges(Math.min(edges + 1, 10))}>▲</Button>
@@ -103,7 +143,13 @@ export function SampleConstruction() {
          </VBox>
          <Body />
          <ThreeCanvas scale={4} width={"600px"} height={"200px"}>
-            <Wideline points={points} attr={attr} join={"Miter"} capsStart={"Round"} capsEnd={"Square"} />
+            <Wideline
+               points={points}
+               attr={attr}
+               join={join.value}
+               capsStart={capsStart.value}
+               capsEnd={capsEnd.value}
+            />
          </ThreeCanvas>
       </HBox>
    )

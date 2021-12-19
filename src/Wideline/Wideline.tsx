@@ -14,8 +14,10 @@ export interface IAttribute {
    width?: number
 }
 
-type Caps = "Butt" | "Round" | "Square" | "Top"
-type Joins = "Bevel" | "Miter" | "Round"
+export const CapsList = ["Butt", "Round", "Square", "Top"] as const
+export type Caps = typeof CapsList[number]
+export const JoinsList = ["Bevel", "Miter", "Round"] as const
+export type Joins = typeof JoinsList[number]
 
 export function Wideline(
    props: GroupProps & {
