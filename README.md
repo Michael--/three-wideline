@@ -1,4 +1,4 @@
-# tree-wideline
+# three-wideline
 
 A three js line implementation.
 
@@ -21,6 +21,7 @@ Some details about the Wideline interface is under construction - stay tuned.
 
 * Support of three js shader lib
 * Documentation
+* Nested import path caused by repository folder structure
 
 ## Repository
 Github: [three-wideline](https://github.com/Michael--/three-wideline)
@@ -32,7 +33,7 @@ Be ensure to add <Logo/> into your three js Canvas created by [React Three Fiber
 An running demo example from the repository is avaiable here [Wideline example](https://number10.de).
 
 ```ts
-import { Wideline, generatePointsInterleaved } from "./Wideline"
+import { Wideline, generatePointsInterleaved } from "./Wideline/dist/Wideline"
 
 export function Logo() {
    const points = useMemo(() => generatePointsInterleaved(5), [])
