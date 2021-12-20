@@ -21,13 +21,14 @@ Some details about the Wideline interface is under construction - stay tuned.
 
 * Support of three js shader lib
 * Documentation
-* Nested import path caused by repository folder structure
 
 ## Repository
 Github: [three-wideline](https://github.com/Michael--/three-wideline)
 
 ## Example
 An running demo example from the repository is avaiable here [Wideline example](https://www.number10.de/sample1).
+
+Another sample at codesandbox [three-wideline-logo](https://codesandbox.io/s/three-wideline-logo-u19je)
 
 Sample how to draw the Wideline Logo as a three js line using typescript and react.
 
