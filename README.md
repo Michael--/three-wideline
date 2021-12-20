@@ -27,7 +27,7 @@ Some details about the Wideline interface is under construction - stay tuned.
 Github: [three-wideline](https://github.com/Michael--/three-wideline)
 
 ## Example
-An running demo example from the repository is avaiable here [Wideline example](https://number10.de).
+An running demo example from the repository is avaiable here [Wideline example](https://www.number10.de/sample1).
 
 Sample how to draw the Wideline Logo as a three js line using typescript and react.
 

@@ -10,6 +10,7 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
+  "homepage": "https://www.number10.de/sample1",
   "license": "MIT",
   "private": false,
   "main": "dist/index.js",
@@ -26,7 +27,7 @@
   },
   "scripts": {
     "start": "BROWSER=none react-scripts start",
-    "build-sample": "react-scripts build",
+    "build-sample": "GENERATE_SOURCEMAP=false react-scripts build",
     "build": "tsc --project tsconfig-dist.json",
     "dist": "npm run build && npm run copy-shader",
     "copy-shader": "copyfiles -f src/Wideline/shader/*.* dist/shader",
