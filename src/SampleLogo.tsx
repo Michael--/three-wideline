@@ -1,4 +1,4 @@
-import { Logo } from "./Logo"
+import { Logo } from "./Wideline"
 import { HBox, Body } from "./Gui"
 import { ThreeCanvas } from "./ThreeCanvas"
 

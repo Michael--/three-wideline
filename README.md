@@ -27,20 +27,20 @@ Some details about the Wideline interface is under construction - stay tuned.
 Github: [three-wideline](https://github.com/Michael--/three-wideline)
 
 ## Example
-
-How to draw the Wideline Logo as a three js line.
-Be ensure to add <Logo/> into your three js Canvas created by [React Three Fiber](https://www.npmjs.com/package/@react-three/fiber).
 An running demo example from the repository is avaiable here [Wideline example](https://number10.de).
 
-```ts
-import { Wideline, generatePointsInterleaved } from "./Wideline/dist/Wideline"
+Sample how to draw the Wideline Logo as a three js line using typescript and react.
 
-export function Logo() {
-   const points = useMemo(() => generatePointsInterleaved(5), [])
+```ts
+import ReactDOM from "react-dom"
+import { Canvas } from "@react-three/fiber"
+import { Wideline } from "three-wideline"
+
+function Logo() {
    return (
       <Wideline
-         scale={[1, 1, 1]}
-         points={points}
+         scale={[5, 5, 0]}
+         points={[-0.5, 0.5, -0.25, -0.5, 0, 0.5, 0.25, -0.5, 0.5, 0.5]}
          attr={[
             { color: "black", width: 0.25 },
             { color: "yellow", width: 0.2 },
@@ -52,6 +52,13 @@ export function Logo() {
       />
    )
 }
+
+ReactDOM.render(
+   <Canvas>
+      <Logo />
+   </Canvas>,
+   document.getElementById('root'),
+)
 ```
 
 Enjoy !
