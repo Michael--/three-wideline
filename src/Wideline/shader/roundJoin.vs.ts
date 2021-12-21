@@ -1,3 +1,4 @@
+const s = `
 attribute vec3 pointA;
 attribute vec3 pointB;
 attribute vec3 pointC;
@@ -47,3 +48,5 @@ void main() {
 
    gl_Position = m * vec4(pos, zlevel, 1);
 }
+`
+export default s
