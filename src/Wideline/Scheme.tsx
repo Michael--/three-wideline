@@ -190,7 +190,11 @@ export class Scheme {
    }
 
    private addUniforms = (ux: { props: IScheme; vs: string; u?: { [uniform: string]: IUniform } }[]) => {
-      const sh = ux.map((e, i) => this.sprops(e.props, e.vs, e.u, i * 0.0001))
+      // zlevel offset used to stack multiple line attribute, the minimial meaningful value depends on gl shader engine
+      // may it could be nice to configure this value by user interface in some cases
+      // if this value is to small, the gl render engine fall into z-fighting
+      const levelOffset = 0.005
+      const sh = ux.map((e, i) => this.sprops(e.props, e.vs, e.u, i * levelOffset))
       this.data.shader.push(sh)
    }
 }
