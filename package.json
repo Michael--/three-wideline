@@ -30,8 +30,8 @@
     "start": "npm run debug-sample1",
     "build": "npm run build-sample1",
     "dist": "tsc --project tsconfig-dist.json",
-    "prepack": "npm run dist",
-    "eject": "react-scripts eject"
+    "prepack": "npm run lint && npm run dist",
+    "lint": "eslint --ext .tsx,.ts,.jsx,.js src/"
   },
   "browserslist": {
     "production": [
