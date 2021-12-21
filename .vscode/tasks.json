@@ -1,11 +1,11 @@
 {
-	"version": "2.0.0",
-	"tasks": [
+   "version": "2.0.0",
+   "tasks": [
       {
          "label": "sample",
          "type": "npm",
          "script": "start",
-			"isBackground": true,
+         "isBackground": true,
          "problemMatcher": [
             {
                "owner": "custom", // this is a workaround to stop the task upon success, see https://github.com/Microsoft/vscode/issues/6209
@@ -14,13 +14,12 @@
                },
                "background": {
                   "activeOnStart": true,
-                  "beginsPattern": "Compiled",
-                  "endsPattern": "(successfully|with|failed)"
+                  "beginsPattern": "vite",
+                  "endsPattern": "(dev server running at)"
                }
             },
             "$tsc"
          ]
-
-      },
-	]
+      }
+   ]
 }

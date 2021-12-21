@@ -10,5 +10,4 @@ const start = () => {
    )
    ReactDOM.render(dom, document.getElementById("root"))
 }
-
 export default start
