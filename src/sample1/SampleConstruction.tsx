@@ -1,6 +1,6 @@
 import { useMemo, useState, CSSProperties } from "react"
-import { IAttribute, Wideline, Joins, JoinsList, Caps, CapsList } from "./Wideline"
-import { generatePointsInterleaved } from "./Wideline"
+import { IAttribute, Wideline, Joins, JoinsList, Caps, CapsList } from "../Wideline"
+import { generatePointsInterleaved } from "../Wideline"
 import { SketchPicker } from "react-color"
 import { Popover, HBox, VBox, Body, Button, Checkbox } from "./Gui"
 import { ThreeCanvas } from "./ThreeCanvas"

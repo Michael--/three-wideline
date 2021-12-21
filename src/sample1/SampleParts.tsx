@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { Wideline } from "./Wideline"
+import { Wideline } from "../Wideline"
 import { HBox, Body } from "./Gui"
 import { ThreeCanvas } from "./ThreeCanvas"
 

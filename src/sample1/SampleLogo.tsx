@@ -1,4 +1,4 @@
-import { Logo } from "./Wideline"
+import { Logo } from "../Wideline"
 import { HBox, Body } from "./Gui"
 import { ThreeCanvas } from "./ThreeCanvas"
 import { GroupProps, MeshProps, useFrame } from "@react-three/fiber"
