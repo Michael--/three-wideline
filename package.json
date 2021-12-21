@@ -25,8 +25,9 @@
   },
   "scripts": {
     "prep-sample1": "echo 'import start from \"./sample1/index\"\nstart()' > src/index.tsx",
-    "start": "npm run prep-sample1 && vite --config src/sample1/vite.config.js --host",
+    "debug-sample1": "npm run prep-sample1 && vite --config src/sample1/vite.config.js --host",
     "build-sample1": "npm run prep-sample1 && vite build --config src/sample1/vite.config.js --base=./",
+    "start": "npm run debug-sample1",
     "build": "npm run build-sample1",
     "dist": "tsc --project tsconfig-dist.json",
     "prepack": "npm run dist",
