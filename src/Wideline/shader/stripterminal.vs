@@ -1,4 +1,3 @@
-const s = `
 attribute vec3 pointA;
 attribute vec3 pointB;
 attribute vec3 pointC;
@@ -51,5 +50,3 @@ void main() {
 
        vColor = vec4(color, opacity);
 }
-`
-export default s

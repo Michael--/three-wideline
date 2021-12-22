@@ -1,6 +1,7 @@
 // rollup.config.js
 import typescript from "@rollup/plugin-typescript"
 import dts from "rollup-plugin-dts"
+import { string } from "rollup-plugin-string"
 
 const config = [
    {
@@ -11,7 +12,7 @@ const config = [
          dir: "dist",
          format: "cjs",
       },
-      plugins: [typescript({ tsconfig: "tsconfig-dist.json" })],
+      plugins: [typescript({ tsconfig: "tsconfig-dist.json" }), string({ include: /\.(vs|fs)$/ })],
    },
    {
       input: "dist/types/index.d.ts",
