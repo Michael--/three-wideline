@@ -11,7 +11,7 @@ const config = [
          dir: "dist",
          format: "cjs",
       },
-      plugins: [typescript()],
+      plugins: [typescript({ tsconfig: "tsconfig-dist.json" })],
    },
    {
       input: "dist/types/index.d.ts",

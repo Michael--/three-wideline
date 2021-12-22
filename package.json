@@ -16,8 +16,7 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist/index.js",
-    "dist/index.d.ts",
-    "dist_REMOVE_THIS_CAPITAL_COMMENT_IF_PUBLISH_WITH_TSC_COMMAND_ONLY"
+    "dist/index.d.ts"
   ],
   "dependencies": {
     "@react-three/fiber": "^7.0.24",
@@ -29,7 +28,6 @@
     "prep-sample1": "echo 'import start from \"./sample1/index\"\nstart()' > src/index.tsx",
     "debug-sample1": "npm run prep-sample1 && vite --config src/sample1/vite.config.js --host",
     "build-sample1": "npm run prep-sample1 && vite build --config src/sample1/vite.config.js --base=./",
-    "dist-tsc": "tsc --project tsconfig-dist.json",
     "dist-rollup": "rollup --config rollup.config.js",
     "start": "npm run debug-sample1",
     "build": "npm run build-sample1",
