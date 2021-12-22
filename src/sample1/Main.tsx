@@ -1,17 +1,25 @@
 import svglogo from "./logo.svg"
-import { HBox, Body, Border, Flex } from "./Gui"
+import { HBox, VBox, Body, Border, Flex } from "./Gui"
 import { SampleParts } from "./SampleParts"
 import { SampleConstruction } from "./SampleConstruction"
 import { SampleLogo } from "./SampleLogo"
+import { name as pname, version } from "../../package.json"
 
 function Title() {
+   const npmlink = "https://www.npmjs.com/package/three-wideline"
    return (
-      <HBox>
-         <Body />
-         <img style={{ paddingRight: "20px" }} src={svglogo} className="App-logo" />
-         <h1>Three-Wideline</h1>
-         <Body />
-      </HBox>
+      <VBox>
+         <HBox>
+            <Body />
+            <img style={{ paddingRight: "20px" }} src={svglogo} className="App-logo" />
+            <h1>{`${pname}`}</h1>
+            <p>{`${version}`}</p>
+            <Body />
+         </HBox>
+         <HBox>
+            <a href={npmlink}>{npmlink}</a>
+         </HBox>
+      </VBox>
    )
 }
 
