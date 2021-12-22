@@ -1,5 +1,5 @@
 import { GroupProps } from "@react-three/fiber"
-import { Wideline } from "."
+import { Wideline } from "./Wideline"
 
 export function Logo(props?: GroupProps) {
    return (
