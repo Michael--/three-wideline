@@ -1,7 +1,7 @@
 {
    "extends": "./tsconfig-base.json",
    "compilerOptions": {
-      "noEmit": true
+      "declarationDir": "dist/types"
    },
-   "include": ["src"]
+   "include": ["src/Wideline"]
 }
