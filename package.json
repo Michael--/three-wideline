@@ -16,7 +16,6 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist/index.js",
-    "dist/index.js.map",
     "dist/index.d.ts"
   ],
   "dependencies": {
@@ -30,10 +29,9 @@
     "debug-sample1": "npm run prep-sample1 && vite --config src/sample1/vite.config.js --host",
     "build-sample1": "npm run prep-sample1 && vite build --config src/sample1/vite.config.js --base=./",
     "apidoc": "api-documenter markdown --i ./dist",
-    "dist-rollup": "rollup --config rollup.config.js && npm run apidoc",
     "start": "npm run debug-sample1",
     "build": "npm run build-sample1",
-    "dist": "npm run dist-rollup",
+    "dist": "rollup --config rollup.config.js && npm run apidoc",
     "prepack": "npm run lint && npm run dist",
     "lint": "eslint --ext .tsx,.ts,.jsx,.js src/"
   },
