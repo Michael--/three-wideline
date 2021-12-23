@@ -9,7 +9,7 @@ const config = [
       output: {
          sourcemap: true,
          dir: "dist",
-         format: "cjs",
+         format: "iife",
       },
       plugins: [
          typescript({ tsconfig: "tsconfig-dist.json" }),
