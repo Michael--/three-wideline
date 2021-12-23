@@ -1,6 +1,12 @@
 import { GroupProps } from "@react-three/fiber"
 import { Wideline } from "./Wideline"
 
+/**
+ * @public
+ * Display the three-wideline logo as line drawn by itself.
+ *
+ * @param props - all possible three js group properties
+ */
 export function Logo(props?: GroupProps) {
    return (
       <Wideline

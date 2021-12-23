@@ -1,23 +1,24 @@
 // rollup.config.js
 import typescript from "@rollup/plugin-typescript"
-import dts from "rollup-plugin-dts"
 import { string } from "rollup-plugin-string"
+import { apiExtractor } from "rollup-plugin-api-extractor"
 
 const config = [
    {
       input: "src/Wideline/index.tsx",
       output: {
-         // name: "bla",
-         //declarationDir: "./dts",
+         sourcemap: true,
          dir: "dist",
          format: "cjs",
       },
-      plugins: [typescript({ tsconfig: "tsconfig-dist.json" }), string({ include: /\.(vs|fs)$/ })],
-   },
-   {
-      input: "dist/types/index.d.ts",
-      output: [{ file: "dist/index.d.ts", format: "es" }],
-      plugins: [dts()],
+      plugins: [
+         typescript({ tsconfig: "tsconfig-dist.json" }),
+         string({ include: /\.(vs|fs)$/ }),
+         apiExtractor({
+            local: true,
+            configFile: "./api-extractor.json",
+         }),
+      ],
    },
 ]
 

@@ -15,12 +15,12 @@ The basic idea is very well documented here [Instanced Line Rendering Part I](ht
 This implementation get this idea and provide a class to use together with three js.
 Most of the shader are reused here with small adjustments.
 
-Some details about the Wideline interface is under construction - stay tuned.
+[API Reference](./markdown/three-wideline.wideline.md)
 
 ## Todo
 
 * Support of three js shader lib
-* Documentation
+* 
 
 ## Repository
 Github: [three-wideline](https://github.com/Michael--/three-wideline)

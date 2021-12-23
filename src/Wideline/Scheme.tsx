@@ -9,30 +9,57 @@ import vertexRoundJoin from "./shader/roundJoin.vs"
 import vertexBevel from "./shader/bevel.vs"
 import vertexMiter from "./shader/miter.vs"
 
+/** @internal Create vertices only at start or end of the line */
 export type Where = "Start" | "End"
 
+/** @internal Index array of vertices */
 export interface IVertices {
+   /** Index array */
    index: number[]
+   /** Line limitations */
    limited?: Where
 }
 
+/**
+ * @public
+ * Scheme/Attribute of a shader segment.
+ */
 export interface IScheme {
+   /** Color */
    color?: Color
+   /** Opacity */
    opacity?: number
+   /** Width */
    width?: number
 }
 
+/**
+ * @public
+ * Geometry definition on excatly one line part, which can be a line segment,
+ * or for example a cap or join.
+ */
 export interface IGeometry {
+   /** Position (x,y) list */
    positions: number[][]
+   /** Cell definition, the vertices of the geometry */
    cells: number[][]
 }
 
+/**
+ * @internal
+ * Collection of geometry and its shader.
+ */
 export interface ISchemeGeometry {
    positions: number[]
    vertices: IVertices[]
    shader: ShaderMaterialProps[][]
 }
 
+/**
+ * @internal
+ * Contains line scheme geometry creator.
+ * This is a toolset to create the needed meshs for a whole line representation.
+ */
 export class Scheme {
    private data: ISchemeGeometry = {
       positions: [],
@@ -40,8 +67,16 @@ export class Scheme {
       shader: [],
    }
 
-   public getScheme = () => this.data
+   /** @internal Access to the created geometry and shader */
+   public getScheme() {
+      return this.data
+   }
 
+   /**
+    * Create simple line segments.
+    * A list of meshes like rectangles.
+    * At the joins, the rectangles are overlapped.
+    */
    public simple = (props: IScheme[]) => {
       const geometry = boxGeometry()
       this.addGeometry(geometry)
@@ -52,11 +87,17 @@ export class Scheme {
       )
    }
 
+   /**
+    * Create advanced line segments. Instead rectangles trapezoids created.
+    * At the joins, these meshes are not overlapped.
+    * Strips are used to draw transparent lines.
+    */
    public strip = (props: IScheme[]) => {
       this.stripMain(props)
       this.stripTerminal(props)
    }
 
+   /** draw all strips except first element */
    private stripMain = (props: IScheme[]) => {
       const geometry = boxGeometry()
       this.addGeometry(geometry)
@@ -67,6 +108,7 @@ export class Scheme {
       )
    }
 
+   /** draw only the first strip element */
    private stripTerminal = (props: IScheme[]) => {
       const geometry = boxGeometry()
       this.addGeometry(geometry, "Start")
@@ -77,11 +119,13 @@ export class Scheme {
       )
    }
 
+   /** Add custom meshes */
    public custom = (props: IScheme, geometry: IGeometry) => {
       this.addGeometry(geometry)
       this.addUniform(props, vertexSimple)
    }
 
+   /** Add bevil joins. */
    public bevel = (props: IScheme[]) => {
       const geometry: IGeometry = {
          positions: [
@@ -100,6 +144,7 @@ export class Scheme {
       )
    }
 
+   /** Add miter joins. */
    public miter = (props: IScheme[]) => {
       const geometry: IGeometry = {
          positions: [
@@ -122,6 +167,7 @@ export class Scheme {
       )
    }
 
+   /** Add a cap to the line */
    public addCap = (props: IScheme[], geometry: IGeometry | undefined, where: Where) => {
       if (geometry !== undefined) {
          this.addGeometry(geometry, where)
@@ -134,6 +180,7 @@ export class Scheme {
       }
    }
 
+   /** Add a round join */
    public roundJoin = (props: IScheme[], resolution: number) => {
       const roundJoinGeometry = (resolution: number): IGeometry => {
          const positions: number[][] = []
@@ -156,6 +203,7 @@ export class Scheme {
       )
    }
 
+   /** Append a geometry to the result */
    private addGeometry = (geometry: IGeometry, limited?: Where) => {
       const offset = this.data.positions.length / 3
       this.data.positions = this.data.positions.concat(geometry.positions.flat())
@@ -163,6 +211,7 @@ export class Scheme {
       this.data.vertices.push({ index: v, limited })
    }
 
+   /** create shader uniform */
    private sprops(
       props: IScheme,
       vs: string,
@@ -184,11 +233,13 @@ export class Scheme {
       }
    }
 
+   /** add one shader with its uniform */
    private addUniform = (props: IScheme, vs: string, u?: { [uniform: string]: IUniform }) => {
       const sh = this.sprops(props, vs, u)
       this.data.shader.push([sh])
    }
 
+   /** add a list of shaders with its uniforms */
    private addUniforms = (ux: { props: IScheme; vs: string; u?: { [uniform: string]: IUniform } }[]) => {
       // zlevel offset used to stack multiple line attribute, the minimial meaningful value depends on gl shader engine
       // may it could be nice to configure this value by user interface in some cases
@@ -199,6 +250,11 @@ export class Scheme {
    }
 }
 
+/**
+ * @internal
+ * Create a simple mesh geometry consists of two triangles.
+ * It look like a box or reactangle.
+ */
 export const boxGeometry = (): IGeometry => {
    return {
       positions: [
@@ -214,6 +270,10 @@ export const boxGeometry = (): IGeometry => {
    }
 }
 
+/**
+ * @internal
+ * Geometry of the square cap
+ */
 export const squareCapGeometry = (): IGeometry => {
    return {
       positions: [
@@ -229,6 +289,10 @@ export const squareCapGeometry = (): IGeometry => {
    }
 }
 
+/**
+ * @internal
+ * Geometry of the top cap
+ */
 export const topCapGeometry = (): IGeometry => {
    return {
       positions: [
@@ -240,6 +304,10 @@ export const topCapGeometry = (): IGeometry => {
    }
 }
 
+/**
+ * @internal
+ * Geometry of the round cap
+ */
 export const roundCapGeometry = (resolution: number): IGeometry => {
    const positions = [[0, 0, 0]]
    for (let i = 0; i <= resolution; i++) {

@@ -3,34 +3,86 @@ import { GroupProps } from "@react-three/fiber"
 import { Color, ColorRepresentation, Vector2, Vector3 } from "three"
 import { Scheme, IVertices, IGeometry, roundCapGeometry, squareCapGeometry, topCapGeometry, IScheme } from "./Scheme"
 
-type Shape = Vector3[] | Vector2[] | number[]
+/**
+ * @public
+ * Shape point definition.
+ */
+export type Shape = Vector3[] | Vector2[] | number[]
 
+/**
+ * @public
+ * Appearing of the line, mainly width and color.
+ */
 export interface IAttribute {
-   /** the main color of the line */
+   /** The main color of the line */
    color?: ColorRepresentation
-   /** optional show some inner parts with an alternative color, e.g. miter, bevel ... */
+   /** Show some inner parts with an alternative color, e.g. miter, bevel ... */
    offals?: ColorRepresentation
-   /** the with of the line */
+   /** The with of the line */
    width?: number
 }
 
+/**
+ * @public
+ * Line cap representation.
+ */
 export const CapsList = ["Butt", "Round", "Square", "Top"] as const
+
+/**
+ * @public
+ * Line cap representation.
+ */
 export type Caps = typeof CapsList[number]
+
+/**
+ * @public
+ * Line join representation.
+ */
 export const JoinsList = ["Bevel", "Miter", "Round"] as const
+
+/**
+ * @public
+ * Line join representation.
+ */
 export type Joins = typeof JoinsList[number]
 
-export function Wideline(
-   props: GroupProps & {
-      points: Shape
-      attr: IAttribute | IAttribute[]
-      opacity?: number
-      join?: Joins
-      capsStart?: Caps
-      capsEnd?: Caps
-      arrow?: ColorRepresentation
-      custom?: { scheme: IScheme; geometry: IGeometry }[]
-   },
-) {
+/**
+ * @public
+ * Line properties.
+ */
+export interface IWidelineProps {
+   /** The shape of the line, some points. */
+   points: Shape
+   /** The line attribute, use an array to draw multiple lines with same geometry. */
+   attr: IAttribute | IAttribute[]
+   /** Line opacity, is less than 1, the line is transparent. Optimized shader are used in that case. */
+   opacity?: number
+   /** Which joins are used */
+   join?: Joins
+   /** The start cap of the line */
+   capsStart?: Caps
+   /** The end cap of the line */
+   capsEnd?: Caps
+   /** A user defined custom element for any segment of the line @beta */
+   custom?: { scheme: IScheme; geometry: IGeometry }[]
+}
+
+/**
+ * @public
+ * Displayed a 2D-Line as indexed mesh, whereby the mesh consists of the determined line options.
+ * A geometry is calculated which are drawn by several vertex shader.
+ *
+ * @example Line between 2 points with default attributes (white, width=1).
+ * ```
+ * <Wideline points={[-1, -1, 1, 1]} attr={{}} />
+ * ```
+ *
+ * @example Line between 3 points (red, width=0.2, round join).
+ * ```
+ * <Wideline points={[-1, -1, 0, 1, 1, -1]} attr={{ color: "red", width: 0.2 }} join="Round" />
+ * ```
+ */
+export function Wideline(props: GroupProps & IWidelineProps) {
    const attr = useMemo(() => {
       const scheme = new Scheme()
       const mainColor = (a: IAttribute) => new Color(a.color)
