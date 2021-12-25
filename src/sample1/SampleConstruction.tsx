@@ -84,16 +84,17 @@ export function SampleConstruction() {
    return (
       <HBox>
          <VBox>
+            <h3>Adjust some features of the displayed line</h3>
             <HBox>
-               <Checkbox checked={second} onChange={c => setSecond(c)}>
-                  <p>2nd Attribute</p>
-               </Checkbox>
                <Button onClick={(x, y) => setPicker({ show: 0, x, y })}>
                   <p style={styleColor(color1)}>Color</p>
                </Button>
                <Button onClick={(x, y) => setPicker({ show: 1, x, y })}>
                   <p style={styleColor(color2)}>Color2</p>
                </Button>
+               <Checkbox checked={second} onChange={c => setSecond(c)}>
+                  <p>show 2nd Attribute</p>
+               </Checkbox>
                {picker.show >= 0 ? (
                   <Popover x={picker.x} y={picker.y}>
                      <Button style={styleCover} onClick={(x, y) => setPicker({ show: -1, x, y })}></Button>

@@ -1,6 +1,7 @@
 import svglogo from "./logo.svg"
 import { HBox, VBox, Body, Border, Flex } from "./Gui"
 import { SampleParts } from "./SampleParts"
+import { CustomLineParts } from "./CustomLineParts"
 import { SampleConstruction } from "./SampleConstruction"
 import { SampleLogo } from "./SampleLogo"
 import { name as pname, version } from "../../package.json"
@@ -31,6 +32,8 @@ export function Main() {
          <SampleLogo />
          <Border />
          <SampleParts />
+         <Border />
+         <CustomLineParts />
          <Border />
          <SampleConstruction />
          <Border />
