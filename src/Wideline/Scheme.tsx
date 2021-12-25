@@ -122,7 +122,7 @@ export class Scheme {
    /** Add custom meshes */
    public custom = (props: IScheme, geometry: IGeometry) => {
       this.addGeometry(geometry)
-      this.addUniform(props, vertexSimple)
+      this.addUniforms([{ props: props, vs: vertexSimple }])
    }
 
    /** Add bevil joins. */
@@ -231,12 +231,6 @@ export class Scheme {
          transparent: true,
          side: zlevel !== undefined && zlevel > 0 ? FrontSide : DoubleSide,
       }
-   }
-
-   /** add one shader with its uniform */
-   private addUniform = (props: IScheme, vs: string, u?: { [uniform: string]: IUniform }) => {
-      const sh = this.sprops(props, vs, u)
-      this.data.shader.push([sh])
    }
 
    /** add a list of shaders with its uniforms */
