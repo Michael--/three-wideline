@@ -12,8 +12,5 @@ A user defined custom element for any segment of the line
 <b>Signature:</b>
 
 ```typescript
-custom?: {
-        scheme: IScheme;
-        geometry: IGeometry;
-    }[];
+custom?: ICustom[];
 ```

@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { Wideline, IGeometry, IScheme, generatePointsInterleaved } from "../Wideline"
+import { Wideline, IGeometry, IScheme, generatePointsInterleaved, ICustom } from "../Wideline"
 import { HBox, Body } from "./Gui"
 import { ThreeCanvas } from "./ThreeCanvas"
 import { Color } from "three"
@@ -18,7 +18,7 @@ export function CustomLineParts() {
       ],
    }
    const arrowScheme: IScheme = { color: new Color("blue"), width: 0.2 }
-   const arrow = { scheme: arrowScheme, geometry: arrowGeometry }
+   const arrow: ICustom = { scheme: arrowScheme, geometry: arrowGeometry }
 
    const points = useMemo(() => generatePointsInterleaved(5, 5, 2), [])
    return (

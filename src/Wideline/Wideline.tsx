@@ -24,6 +24,17 @@ export interface IAttribute {
 
 /**
  * @public
+ * Custom element definition
+ */
+export interface ICustom {
+   /** How it appear */
+   scheme: IScheme
+   /** The user defined geometry */
+   geometry: IGeometry
+}
+
+/**
+ * @public
  * Line cap representation.
  */
 export const CapsList = ["Butt", "Round", "Square", "Top"] as const
@@ -64,7 +75,7 @@ export interface IWidelineProps {
    /** The end cap of the line */
    capsEnd?: Caps
    /** A user defined custom element for any segment of the line @beta */
-   custom?: { scheme: IScheme; geometry: IGeometry }[]
+   custom?: ICustom[]
 }
 
 /**
