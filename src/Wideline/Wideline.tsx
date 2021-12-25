@@ -90,9 +90,12 @@ export function Wideline(props: GroupProps & IWidelineProps) {
 
       const ar = props.attr instanceof Array ? props.attr : [props.attr]
 
-      if (props.opacity !== undefined)
-         scheme.strip(ar.map(e => ({ color: mainColor(e), width: e.width, opacity: props.opacity })))
-      else scheme.simple(ar.map(e => ({ color: mainColor(e), width: e.width })))
+      if (props.opacity !== undefined) {
+         if (props.opacity > 0)
+            scheme.strip(ar.map(e => ({ color: mainColor(e), width: e.width, opacity: props.opacity })))
+      } else {
+         scheme.simple(ar.map(e => ({ color: mainColor(e), width: e.width })))
+      }
 
       const capgeo = (c: Caps): IGeometry | undefined => {
          switch (c) {
@@ -106,30 +109,32 @@ export function Wideline(props: GroupProps & IWidelineProps) {
          return undefined
       }
 
-      if (props.capsStart !== undefined) {
+      if (props.capsStart !== undefined && props.opacity !== 0) {
          const s = ar.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
          scheme.addCap(s, capgeo(props.capsStart), "Start")
       }
-      if (props.capsEnd !== undefined) {
+      if (props.capsEnd !== undefined && props.opacity !== 0) {
          const s = ar.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
          scheme.addCap(s, capgeo(props.capsEnd), "End")
       }
 
-      switch (props.join) {
-         case "Bevel": {
-            const s = ar.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
-            scheme.bevel(s)
-            break
-         }
-         case "Miter": {
-            const s = ar.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
-            scheme.miter(s)
-            break
-         }
-         case "Round": {
-            const s = ar.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
-            scheme.roundJoin(s, 10)
-            break
+      if (props.opacity !== 0) {
+         switch (props.join) {
+            case "Bevel": {
+               const s = ar.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
+               scheme.bevel(s)
+               break
+            }
+            case "Miter": {
+               const s = ar.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
+               scheme.miter(s)
+               break
+            }
+            case "Round": {
+               const s = ar.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
+               scheme.roundJoin(s, 10)
+               break
+            }
          }
       }
       props.custom?.forEach(e => scheme.custom(e.scheme, e.geometry))
