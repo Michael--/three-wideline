@@ -71,9 +71,9 @@ export interface IWidelineProps {
    /** Which joins are used */
    join?: Joins
    /** The start cap of the line */
-   capsStart?: Caps
+   capsStart?: Caps | IGeometry
    /** The end cap of the line */
-   capsEnd?: Caps
+   capsEnd?: Caps | IGeometry
    /** A user defined custom element for any segment of the line @beta */
    custom?: ICustom[]
 }
@@ -108,7 +108,8 @@ export function Wideline(props: GroupProps & IWidelineProps) {
          scheme.simple(ar.map(e => ({ color: mainColor(e), width: e.width })))
       }
 
-      const capgeo = (c: Caps): IGeometry | undefined => {
+      const capgeo = (c: Caps | IGeometry): IGeometry | undefined => {
+         if (typeof c !== "string") return c
          switch (c) {
             case "Round":
                return roundCapGeometry(10)
@@ -117,6 +118,7 @@ export function Wideline(props: GroupProps & IWidelineProps) {
             case "Top":
                return topCapGeometry()
          }
+
          return undefined
       }
 
