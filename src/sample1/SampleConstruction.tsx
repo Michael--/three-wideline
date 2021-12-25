@@ -1,7 +1,7 @@
 import { useMemo, useState, CSSProperties } from "react"
 import { IAttribute, Wideline, Joins, JoinsList, Caps, CapsList } from "../Wideline"
 import { generatePointsInterleaved } from "../Wideline"
-import { SketchPicker } from "react-color"
+import { SketchPicker, RGBColor } from "react-color"
 import { Popover, HBox, VBox, Body, Button, Checkbox } from "./Gui"
 import { ThreeCanvas } from "./ThreeCanvas"
 import Select from "react-select"
@@ -16,14 +16,22 @@ type CapsItem = {
    label: string
 }
 
+function toHexColor(c: RGBColor): string {
+   const toHex = (v: number) => {
+      const hex = v.toString(16)
+      return hex.length == 1 ? "0" + hex : hex
+   }
+   return "#" + toHex(c.r) + toHex(c.g) + toHex(c.b)
+}
+
 export function SampleConstruction() {
    const [edges, setEdges] = useState(8)
    const [dimension, setDimension] = useState(5)
    const [width, setWidth] = useState(0.2)
    const [width2, setWidth2] = useState(0.1)
    const [second, setSecond] = useState(false)
-   const [color1, setColor1] = useState("red")
-   const [color2, setColor2] = useState("yellow")
+   const [color1, setColor1] = useState<RGBColor>({ a: 1.0, r: 255, g: 0, b: 0 })
+   const [color2, setColor2] = useState<RGBColor>({ a: 1.0, r: 255, g: 255, b: 0 })
    const [picker, setPicker] = useState({ show: -1, x: 0, y: 0 })
 
    const joinlist = useMemo(
@@ -46,11 +54,11 @@ export function SampleConstruction() {
    const [capsStart, setCapsStart] = useState(capslist[0])
    const [capsEnd, setCapsEnd] = useState(capslist[0])
 
-   const styleColor = (color: string): CSSProperties => {
+   const styleColor = (color: RGBColor): CSSProperties => {
       return {
          borderRadius: "4px",
          padding: "4px",
-         backgroundColor: color,
+         backgroundColor: toHexColor(color),
          // color: e.g. inverse of color,
       }
    }
@@ -68,13 +76,13 @@ export function SampleConstruction() {
    const attr = useMemo(() => {
       const attr: IAttribute[] = [
          {
-            color: color1,
+            color: toHexColor(color1),
             width: width,
          },
       ]
       if (second) {
          attr.push({
-            color: color2,
+            color: toHexColor(color2),
             width: width2,
          })
       }
@@ -89,9 +97,11 @@ export function SampleConstruction() {
                <Button onClick={(x, y) => setPicker({ show: 0, x, y })}>
                   <p style={styleColor(color1)}>Color</p>
                </Button>
-               <Button onClick={(x, y) => setPicker({ show: 1, x, y })}>
-                  <p style={styleColor(color2)}>Color2</p>
-               </Button>
+               {second && (
+                  <Button onClick={(x, y) => setPicker({ show: 1, x, y })}>
+                     <p style={styleColor(color2)}>Color2</p>
+                  </Button>
+               )}
                <Checkbox checked={second} onChange={c => setSecond(c)}>
                   <p>show 2nd Attribute</p>
                </Checkbox>
@@ -100,7 +110,7 @@ export function SampleConstruction() {
                      <Button style={styleCover} onClick={(x, y) => setPicker({ show: -1, x, y })}></Button>
                      <SketchPicker
                         color={picker.show === 0 ? color1 : color2}
-                        onChange={c => (picker.show === 0 ? setColor1(c.hex) : setColor2(c.hex))}
+                        onChange={c => (picker.show === 0 ? setColor1(c.rgb) : setColor2(c.rgb))}
                      />
                   </Popover>
                ) : undefined}
@@ -132,11 +142,15 @@ export function SampleConstruction() {
                   <HBox>
                      <Button onClick={() => setWidth(Math.min(width + 0.1, 1))}>▲</Button>
                      <Button onClick={() => setWidth(Math.max(width - 0.1, 0.1))}>▼</Button>
-                     <p>Width: {width.toFixed(1)}</p>
-                     <Body style={{ marginLeft: "40px" }} />
-                     <Button onClick={() => setWidth2(Math.min(width2 + 0.1, 1))}>▲</Button>
-                     <Button onClick={() => setWidth2(Math.max(width2 - 0.1, 0.1))}>▼</Button>
-                     <p>Width2: {width2.toFixed(1)}</p>
+                     <p style={{ marginRight: "40px" }}>Width: {width.toFixed(1)}</p>
+                     {second && (
+                        <HBox>
+                           <Button onClick={() => setWidth2(Math.min(width2 + 0.1, 1))}>▲</Button>
+                           <Button onClick={() => setWidth2(Math.max(width2 - 0.1, 0.1))}>▼</Button>
+                           <p style={{ marginRight: "40px" }}>Width2: {width2.toFixed(1)}</p>
+                        </HBox>
+                     )}
+                     <p>Opacity: {(color1.a ?? 1.0).toFixed(1)}</p>
                   </HBox>
                </VBox>
                <Body />
@@ -150,6 +164,7 @@ export function SampleConstruction() {
                join={join.value}
                capsStart={capsStart.value}
                capsEnd={capsEnd.value}
+               opacity={color1.a}
             />
          </ThreeCanvas>
       </HBox>

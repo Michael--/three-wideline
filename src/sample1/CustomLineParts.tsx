@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 import { Wideline, IGeometry, IScheme, generatePointsInterleaved, ICustom } from "../Wideline"
-import { HBox, Body } from "./Gui"
+import { HBox, VBox, Body } from "./Gui"
 import { ThreeCanvas } from "./ThreeCanvas"
 import { Color } from "three"
 
@@ -17,21 +17,31 @@ export function CustomLineParts() {
          [2, 3, 0],
       ],
    }
-   const arrowScheme: IScheme = { color: new Color("blue"), width: 0.25 }
+   const arrowScheme: IScheme = { color: new Color("green"), width: 0.25 }
    const arrow: ICustom = { scheme: arrowScheme, geometry: arrowGeometry }
 
-   const points = useMemo(() => generatePointsInterleaved(5, 5, 2), [])
+   const points = useMemo(() => generatePointsInterleaved(5, 5, 1), [])
    return (
       <HBox>
-         <h3>Custom element on each line segment, custom caps</h3>
+         <VBox>
+            <h3>1. Custom element on each line segment, custom caps</h3>
+            <h3>2. Custom element only</h3>
+         </VBox>
          <Body />
          <ThreeCanvas scale={2} width={"400px"} height={"200px"}>
             <Wideline
+               position={[0, 0.75, 0]}
                points={points}
                attr={{ color: "yellow", width: 0.5 }}
                join={"Round"}
                capsStart={arrowGeometry}
                capsEnd={arrowGeometry}
+               custom={[arrow]}
+            />
+            <Wideline
+               position={[0, -0.75, 0]}
+               points={points}
+               attr={[]} // empty attr exclude main line parts (as same as with opacity=0)
                custom={[arrow]}
             />
          </ThreeCanvas>
