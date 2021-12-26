@@ -50,7 +50,7 @@ export function SampleConstruction() {
          }),
       [],
    )
-   const [join, setJoin] = useState(joinlist[0])
+   const [join, setJoin] = useState(joinlist[1])
    const [capsStart, setCapsStart] = useState(capslist[0])
    const [capsEnd, setCapsEnd] = useState(capslist[0])
 

@@ -49,7 +49,7 @@ export type Caps = typeof CapsList[number]
  * @public
  * Line join representation.
  */
-export const JoinsList = ["Bevel", "Miter", "Round"] as const
+export const JoinsList = ["None", "Bevel", "Miter", "Round"] as const
 
 /**
  * @public
@@ -101,12 +101,9 @@ export function Wideline(props: GroupProps & IWidelineProps) {
 
       const ar = props.attr instanceof Array ? props.attr : [props.attr]
 
-      if (props.opacity !== undefined) {
-         if (props.opacity > 0)
-            scheme.strip(ar.map(e => ({ color: mainColor(e), width: e.width, opacity: props.opacity })))
-      } else {
-         scheme.simple(ar.map(e => ({ color: mainColor(e), width: e.width })))
-      }
+      if (props.opacity !== undefined && props.opacity < 1)
+         scheme.strip(ar.map(e => ({ color: mainColor(e), width: e.width, opacity: props.opacity })))
+      else scheme.simple(ar.map(e => ({ color: mainColor(e), width: e.width })))
 
       const capgeo = (c: Caps | IGeometry): IGeometry | undefined => {
          if (typeof c !== "string") return c
