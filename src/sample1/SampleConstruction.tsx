@@ -1,4 +1,4 @@
-import { useMemo, useState, CSSProperties } from "react"
+import { useEffect, useMemo, useState, CSSProperties } from "react"
 import { IAttribute, Wideline, Joins, JoinsList, Caps, CapsList } from "../Wideline"
 import { generatePointsInterleaved } from "../Wideline"
 import { SketchPicker, RGBColor } from "react-color"
@@ -26,13 +26,13 @@ function toHexColor(c: RGBColor): string {
 
 export function SampleConstruction() {
    const [edges, setEdges] = useState(8)
-   const [dimension, setDimension] = useState(5)
    const [width, setWidth] = useState(0.2)
    const [width2, setWidth2] = useState(0.1)
    const [second, setSecond] = useState(false)
    const [color1, setColor1] = useState<RGBColor>({ a: 1.0, r: 255, g: 0, b: 0 })
    const [color2, setColor2] = useState<RGBColor>({ a: 1.0, r: 255, g: 255, b: 0 })
    const [picker, setPicker] = useState({ show: -1, x: 0, y: 0 })
+   const [vx, setVx] = useState({ running: false, x: 0 })
 
    const joinlist = useMemo(
       () =>
@@ -72,7 +72,24 @@ export function SampleConstruction() {
       border: "none",
    }
 
-   const points = useMemo(() => generatePointsInterleaved(edges + 1, dimension), [edges, dimension])
+   useEffect(() => {
+      if (vx.running) {
+         const t = setInterval(() => {
+            // Force a simple animation.
+            // As implemented it causes a lot of redraws with new geometry.
+            // I can accept as a demo.
+            setVx(v => ({ running: true, x: v.x + 0.025 }))
+         }, 50)
+         return () => {
+            clearInterval(t)
+         }
+      }
+   }, [vx.running])
+
+   const points = useMemo(
+      () => generatePointsInterleaved(edges + 1, Math.cos(vx.x) * 5, Math.cos(vx.x / 2.5)),
+      [edges, vx.x],
+   )
    const attr = useMemo(() => {
       const attr: IAttribute[] = [
          {
@@ -134,12 +151,6 @@ export function SampleConstruction() {
                      <Body />
                   </HBox>
                   <HBox>
-                     <Button onClick={() => setDimension(Math.min(dimension + 1, 5))}>▲</Button>
-                     <Button onClick={() => setDimension(Math.max(dimension - 1, 1))}>▼</Button>
-                     <p>Dimension: {dimension}</p>
-                     <Body />
-                  </HBox>
-                  <HBox>
                      <Button onClick={() => setWidth(Math.min(width + 0.1, 1))}>▲</Button>
                      <Button onClick={() => setWidth(Math.max(width - 0.1, 0.1))}>▼</Button>
                      <p style={{ marginRight: "40px" }}>Width: {width.toFixed(1)}</p>
@@ -151,6 +162,12 @@ export function SampleConstruction() {
                         </HBox>
                      )}
                      <p>Opacity: {(color1.a ?? 1.0).toFixed(1)}</p>
+                  </HBox>
+                  <HBox>
+                     <Checkbox checked={vx.running} onChange={c => setVx({ ...vx, running: c })}>
+                        <p>Animation</p>
+                     </Checkbox>
+                     <Body />
                   </HBox>
                </VBox>
                <Body />
