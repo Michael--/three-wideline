@@ -9,7 +9,7 @@ const config = defineConfig({
    output: {
       sourcemap: false,
       dir: "dist",
-      format: "cjs",
+      format: "iife",
       name: "ThreeWideline",
       globals: {
          react: "React",
