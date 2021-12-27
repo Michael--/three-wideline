@@ -1,6 +1,6 @@
-import { ReactNode, CSSProperties } from "react"
+import * as React from "react"
 
-export function Popover(props: { x?: number; y?: number; children?: ReactNode }) {
+export function Popover(props: { x?: number; y?: number; children?: React.ReactNode }) {
    return (
       <div
          style={{
@@ -15,7 +15,7 @@ export function Popover(props: { x?: number; y?: number; children?: ReactNode })
    )
 }
 
-export function Flex(props: { children?: ReactNode }) {
+export function Flex(props: { children?: React.ReactNode }) {
    return (
       <div
          style={{
@@ -28,7 +28,7 @@ export function Flex(props: { children?: ReactNode }) {
    )
 }
 
-export function Body(props: { style?: React.CSSProperties; children?: ReactNode }) {
+export function Body(props: { style?: React.CSSProperties; children?: React.ReactNode }) {
    return <div style={{ flex: 1, ...props.style }}>{props.children}</div>
 }
 
@@ -45,7 +45,7 @@ export function Border() {
    )
 }
 
-export function HBox(props: { children?: ReactNode }) {
+export function HBox(props: { children?: React.ReactNode }) {
    return (
       <div
          style={{
@@ -60,7 +60,7 @@ export function HBox(props: { children?: ReactNode }) {
    )
 }
 
-export function VBox(props: { children?: ReactNode }) {
+export function VBox(props: { children?: React.ReactNode }) {
    return (
       <div
          style={{
@@ -77,10 +77,10 @@ export function VBox(props: { children?: ReactNode }) {
 
 export function Button(props: {
    style?: React.CSSProperties
-   children?: ReactNode
+   children?: React.ReactNode
    onClick?: (x: number, y: number) => void
 }) {
-   const style: CSSProperties = {
+   const style: React.CSSProperties = {
       fontSize: "larger",
       margin: "4px",
       padding: "4px",
@@ -102,7 +102,7 @@ export function Button(props: {
 export function Checkbox(props: {
    checked: boolean
    style?: React.CSSProperties
-   children?: ReactNode
+   children?: React.ReactNode
    onChange?: (checked: boolean) => void
 }) {
    return (

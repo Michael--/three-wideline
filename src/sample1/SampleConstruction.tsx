@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, CSSProperties } from "react"
+import * as React from "react"
 import { IAttribute, Wideline, Joins, JoinsList, Caps, CapsList } from "../Wideline"
 import { generatePointsInterleaved } from "../Wideline"
 import { SketchPicker, RGBColor } from "react-color"
@@ -25,16 +25,16 @@ function toHexColor(c: RGBColor): string {
 }
 
 export function SampleConstruction() {
-   const [edges, setEdges] = useState(8)
-   const [width, setWidth] = useState(0.2)
-   const [width2, setWidth2] = useState(0.1)
-   const [second, setSecond] = useState(false)
-   const [color1, setColor1] = useState<RGBColor>({ a: 1.0, r: 255, g: 0, b: 0 })
-   const [color2, setColor2] = useState<RGBColor>({ a: 1.0, r: 255, g: 255, b: 0 })
-   const [picker, setPicker] = useState({ show: -1, x: 0, y: 0 })
-   const [vx, setVx] = useState({ running: false, x: 0 })
+   const [edges, setEdges] = React.useState(8)
+   const [width, setWidth] = React.useState(0.2)
+   const [width2, setWidth2] = React.useState(0.1)
+   const [second, setSecond] = React.useState(false)
+   const [color1, setColor1] = React.useState<RGBColor>({ a: 1.0, r: 255, g: 0, b: 0 })
+   const [color2, setColor2] = React.useState<RGBColor>({ a: 1.0, r: 255, g: 255, b: 0 })
+   const [picker, setPicker] = React.useState({ show: -1, x: 0, y: 0 })
+   const [vx, setVx] = React.useState({ running: false, x: 0 })
 
-   const joinlist = useMemo(
+   const joinlist = React.useMemo(
       () =>
          JoinsList.map(e => {
             const a: JoinItem = { value: e, label: e }
@@ -42,7 +42,7 @@ export function SampleConstruction() {
          }),
       [],
    )
-   const capslist = useMemo(
+   const capslist = React.useMemo(
       () =>
          CapsList.map(e => {
             const a: CapsItem = { value: e, label: e }
@@ -50,11 +50,11 @@ export function SampleConstruction() {
          }),
       [],
    )
-   const [join, setJoin] = useState(joinlist[1])
-   const [capsStart, setCapsStart] = useState(capslist[0])
-   const [capsEnd, setCapsEnd] = useState(capslist[0])
+   const [join, setJoin] = React.useState(joinlist[1])
+   const [capsStart, setCapsStart] = React.useState(capslist[0])
+   const [capsEnd, setCapsEnd] = React.useState(capslist[0])
 
-   const styleColor = (color: RGBColor): CSSProperties => {
+   const styleColor = (color: RGBColor): React.CSSProperties => {
       return {
          borderRadius: "4px",
          padding: "4px",
@@ -63,7 +63,7 @@ export function SampleConstruction() {
       }
    }
 
-   const styleCover: CSSProperties = {
+   const styleCover: React.CSSProperties = {
       position: "fixed",
       top: 0,
       right: 0,
@@ -72,7 +72,7 @@ export function SampleConstruction() {
       border: "none",
    }
 
-   useEffect(() => {
+   React.useEffect(() => {
       if (vx.running) {
          const t = setInterval(() => {
             // Force a simple animation.
@@ -86,11 +86,11 @@ export function SampleConstruction() {
       }
    }, [vx.running])
 
-   const points = useMemo(
+   const points = React.useMemo(
       () => generatePointsInterleaved(edges + 1, Math.cos(vx.x) * 5, Math.cos(vx.x / 2.5)),
       [edges, vx.x],
    )
-   const attr = useMemo(() => {
+   const attr = React.useMemo(() => {
       const attr: IAttribute[] = [
          {
             color: toHexColor(color1),

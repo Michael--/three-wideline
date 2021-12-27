@@ -1,13 +1,12 @@
-import { Logo } from "../Wideline"
+import * as React from "react"
+import { Logo, SomeGroupProps } from "../Wideline"
 import { HBox, Body } from "./Gui"
 import { ThreeCanvas } from "./ThreeCanvas"
-import { GroupProps, MeshProps, useFrame } from "@react-three/fiber"
+import { MeshProps, useFrame } from "@react-three/fiber"
 import { Mesh } from "three"
 
-import { useRef } from "react"
-
 function Box(props: MeshProps) {
-   const ref = useRef<Mesh>(null)
+   const ref = React.useRef<Mesh>(null)
 
    useFrame((_, delta) => {
       if (ref?.current !== null) {
@@ -24,9 +23,9 @@ function Box(props: MeshProps) {
    )
 }
 
-function MovingLogo(props?: GroupProps) {
-   const ref = useRef<Mesh>(null)
-   const p = useRef(0)
+function MovingLogo(props?: SomeGroupProps) {
+   const ref = React.useRef<Mesh>(null)
+   const p = React.useRef(0)
    useFrame((_, delta) => {
       if (ref?.current !== null) {
          ref.current.rotation.y += delta

@@ -1,3 +1,4 @@
+import * as React from "react"
 import svglogo from "./logo.svg"
 import { HBox, VBox, Body, Border, Flex } from "./Gui"
 import { SampleParts } from "./SampleParts"

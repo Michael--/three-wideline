@@ -1,10 +1,10 @@
-import { useMemo } from "react"
+import * as React from "react"
 import { Wideline, generatePointsInterleaved } from "../Wideline"
 import { HBox, Body } from "./Gui"
 import { ThreeCanvas } from "./ThreeCanvas"
 
 export function SampleParts() {
-   const points = useMemo(() => generatePointsInterleaved(5, 5, 2), [])
+   const points = React.useMemo(() => generatePointsInterleaved(5, 5, 2), [])
 
    return (
       <HBox>

@@ -1,7 +1,9 @@
-import { useMemo } from "react"
+import * as React from "react"
 import { GroupProps } from "@react-three/fiber"
 import { Color, ColorRepresentation, Vector2, Vector3 } from "three"
 import { Scheme, IVertices, IGeometry, roundCapGeometry, squareCapGeometry, topCapGeometry, IScheme } from "./Scheme"
+
+export type SomeGroupProps = Pick<GroupProps, "position" | "scale" | "rotation">
 
 /**
  * @public
@@ -93,8 +95,8 @@ export interface IWidelineProps {
  * <Wideline points={[-1, -1, 0, 1, 1, -1]} attr={{ color: "red", width: 0.2 }} join="Round" />
  * ```
  */
-export function Wideline(props: GroupProps & IWidelineProps) {
-   const attr = useMemo(() => {
+export function Wideline(props: SomeGroupProps & IWidelineProps) {
+   const attr = React.useMemo(() => {
       const scheme = new Scheme()
       const mainColor = (a: IAttribute) => new Color(a.color)
       const altColor = (a: IAttribute) => (a.offals === undefined ? mainColor(a) : new Color(a.offals))

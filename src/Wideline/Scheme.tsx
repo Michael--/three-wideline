@@ -1,3 +1,4 @@
+import * as React from "react"
 import { ShaderMaterialProps } from "@react-three/fiber"
 import { Color, IUniform, DoubleSide, FrontSide } from "three"
 import fragmentSimple from "./shader/simple.fs"
