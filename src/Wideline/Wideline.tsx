@@ -3,6 +3,9 @@ import { GroupProps } from "@react-three/fiber"
 import { Color, ColorRepresentation, Vector2, Vector3 } from "three"
 import { Scheme, IVertices, IGeometry, roundCapGeometry, squareCapGeometry, topCapGeometry, IScheme } from "./Scheme"
 
+/**
+ * @internal
+ */
 export type SomeGroupProps = Pick<GroupProps, "position" | "scale" | "rotation">
 
 /**

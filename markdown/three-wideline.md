@@ -36,5 +36,4 @@
 |  [Caps](./three-wideline.caps.md) | Line cap representation. |
 |  [Joins](./three-wideline.joins.md) | Line join representation. |
 |  [Shape](./three-wideline.shape.md) | Shape point definition. |
-|  [SomeGroupProps](./three-wideline.somegroupprops.md) |  |
 

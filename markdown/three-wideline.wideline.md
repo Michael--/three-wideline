@@ -16,7 +16,7 @@ export declare function Wideline(props: SomeGroupProps & IWidelineProps): JSX.El
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  props | [SomeGroupProps](./three-wideline.somegroupprops.md) &amp; [IWidelineProps](./three-wideline.iwidelineprops.md) |  |
+|  props | SomeGroupProps &amp; [IWidelineProps](./three-wideline.iwidelineprops.md) |  |
 
 <b>Returns:</b>
 

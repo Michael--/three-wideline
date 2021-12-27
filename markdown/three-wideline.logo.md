@@ -16,7 +16,7 @@ export declare function Logo(props?: SomeGroupProps): JSX.Element;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  props | [SomeGroupProps](./three-wideline.somegroupprops.md) | all possible three js group properties |
+|  props | SomeGroupProps | all possible three js group properties |
 
 <b>Returns:</b>
 
