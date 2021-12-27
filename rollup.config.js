@@ -11,13 +11,13 @@ const config = defineConfig({
       dir: "dist",
       format: "iife",
       name: "ThreeWideline",
-      globals: {
-         "react": "React",
-         "react/jsx-runtime": "jsxRuntime",
-         "three": "three",
-      },
+      //globals: {
+      //   "react": "React",
+      //   "react/jsx-runtime": "jsxRuntime",
+      //   "three": "three",
+      //},
    },
-   external: ["react", "react/jsx-runtime", "three"],
+   //external: ["react", "react/jsx-runtime", "three"],
    plugins: [
       typescript({ tsconfig: "tsconfig-dist.json" }),
       string({ include: /\.(vs|fs)$/ }),
