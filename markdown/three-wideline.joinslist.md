@@ -9,5 +9,5 @@ Line join representation.
 <b>Signature:</b>
 
 ```typescript
-JoinsList: readonly ["Bevel", "Miter", "Round"]
+JoinsList: readonly ["None", "Bevel", "Miter", "Round"]
 ```

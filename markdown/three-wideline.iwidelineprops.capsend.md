@@ -9,5 +9,5 @@ The end cap of the line
 <b>Signature:</b>
 
 ```typescript
-capsEnd?: Caps;
+capsEnd?: Caps | IGeometry;
 ```

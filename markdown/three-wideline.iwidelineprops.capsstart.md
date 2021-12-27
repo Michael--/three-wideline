@@ -9,5 +9,5 @@ The start cap of the line
 <b>Signature:</b>
 
 ```typescript
-capsStart?: Caps;
+capsStart?: Caps | IGeometry;
 ```
