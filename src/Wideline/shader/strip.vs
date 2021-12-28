@@ -3,21 +3,15 @@ attribute vec3 pointB;
 attribute vec3 pointC;
 attribute vec3 pointD;
 
-uniform vec3 color;
 uniform float opacity;
 uniform float width;
 uniform float zlevel;
-
-varying vec4 vColor;
 
 void main() {
    vec2 pA = pointA.xy;
    vec2 pB = pointB.xy;
    vec2 pC = pointC.xy;
    vec2 pD = pointD.xy;
-
-   vColor = vec4(color, opacity);
-   mat4 m = projectionMatrix * modelViewMatrix;
 
    // Select the three points we'll use and adjust the vertex according to 
    // the side of the segment the vertex is on and the order of the points.
@@ -45,16 +39,17 @@ void main() {
    float sigma = sign(dot(p01 + p21, normal));
 
    // If this is the intersecting vertex, 
+   vec3 transformed;
 
    if(sign(pos.y) == -sigma) {
       float mx = opacity >= 1.0 ? 0.5 : 0.125;
       float dt = max(mx, dot(normal, p01Norm));
       vec2 point = 0.5 * normal * -sigma * width / dt;
-      gl_Position = m * vec4(p1 + point, zlevel, 1);
+      transformed = vec3(p1 + point, zlevel);
    } else {
       vec2 xBasis = p2 - p1;
       vec2 yBasis = normalize(vec2(-xBasis.y, xBasis.x));
       vec2 point = p1 + xBasis * pos.x + yBasis * width * pos.y;
-      gl_Position = m * vec4(point, zlevel, 1);
+      transformed = vec3(point, zlevel);
    }
 }

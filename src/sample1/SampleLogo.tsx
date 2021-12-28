@@ -47,9 +47,11 @@ export function SampleLogo() {
          <h3>Wideline Logo drawn itself in a tiny 3D world</h3>
          <Body />
          <ThreeCanvas width={"200px"}>
-            <ambientLight />
-            <pointLight position={[10, 10, 10]} />
-            <Box position={[0, 0, -1]} scale={[3, 3, 3]} />
+            <ambientLight intensity={0.2} color={"white"} />
+            <pointLight position={[0, -2, 3]} intensity={0.4} color={"yellow"} />
+            <spotLight intensity={1.2} position={[2, 2, 10]} angle={0.2} penumbra={1} color={"lightblue"} />
+
+            <Box position={[1, 0, -1]} scale={[2, 2, 2]} />
             <MovingLogo position={[0, 0, 2]} scale={[2, 2, 1]} />
             <Logo position={[0, 0, -8]} scale={[12, 12, 1]} />
          </ThreeCanvas>

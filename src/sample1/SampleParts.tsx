@@ -11,6 +11,7 @@ export function SampleParts() {
          <h3>Show line, joins and caps in different color</h3>
          <Body />
          <ThreeCanvas scale={2} width={"400px"} height={"200px"}>
+            <ambientLight intensity={1} color={"white"} />
             <Wideline
                points={points}
                attr={{ color: "yellow", offals: "red", width: 0.5 }}

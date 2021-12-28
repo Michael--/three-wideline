@@ -1,7 +1,6 @@
-import * as React from "react"
+// import * as React from "react"
 import { ShaderMaterialProps } from "@react-three/fiber"
 import { Color, IUniform, DoubleSide, FrontSide } from "three"
-import fragmentSimple from "./shader/simple.fs"
 import vertexSimple from "./shader/simple.vs"
 import vertexStrip from "./shader/strip.vs"
 import vertexStripTerminal from "./shader/stripterminal.vs"
@@ -9,6 +8,7 @@ import vertexCaps from "./shader/caps.vs"
 import vertexRoundJoin from "./shader/roundJoin.vs"
 import vertexBevel from "./shader/bevel.vs"
 import vertexMiter from "./shader/miter.vs"
+import * as THREE from "three"
 
 /** @internal Create vertices only at start or end of the line */
 export type Where = "Start" | "End"
@@ -81,11 +81,7 @@ export class Scheme {
    public simple = (props: IScheme[]) => {
       const geometry = boxGeometry()
       this.addGeometry(geometry)
-      this.addUniforms(
-         props.map(e => {
-            return { props: e, vs: vertexSimple }
-         }),
-      )
+      this.addUniforms("simple", vertexSimple, props)
    }
 
    /**
@@ -102,28 +98,20 @@ export class Scheme {
    private stripMain = (props: IScheme[]) => {
       const geometry = boxGeometry()
       this.addGeometry(geometry)
-      this.addUniforms(
-         props.map(e => {
-            return { props: e, vs: vertexStrip }
-         }),
-      )
+      this.addUniforms("strip", vertexStrip, props)
    }
 
    /** draw only the first strip element */
    private stripTerminal = (props: IScheme[]) => {
       const geometry = boxGeometry()
       this.addGeometry(geometry, "Start")
-      this.addUniforms(
-         props.map(e => {
-            return { props: e, vs: vertexStripTerminal }
-         }),
-      )
+      this.addUniforms("terminal", vertexStripTerminal, props)
    }
 
    /** Add custom meshes */
    public custom = (props: IScheme, geometry: IGeometry) => {
       this.addGeometry(geometry)
-      this.addUniforms([{ props: props, vs: vertexSimple }])
+      this.addUniforms("simple", vertexSimple, [props])
    }
 
    /** Add bevil joins. */
@@ -138,11 +126,7 @@ export class Scheme {
       }
 
       this.addGeometry(geometry)
-      this.addUniforms(
-         props.map(e => {
-            return { props: e, vs: vertexBevel }
-         }),
-      )
+      this.addUniforms("bevel", vertexBevel, props)
    }
 
    /** Add miter joins. */
@@ -161,11 +145,7 @@ export class Scheme {
       }
 
       this.addGeometry(geometry)
-      this.addUniforms(
-         props.map(e => {
-            return { props: e, vs: vertexMiter }
-         }),
-      )
+      this.addUniforms("miter", vertexMiter, props)
    }
 
    /** Add a cap to the line */
@@ -173,11 +153,7 @@ export class Scheme {
       if (geometry !== undefined) {
          this.addGeometry(geometry, where)
          const u = { dir: { value: where === "Start" ? -1.0 : 1.0 } }
-         this.addUniforms(
-            props.map(e => {
-               return { props: e, vs: vertexCaps, u }
-            }),
-         )
+         this.addUniforms("caps", vertexCaps, props, u)
       }
    }
 
@@ -197,11 +173,7 @@ export class Scheme {
       }
       this.addGeometry(roundJoinGeometry(resolution))
       const u = { resolution: { value: resolution } }
-      this.addUniforms(
-         props.map(e => {
-            return { props: e, vs: vertexRoundJoin, u }
-         }),
-      )
+      this.addUniforms("roundJoin", vertexRoundJoin, props, u)
    }
 
    /** Append a geometry to the result */
@@ -215,32 +187,54 @@ export class Scheme {
    /** create shader uniform */
    private sprops(
       props: IScheme,
-      vs: string,
+      uname: string,
+      part1: string,
+      part2: string,
       u?: { [uniform: string]: IUniform },
       zlevel?: number,
    ): ShaderMaterialProps {
+      const shader = THREE.ShaderLib["standard"]
+      const uniforms = THREE.UniformsUtils.merge([shader.uniforms])
+
       return {
          uniforms: {
+            ...uniforms,
             width: { value: props.width ?? 1 },
-            color: { value: props.color },
+            ambientLightColor: { value: props.color },
+            diffuse: { value: props.color },
             opacity: { value: props.opacity ?? 1 },
             zlevel: { value: zlevel },
             ...u,
          },
-         vertexShader: vs,
-         fragmentShader: fragmentSimple,
+         onBeforeCompile: sh => {
+            sh.vertexShader = part1 + sh.vertexShader.replace("#include <begin_vertex>", part2)
+         },
+         customProgramCacheKey: () => {
+            return uname
+         },
+         vertexShader: shader.vertexShader,
+         fragmentShader: shader.fragmentShader,
          transparent: true,
          side: zlevel !== undefined && zlevel > 0 ? FrontSide : DoubleSide,
+         lights: true,
+         //defines: { STANDARD: "", PHYSICAL: "" },
       }
    }
 
    /** add a list of shaders with its uniforms */
-   private addUniforms = (ux: { props: IScheme; vs: string; u?: { [uniform: string]: IUniform } }[]) => {
+   private addUniforms = (uname: string, vs: string, props: IScheme[], u?: { [uniform: string]: IUniform }) => {
       // zlevel offset used to stack multiple line attribute, the minimial meaningful value depends on gl shader engine
       // may it could be nice to configure this value by user interface in some cases
       // if this value is to small, the gl render engine fall into z-fighting
       const levelOffset = 0.005
-      const sh = ux.map((e, i) => this.sprops(e.props, e.vs, e.u, i * levelOffset))
+
+      // split vertex shader imported from file in 2 parts, 1: definition of vars, 2: shader part creating transformed position
+      const split = vs.split("void main() {")
+      if (split.length < 2) throw "shader content unexpected, can't split in 2 parts"
+      const part1 = split[0]
+      const part2 = split[1].substring(0, split[1].lastIndexOf("}"))
+
+      const sh = props.map((e, i) => this.sprops(e, uname, part1, part2, u, i * levelOffset))
       this.data.shader.push(sh)
    }
 }

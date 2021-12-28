@@ -2,12 +2,9 @@ attribute vec3 pointA;
 attribute vec3 pointB;
 attribute vec3 pointC;
 
-uniform vec3 color;
 uniform float opacity;
 uniform float width;
 uniform float zlevel;
-
-varying vec4 vColor;
 
 void main() {
      vec2 pA = pointA.xy;
@@ -37,7 +34,5 @@ void main() {
      // Calculate the final point position.
      vec2 point = pB + position.x * p0 + position.y * p1 + position.z * p2 + w * p3;
 
-     vColor = vec4(color, opacity);
-     mat4 m = projectionMatrix * modelViewMatrix;
-     gl_Position = m * vec4(point, zlevel, 1);
+     vec3 transformed = vec3(point, zlevel);
 }

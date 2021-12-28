@@ -175,6 +175,7 @@ export function SampleConstruction() {
          </VBox>
          <Body />
          <ThreeCanvas scale={4} width={"600px"} height={"200px"}>
+            <ambientLight intensity={1} color={"white"} />
             <Wideline
                points={points}
                attr={attr}

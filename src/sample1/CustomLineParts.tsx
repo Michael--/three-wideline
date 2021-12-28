@@ -29,6 +29,7 @@ export function CustomLineParts() {
          </VBox>
          <Body />
          <ThreeCanvas scale={2} width={"400px"} height={"200px"}>
+            <ambientLight intensity={1} color={"white"} />
             <Wideline
                position={[0, 0.75, 0]}
                points={points}

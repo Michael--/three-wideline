@@ -241,8 +241,12 @@ export function Wideline(props: SomeGroupProps & IWidelineProps) {
       })
       const count = plength * countPositions
       const fa = new Float32Array(pointA)
+      const normal = Array(position.length / 3)
+         .fill("a")
+         .map(() => [1, 1])
+         .flat()
       const key = Math.random()
-      return { key, position, cx, count, fa, offset: countPositions * 3, groups, materials: materials.flat() }
+      return { key, position, normal, cx, count, fa, offset: countPositions * 3, groups, materials: materials.flat() }
    }, [props])
 
    return (
@@ -254,6 +258,12 @@ export function Wideline(props: SomeGroupProps & IWidelineProps) {
                   count={attr.position.length / 3}
                   array={new Float32Array(attr.position)}
                   itemSize={3}
+               />
+               <bufferAttribute
+                  attachObject={["attributes", "normal"]}
+                  count={attr.normal.length / 2}
+                  array={new Float32Array(attr.normal)}
+                  itemSize={2}
                />
                <bufferAttribute attach="index" array={new Uint16Array(attr.cx)} count={attr.cx.length} itemSize={1} />
                <bufferAttribute attachObject={["attributes", "pointA"]} array={attr.fa} itemSize={3} />

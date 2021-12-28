@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import * as React from "react"
 import { Canvas } from "@react-three/fiber"
 import { HBox, Body } from "./Gui"
 
@@ -6,7 +6,7 @@ export function ThreeCanvas(props: {
    width?: number | string
    height?: number | string
    scale?: number
-   children?: ReactNode
+   children?: React.ReactNode
 }) {
    const width = props.width ?? "400px"
    const height = props.height ?? width
