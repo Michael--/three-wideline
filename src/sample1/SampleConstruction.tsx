@@ -109,7 +109,7 @@ export function SampleConstruction() {
    return (
       <HBox>
          <VBox>
-            <h3>Adjust some features of the displayed line</h3>
+            <p>Adjust some features of the displayed line.</p>
             <HBox>
                <Button onClick={(x, y) => setPicker({ show: 0, x, y })}>
                   <p style={styleColor(color1)}>Color</p>
@@ -175,7 +175,7 @@ export function SampleConstruction() {
          </VBox>
          <Body />
          <ThreeCanvas scale={4} width={"600px"} height={"200px"}>
-            <ambientLight intensity={1} color={"white"} />
+            <ambientLight intensity={1} />
             <Wideline
                points={points}
                attr={attr}

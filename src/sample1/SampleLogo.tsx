@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Logo } from "../Wideline"
-import { HBox, Body } from "./Gui"
+import { HBox, VBox, Body } from "./Gui"
 import { ThreeCanvas } from "./ThreeCanvas"
 import { MeshProps, useFrame, GroupProps } from "@react-three/fiber"
 import { Mesh } from "three"
@@ -31,7 +31,7 @@ function MovingLogo(props?: GroupProps) {
          ref.current.rotation.y += delta
          p.current += delta
          ref.current.position.x = 1.5 * Math.sin(p.current * 0.5)
-         ref.current.position.y = 3.5 * Math.sin(p.current)
+         ref.current.position.y = 2.5 * Math.sin(p.current)
       }
    })
    return (
@@ -44,10 +44,13 @@ function MovingLogo(props?: GroupProps) {
 export function SampleLogo() {
    return (
       <HBox>
-         <h3>Wideline Logo drawn itself in a tiny 3D world</h3>
+         <VBox>
+            <p>Wideline Logo drawn itself in a tiny 3D world.</p>
+            <p>Some directional lights are enabled.</p>
+         </VBox>
          <Body />
-         <ThreeCanvas width={"200px"}>
-            <ambientLight intensity={0.2} color={"white"} />
+         <ThreeCanvas width={"400px"} height={"200px"}>
+            <ambientLight intensity={0.2} />
             <pointLight position={[0, -2, 3]} intensity={0.4} color={"yellow"} />
             <spotLight intensity={1.2} position={[2, 2, 10]} angle={0.2} penumbra={1} color={"lightblue"} />
 

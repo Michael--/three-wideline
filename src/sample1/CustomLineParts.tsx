@@ -24,12 +24,12 @@ export function CustomLineParts() {
    return (
       <HBox>
          <VBox>
-            <h3>1. Custom element on each line segment, custom caps</h3>
-            <h3>2. Custom element only</h3>
+            <p>1. Custom element on each line segment, custom caps.</p>
+            <p>2. Custom element only.</p>
          </VBox>
          <Body />
          <ThreeCanvas scale={2} width={"400px"} height={"200px"}>
-            <ambientLight intensity={1} color={"white"} />
+            <ambientLight intensity={1} />
             <Wideline
                position={[0, 0.75, 0]}
                points={points}
