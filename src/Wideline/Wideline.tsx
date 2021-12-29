@@ -83,19 +83,13 @@ export interface IWidelineProps {
    /** A user defined custom element for any segment of the line @beta */
    custom?: ICustom[]
 
-   /** Line local position.
-    * @default: [0, 0, 0]
-    */
+   /** Line local position. */
    position?: FiberVector3
 
-   /** Line scale
-    * @default: [1, 1, 1]
-    */
+   /** Line scale */
    scale?: FiberVector3
 
-   /** Line rotation
-    * @default: [0, 0, 0]
-    */
+   /** Line rotation */
    rotation?: Euler
 }
 

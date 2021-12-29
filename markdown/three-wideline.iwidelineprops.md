@@ -23,4 +23,7 @@ export interface IWidelineProps
 |  [join?](./three-wideline.iwidelineprops.join.md) | [Joins](./three-wideline.joins.md) | <i>(Optional)</i> Which joins are used |
 |  [opacity?](./three-wideline.iwidelineprops.opacity.md) | number | <i>(Optional)</i> Line opacity, is less than 1, the line is transparent. Optimized shader are used in that case. |
 |  [points](./three-wideline.iwidelineprops.points.md) | [Shape](./three-wideline.shape.md) | The shape of the line, some points. |
+|  [position?](./three-wideline.iwidelineprops.position.md) | FiberVector3 | <i>(Optional)</i> Line local position. |
+|  [rotation?](./three-wideline.iwidelineprops.rotation.md) | Euler | <i>(Optional)</i> Line rotation |
+|  [scale?](./three-wideline.iwidelineprops.scale.md) | FiberVector3 | <i>(Optional)</i> Line scale |
 

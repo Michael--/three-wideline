@@ -9,14 +9,14 @@ Displayed a 2D-Line as indexed mesh, whereby the mesh consists of the determined
 <b>Signature:</b>
 
 ```typescript
-export declare function Wideline(props: SomeGroupProps & IWidelineProps): JSX.Element;
+export declare function Wideline(props: IWidelineProps): JSX.Element;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  props | SomeGroupProps &amp; [IWidelineProps](./three-wideline.iwidelineprops.md) |  |
+|  props | [IWidelineProps](./three-wideline.iwidelineprops.md) |  |
 
 <b>Returns:</b>
 
