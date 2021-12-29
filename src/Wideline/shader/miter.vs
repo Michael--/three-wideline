@@ -27,7 +27,7 @@ void main() {
      vec2 p0 = 0.5 * width * sigma * (sigma < 0.0 ? abNorm : cbNorm);
      vec2 p1 = 0.5 * miter * sigma * width / max(0.25, dot(miter, abNorm));
      vec2 p2 = 0.5 * width * sigma * (sigma < 0.0 ? cbNorm : abNorm);
-     float mx = opacity >= 1.0 ? 0.5 : 0.125;
+     float mx = 0.5;
      vec2 p3 = -0.5 * miter * sigma * width / max(mx, dot(miter, abNorm));
      float w = (position == vec3(0, 0, 0)) ? 1.0 : 0.0; // to avoid position definition as vec4 type
 

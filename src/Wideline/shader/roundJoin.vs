@@ -27,7 +27,7 @@ void main() {
    vec3 transformed;
    // If this is the zeroth id, it's the center of our circle. Stretch it to meet the segments' intersection.
    if(position.x == 0.0) {
-      float mx = opacity >= 1.0 ? 0.5 : 0.125;
+      float mx = 0.5;
       transformed = vec3(pB + -0.5 * yBasis * sigma * width / max(mx, dot(yBasis, abn)), zlevel);
    } else {
 

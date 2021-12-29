@@ -19,7 +19,7 @@ void main() {
    vec2 cbn = -normalize(vec2(-cb.y, cb.x));
    vec2 p0 = 0.5 * sigma * width * (sigma < 0.0 ? abn : cbn);
    vec2 p1 = 0.5 * sigma * width * (sigma < 0.0 ? cbn : abn);
-   float mx = opacity >= 1.0 ? 0.5 : 0.125;
+   float mx = 0.5;
    float dt = max(mx, dot(normal, abn));
    vec2 p2 = -0.5 * normal * sigma * width / dt;
    vec2 point = pB + position.x * p0 + position.y * p1 + position.z * p2;

@@ -42,7 +42,7 @@ void main() {
    vec3 transformed;
 
    if(sign(pos.y) == -sigma) {
-      float mx = opacity >= 1.0 ? 0.5 : 0.125;
+      float mx = 0.5;
       float dt = max(mx, dot(normal, p01Norm));
       vec2 point = 0.5 * normal * -sigma * width / dt;
       transformed = vec3(p1 + point, zlevel);

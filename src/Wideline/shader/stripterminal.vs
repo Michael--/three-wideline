@@ -33,7 +33,7 @@ void main() {
               float sigma = sign(dot(ab + cb, normal));
 
               if(sign(position.y) == -sigma) {
-                     float mx = opacity >= 1.0 ? 0.5 : 0.125;
+                     float mx = 0.5;
                      float dt = max(mx, dot(normal, abNorm));
                      vec2 position = 0.5 * normal * -sigma * width / dt;
                      transformed = vec3(pB + position, zlevel);
