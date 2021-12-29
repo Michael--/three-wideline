@@ -72,6 +72,15 @@ export class Scheme {
       return this.data
    }
 
+   /** @internal Reset memory, can be used instead creating new instance */
+   public reset() {
+      this.data = {
+         positions: [],
+         vertices: [],
+         shader: [],
+      }
+   }
+
    /**
     * Create simple line segments.
     * A list of meshes like rectangles.

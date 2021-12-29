@@ -155,8 +155,10 @@ export function Wideline(props: IWidelineProps) {
       return normalizeShape(props.points)
    }, [props.points])
 
-   const val = React.useMemo(() => {
-      const scheme = new Scheme()
+   const scheme = React.useMemo(() => new Scheme(), [])
+
+   const geo = React.useMemo(() => {
+      scheme.reset()
       const mainColor = (a: IAttribute) => new Color(a.color)
       const altColor = (a: IAttribute) => (a.offals === undefined ? mainColor(a) : new Color(a.offals))
 
@@ -207,12 +209,14 @@ export function Wideline(props: IWidelineProps) {
          }
       }
       props.custom?.forEach(e => scheme.custom(e.scheme, e.geometry))
+      return scheme.getScheme()
+   }, [pkey, attr])
 
+   const val = React.useMemo(() => {
       const plength = points.length / 3
 
       let position: number[] = []
       const pointA: number[] = []
-      const geo = scheme.getScheme()
       const countPositions = geo.positions.length / 3
       const vertices: IVertices[] = []
       for (let i = 0; i < geo.vertices.length; i++) vertices.push({ index: [], limited: geo.vertices[i].limited })
@@ -288,7 +292,7 @@ export function Wideline(props: IWidelineProps) {
          groups,
          materials: materials.flat(),
       }
-   }, [pkey, attr, points])
+   }, [geo, points])
 
    return (
       <mesh position={props.position} scale={props.scale} rotation={props.rotation}>
