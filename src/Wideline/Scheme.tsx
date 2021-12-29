@@ -67,6 +67,8 @@ export class Scheme {
       shader: [],
    }
 
+   public transparency = false
+
    /** @internal Access to the created geometry and shader */
    public getScheme() {
       return this.data
@@ -220,7 +222,7 @@ export class Scheme {
          customProgramCacheKey: () => uname,
          vertexShader: shader.vertexShader,
          fragmentShader: shader.fragmentShader,
-         transparent: true,
+         transparent: this.transparency,
          side: zlevel !== undefined && zlevel > 0 ? FrontSide : DoubleSide,
          lights: true,
          //defines: { STANDARD: "", PHYSICAL: "" },

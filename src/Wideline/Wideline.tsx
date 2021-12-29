@@ -119,6 +119,8 @@ export function Wideline(props: IWidelineProps) {
       return props.attr instanceof Array ? props.attr : [props.attr]
    }, [props.attr])
 
+   const transparency = React.useMemo(() => (props.opacity !== undefined ? props.opacity < 1 : false), [props.opacity])
+
    const pkey = React.useMemo(() => {
       return (
          props.points.length.toString() +
@@ -127,7 +129,7 @@ export function Wideline(props: IWidelineProps) {
          props.capsStart +
          props.capsEnd +
          props.custom?.length +
-         (props.opacity !== undefined ? (props.opacity < 1 ? "1" : "") : "")
+         (props.opacity !== undefined ? props.opacity.toFixed(2) : "")
       )
    }, [props.points, props.join, props.capsStart, props.capsEnd, props.custom, props.opacity, attr])
 
@@ -213,6 +215,7 @@ export function Wideline(props: IWidelineProps) {
    }, [pkey, attr])
 
    const val = React.useMemo(() => {
+      scheme.transparency = transparency
       const plength = points.length / 3
 
       let position: number[] = []
@@ -321,11 +324,14 @@ export function Wideline(props: IWidelineProps) {
                array={val.fa.slice(val.offset * 2)}
                itemSize={3}
             />
-            <bufferAttribute
-               attachObject={["attributes", "pointD"]}
-               array={val.fa.slice(val.offset * 3)}
-               itemSize={3}
-            />
+            {/* pointD is only used by "strip" shader used when transparent */}
+            {transparency && (
+               <bufferAttribute
+                  attachObject={["attributes", "pointD"]}
+                  array={val.fa.slice(val.offset * 3)}
+                  itemSize={3}
+               />
+            )}
          </bufferGeometry>
          {val.materials.map((matProps, i) => (
             <shaderMaterial key={i + pkey} attachArray="material" {...matProps} />
