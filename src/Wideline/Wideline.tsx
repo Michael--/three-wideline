@@ -1,12 +1,7 @@
 import * as React from "react"
-import { GroupProps } from "@react-three/fiber"
+import { Vector3 as FiberVector3, Euler } from "@react-three/fiber"
 import { Color, ColorRepresentation, Vector2, Vector3 } from "three"
 import { Scheme, IVertices, IGeometry, roundCapGeometry, squareCapGeometry, topCapGeometry, IScheme } from "./Scheme"
-
-/**
- * @internal
- */
-export type SomeGroupProps = Pick<GroupProps, "position" | "scale" | "rotation">
 
 /**
  * @public
@@ -69,18 +64,39 @@ export type Joins = typeof JoinsList[number]
 export interface IWidelineProps {
    /** The shape of the line, some points. */
    points: Shape
+
    /** The line attribute, use an array to draw multiple lines with same geometry. */
    attr: IAttribute | IAttribute[]
+
    /** Line opacity, is less than 1, the line is transparent. Optimized shader are used in that case. */
    opacity?: number
+
    /** Which joins are used */
    join?: Joins
+
    /** The start cap of the line */
    capsStart?: Caps | IGeometry
+
    /** The end cap of the line */
    capsEnd?: Caps | IGeometry
+
    /** A user defined custom element for any segment of the line @beta */
    custom?: ICustom[]
+
+   /** Line local position.
+    * @default: [0, 0, 0]
+    */
+   position?: FiberVector3
+
+   /** Line scale
+    * @default: [1, 1, 1]
+    */
+   scale?: FiberVector3
+
+   /** Line rotation
+    * @default: [0, 0, 0]
+    */
+   rotation?: Euler
 }
 
 /**
@@ -98,62 +114,24 @@ export interface IWidelineProps {
  * <Wideline points={[-1, -1, 0, 1, 1, -1]} attr={{ color: "red", width: 0.2 }} join="Round" />
  * ```
  */
-export function Wideline(props: SomeGroupProps & IWidelineProps) {
+export function Wideline(props: IWidelineProps) {
    const attr = React.useMemo(() => {
-      const scheme = new Scheme()
-      const mainColor = (a: IAttribute) => new Color(a.color)
-      const altColor = (a: IAttribute) => (a.offals === undefined ? mainColor(a) : new Color(a.offals))
+      return props.attr instanceof Array ? props.attr : [props.attr]
+   }, [props.attr])
 
-      const ar = props.attr instanceof Array ? props.attr : [props.attr]
+   const pkey = React.useMemo(() => {
+      return (
+         props.points.length.toString() +
+         attr.map(e => `${e.width}${e.color}${e.offals}`) +
+         props.join +
+         props.capsStart +
+         props.capsEnd +
+         props.custom?.length +
+         (props.opacity !== undefined ? (props.opacity < 1 ? "1" : "") : "")
+      )
+   }, [props.points, props.join, props.capsStart, props.capsEnd, props.custom, props.opacity, attr])
 
-      if (props.opacity !== undefined && props.opacity < 1)
-         scheme.strip(ar.map(e => ({ color: mainColor(e), width: e.width, opacity: props.opacity })))
-      else scheme.simple(ar.map(e => ({ color: mainColor(e), width: e.width })))
-
-      const capgeo = (c: Caps | IGeometry): IGeometry | undefined => {
-         if (typeof c !== "string") return c
-         switch (c) {
-            case "Round":
-               return roundCapGeometry(10)
-            case "Square":
-               return squareCapGeometry()
-            case "Top":
-               return topCapGeometry()
-         }
-
-         return undefined
-      }
-
-      if (props.capsStart !== undefined && props.opacity !== 0) {
-         const s = ar.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
-         scheme.addCap(s, capgeo(props.capsStart), "Start")
-      }
-      if (props.capsEnd !== undefined && props.opacity !== 0) {
-         const s = ar.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
-         scheme.addCap(s, capgeo(props.capsEnd), "End")
-      }
-
-      if (props.opacity !== 0) {
-         switch (props.join) {
-            case "Bevel": {
-               const s = ar.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
-               scheme.bevel(s)
-               break
-            }
-            case "Miter": {
-               const s = ar.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
-               scheme.miter(s)
-               break
-            }
-            case "Round": {
-               const s = ar.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
-               scheme.roundJoin(s, 10)
-               break
-            }
-         }
-      }
-      props.custom?.forEach(e => scheme.custom(e.scheme, e.geometry))
-
+   const points = React.useMemo(() => {
       const normalizeShape = (points: Shape) => {
          const linePoints: number[] = []
          if (points[0] instanceof Vector2) {
@@ -174,8 +152,62 @@ export function Wideline(props: SomeGroupProps & IWidelineProps) {
          }
          return linePoints
       }
+      return normalizeShape(props.points)
+   }, [props.points])
 
-      const points = normalizeShape(props.points)
+   const val = React.useMemo(() => {
+      const scheme = new Scheme()
+      const mainColor = (a: IAttribute) => new Color(a.color)
+      const altColor = (a: IAttribute) => (a.offals === undefined ? mainColor(a) : new Color(a.offals))
+
+      if (props.opacity !== undefined && props.opacity < 1)
+         scheme.strip(attr.map(e => ({ color: mainColor(e), width: e.width, opacity: props.opacity })))
+      else scheme.simple(attr.map(e => ({ color: mainColor(e), width: e.width })))
+
+      const capgeo = (c: Caps | IGeometry): IGeometry | undefined => {
+         if (typeof c !== "string") return c
+         switch (c) {
+            case "Round":
+               return roundCapGeometry(10)
+            case "Square":
+               return squareCapGeometry()
+            case "Top":
+               return topCapGeometry()
+         }
+
+         return undefined
+      }
+
+      if (props.capsStart !== undefined && props.opacity !== 0) {
+         const s = attr.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
+         scheme.addCap(s, capgeo(props.capsStart), "Start")
+      }
+      if (props.capsEnd !== undefined && props.opacity !== 0) {
+         const s = attr.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
+         scheme.addCap(s, capgeo(props.capsEnd), "End")
+      }
+
+      if (props.opacity !== 0) {
+         switch (props.join) {
+            case "Bevel": {
+               const s = attr.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
+               scheme.bevel(s)
+               break
+            }
+            case "Miter": {
+               const s = attr.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
+               scheme.miter(s)
+               break
+            }
+            case "Round": {
+               const s = attr.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
+               scheme.roundJoin(s, 10)
+               break
+            }
+         }
+      }
+      props.custom?.forEach(e => scheme.custom(e.scheme, e.geometry))
+
       const plength = points.length / 3
 
       let position: number[] = []
@@ -245,48 +277,55 @@ export function Wideline(props: SomeGroupProps & IWidelineProps) {
          .fill("a")
          .map(() => [1, 1])
          .flat()
-      const key = Math.random()
-      return { key, position, normal, cx, count, fa, offset: countPositions * 3, groups, materials: materials.flat() }
-   }, [props])
+      return {
+         anyUpdate: Math.random(),
+         position,
+         normal,
+         cx,
+         count,
+         fa,
+         offset: countPositions * 3,
+         groups,
+         materials: materials.flat(),
+      }
+   }, [pkey, attr, points])
 
    return (
-      <group key={attr.key} {...props}>
-         <mesh>
-            <bufferGeometry attach="geometry" groups={attr.groups}>
-               <bufferAttribute
-                  attachObject={["attributes", "position"]}
-                  count={attr.position.length / 3}
-                  array={new Float32Array(attr.position)}
-                  itemSize={3}
-               />
-               <bufferAttribute
-                  attachObject={["attributes", "normal"]}
-                  count={attr.normal.length / 2}
-                  array={new Float32Array(attr.normal)}
-                  itemSize={2}
-               />
-               <bufferAttribute attach="index" array={new Uint16Array(attr.cx)} count={attr.cx.length} itemSize={1} />
-               <bufferAttribute attachObject={["attributes", "pointA"]} array={attr.fa} itemSize={3} />
-               <bufferAttribute
-                  attachObject={["attributes", "pointB"]}
-                  array={attr.fa.slice(attr.offset * 1)}
-                  itemSize={3}
-               />
-               <bufferAttribute
-                  attachObject={["attributes", "pointC"]}
-                  array={attr.fa.slice(attr.offset * 2)}
-                  itemSize={3}
-               />
-               <bufferAttribute
-                  attachObject={["attributes", "pointD"]}
-                  array={attr.fa.slice(attr.offset * 3)}
-                  itemSize={3}
-               />
-            </bufferGeometry>
-            {attr.materials.map((matProps, i) => (
-               <shaderMaterial key={i} attachArray="material" {...matProps} />
-            ))}
-         </mesh>
-      </group>
+      <mesh position={props.position} scale={props.scale} rotation={props.rotation}>
+         <bufferGeometry key={val.anyUpdate} attach="geometry" groups={val.groups}>
+            <bufferAttribute
+               attachObject={["attributes", "position"]}
+               count={val.position.length / 3}
+               array={new Float32Array(val.position)}
+               itemSize={3}
+            />
+            <bufferAttribute
+               attachObject={["attributes", "normal"]}
+               count={val.normal.length / 2}
+               array={new Float32Array(val.normal)}
+               itemSize={2}
+            />
+            <bufferAttribute attach="index" array={new Uint16Array(val.cx)} count={val.cx.length} itemSize={1} />
+            <bufferAttribute attachObject={["attributes", "pointA"]} array={val.fa} itemSize={3} />
+            <bufferAttribute
+               attachObject={["attributes", "pointB"]}
+               array={val.fa.slice(val.offset * 1)}
+               itemSize={3}
+            />
+            <bufferAttribute
+               attachObject={["attributes", "pointC"]}
+               array={val.fa.slice(val.offset * 2)}
+               itemSize={3}
+            />
+            <bufferAttribute
+               attachObject={["attributes", "pointD"]}
+               array={val.fa.slice(val.offset * 3)}
+               itemSize={3}
+            />
+         </bufferGeometry>
+         {val.materials.map((matProps, i) => (
+            <shaderMaterial key={i + pkey} attachArray="material" {...matProps} />
+         ))}
+      </mesh>
    )
 }

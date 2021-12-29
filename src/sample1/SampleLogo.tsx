@@ -1,8 +1,8 @@
 import * as React from "react"
-import { Logo, SomeGroupProps } from "../Wideline"
+import { Logo } from "../Wideline"
 import { HBox, Body } from "./Gui"
 import { ThreeCanvas } from "./ThreeCanvas"
-import { MeshProps, useFrame } from "@react-three/fiber"
+import { MeshProps, useFrame, GroupProps } from "@react-three/fiber"
 import { Mesh } from "three"
 
 function Box(props: MeshProps) {
@@ -23,7 +23,7 @@ function Box(props: MeshProps) {
    )
 }
 
-function MovingLogo(props?: SomeGroupProps) {
+function MovingLogo(props?: GroupProps) {
    const ref = React.useRef<Mesh>(null)
    const p = React.useRef(0)
    useFrame((_, delta) => {
@@ -35,8 +35,8 @@ function MovingLogo(props?: SomeGroupProps) {
       }
    })
    return (
-      <group ref={ref}>
-         <Logo {...props} />
+      <group ref={ref} {...props}>
+         <Logo />
       </group>
    )
 }

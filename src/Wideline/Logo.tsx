@@ -1,5 +1,6 @@
 import * as React from "react"
-import { Wideline, SomeGroupProps } from "./Wideline"
+import { GroupProps } from "@react-three/fiber"
+import { Wideline } from "./Wideline"
 
 /**
  * @public
@@ -7,11 +8,10 @@ import { Wideline, SomeGroupProps } from "./Wideline"
  *
  * @param props - all possible three js group properties
  */
-export function Logo(props?: SomeGroupProps) {
+export function Logo(props?: GroupProps) {
    return (
-      <>
+      <group {...props}>
          <Wideline
-            {...props}
             points={[-0.5, 0.5, -0.25, -0.5, 0, 0.5, 0.25, -0.5, 0.5, 0.5]}
             attr={[
                { color: "black", width: 0.25 },
@@ -22,6 +22,6 @@ export function Logo(props?: SomeGroupProps) {
             capsStart={"Round"}
             capsEnd={"Top"}
          />
-      </>
+      </group>
    )
 }

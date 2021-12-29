@@ -1,4 +1,3 @@
-// import * as React from "react"
 import { ShaderMaterialProps } from "@react-three/fiber"
 import { Color, IUniform, DoubleSide, FrontSide } from "three"
 import vertexSimple from "./shader/simple.vs"
@@ -209,9 +208,7 @@ export class Scheme {
          onBeforeCompile: sh => {
             sh.vertexShader = part1 + sh.vertexShader.replace("#include <begin_vertex>", part2)
          },
-         customProgramCacheKey: () => {
-            return uname
-         },
+         customProgramCacheKey: () => uname,
          vertexShader: shader.vertexShader,
          fragmentShader: shader.fragmentShader,
          transparent: true,
