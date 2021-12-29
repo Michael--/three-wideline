@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { IAttribute, Wideline, Joins, JoinsList, Caps, CapsList } from "../Wideline"
 import { generatePointsInterleaved } from "../Wideline"
 import { SketchPicker, RGBColor } from "react-color"

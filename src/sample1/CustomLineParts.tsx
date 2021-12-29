@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { Wideline, IGeometry, IScheme, generatePointsInterleaved, ICustom } from "../Wideline"
 import { HBox, VBox, Body } from "./Gui"
 import { ThreeCanvas } from "./ThreeCanvas"

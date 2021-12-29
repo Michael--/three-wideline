@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 
 export function Popover(props: { x?: number; y?: number; children?: React.ReactNode }) {
    return (

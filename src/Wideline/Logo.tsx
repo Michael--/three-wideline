@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { GroupProps } from "@react-three/fiber"
 import { Wideline } from "./Wideline"
 

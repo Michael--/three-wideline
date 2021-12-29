@@ -2,18 +2,18 @@ import { defineConfig } from "rollup"
 import typescript from "@rollup/plugin-typescript"
 import { string } from "rollup-plugin-string"
 import { apiExtractor } from "rollup-plugin-api-extractor"
-import { terser } from "rollup-plugin-terser"
+// import { terser } from "rollup-plugin-terser"
 
 const config = defineConfig({
    input: "src/Wideline/index.tsx",
    output: {
       sourcemap: false,
       dir: "dist",
-      format: "iife",
+      format: "cjs",
       name: "ThreeWideline",
       globals: {
-         react: "React",
-         three: "three",
+         React: "react",
+         three: "THREE",
       },
    },
 
@@ -21,7 +21,7 @@ const config = defineConfig({
    plugins: [
       typescript({ tsconfig: "tsconfig-dist.json" }),
       string({ include: /\.(vs|fs)$/ }),
-      terser(),
+      // terser(),
       apiExtractor({
          local: true,
          configFile: "./api-extractor.json",

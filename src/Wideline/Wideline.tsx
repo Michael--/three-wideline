@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { Vector3 as FiberVector3, Euler } from "@react-three/fiber"
 import { Color, ColorRepresentation, Vector2, Vector3 } from "three"
 import { Scheme, IVertices, IGeometry, roundCapGeometry, squareCapGeometry, topCapGeometry, IScheme } from "./Scheme"
