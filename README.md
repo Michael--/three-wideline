@@ -19,8 +19,9 @@ Most of the shader are reused here with small adjustments.
 
 ## Todo
 
-* Support of three js shader lib
-* 
+* raycast
+* check/adjust uv mapping
+* multiple lines with one attribute set
 
 ## Repository
 Github: [three-wideline](https://github.com/Michael--/three-wideline)
@@ -28,11 +29,15 @@ Github: [three-wideline](https://github.com/Michael--/three-wideline)
 ## Example
 An running demo example from the repository is avaiable here [Wideline example](https://www.number10.de/sample1).
 
-Another sample at codesandbox [three-wideline-logo](https://codesandbox.io/s/three-wideline-logo-u19je)
+Samples at codesandbox:
+* [logo](https://codesandbox.io/s/three-wideline-logo-u19je)
+* [animated](https://codesandbox.io/s/three-wideline-animated-tue8d)
+ 
 
-Sample how to draw the Wideline Logo as a three js line using typescript and react.
+How to draw the Wideline Logo as a three js line using typescript and react.
 
 ```ts
+import React from "react"
 import ReactDOM from "react-dom"
 import { Canvas } from "@react-three/fiber"
 import { Wideline } from "three-wideline"
@@ -40,7 +45,7 @@ import { Wideline } from "three-wideline"
 function Logo() {
    return (
       <Wideline
-         scale={[5, 5, 0]}
+         scale={[5, 5, 1]}
          points={[-0.5, 0.5, -0.25, -0.5, 0, 0.5, 0.25, -0.5, 0.5, 0.5]}
          attr={[
             { color: "black", width: 0.25 },
@@ -55,7 +60,8 @@ function Logo() {
 }
 
 ReactDOM.render(
-   <Canvas>
+   <Canvas style={{ backgroundColor: "grey", height: "400px" }}>
+      <ambientLight intensity={0.75} />
       <Logo />
    </Canvas>,
    document.getElementById('root'),
