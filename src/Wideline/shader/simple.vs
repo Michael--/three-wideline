@@ -13,4 +13,5 @@ void main() {
    vec2 point = pA + xBasis * position.x + yBasis * width * position.y;
 
    vec3 transformed = vec3(point, zlevel);
+   vec3 objectNormal = normalize(vec3(transformed.xy, 1));
 }

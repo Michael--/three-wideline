@@ -218,7 +218,9 @@ export class Scheme {
             ...u,
          },
          onBeforeCompile: sh => {
-            sh.vertexShader = part1 + sh.vertexShader.replace("#include <begin_vertex>", part2)
+            sh.vertexShader =
+               part1 +
+               sh.vertexShader.replace("#include <beginnormal_vertex>", part2).replace("#include <begin_vertex>", "")
          },
          customProgramCacheKey: () => uname,
          vertexShader: shader.vertexShader,

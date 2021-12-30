@@ -14,4 +14,5 @@ void main() {
      vec2 point = (dir <= 0.0 ? pA : pB) + xBasis * width * position.x + yBasis * width * position.y;
 
      vec3 transformed = vec3(point, zlevel);
+     vec3 objectNormal = normalize(vec3(transformed.xy, 1));
 }

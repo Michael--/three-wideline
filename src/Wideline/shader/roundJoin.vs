@@ -2,7 +2,6 @@ attribute vec3 pointA;
 attribute vec3 pointB;
 attribute vec3 pointC;
 
-uniform float opacity;
 uniform float width;
 uniform float resolution;
 uniform float zlevel;
@@ -41,4 +40,5 @@ void main() {
 
       transformed = vec3(pos, zlevel);
    }
+   vec3 objectNormal = normalize(vec3(transformed.xy, 1));
 }

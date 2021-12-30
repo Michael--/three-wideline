@@ -35,4 +35,5 @@ void main() {
      vec2 point = pB + position.x * p0 + position.y * p1 + position.z * p2 + w * p3;
 
      vec3 transformed = vec3(point, zlevel);
+     vec3 objectNormal = normalize(vec3(transformed.xy, 1));
 }

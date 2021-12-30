@@ -224,6 +224,7 @@ export function Wideline(props: IWidelineProps) {
       }
       for (let i = 0; i < plength; i++) {
          const { px, py, pz } = getPoint(i)
+
          // add much points as needed
          for (let n = 0; n < countPositions; n++) pointA.push(px, py, pz)
 
@@ -274,14 +275,10 @@ export function Wideline(props: IWidelineProps) {
       })
       const count = plength * countPositions
       const fa = new Float32Array(pointA)
-      const normal = Array(position.length / 3)
-         .fill("a")
-         .map(() => [1, 1])
-         .flat()
+
       return {
          anyUpdate: Math.random(),
          position,
-         normal,
          cx,
          count,
          fa,
@@ -299,12 +296,6 @@ export function Wideline(props: IWidelineProps) {
                count={val.position.length / 3}
                array={new Float32Array(val.position)}
                itemSize={3}
-            />
-            <bufferAttribute
-               attachObject={["attributes", "normal"]}
-               count={val.normal.length / 2}
-               array={new Float32Array(val.normal)}
-               itemSize={2}
             />
             <bufferAttribute attach="index" array={new Uint16Array(val.cx)} count={val.cx.length} itemSize={1} />
             <bufferAttribute attachObject={["attributes", "pointA"]} array={val.fa} itemSize={3} />

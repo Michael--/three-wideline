@@ -5,6 +5,7 @@ import { SampleParts } from "./SampleParts"
 import { CustomLineParts } from "./CustomLineParts"
 import { SampleConstruction } from "./SampleConstruction"
 import { SampleLogo } from "./SampleLogo"
+import { SampleLights } from "./SampleLights"
 import { name as pname, version } from "../../package.json"
 
 function Title() {
@@ -37,6 +38,8 @@ export function Main() {
          <CustomLineParts />
          <Border />
          <SampleConstruction />
+         <Border />
+         <SampleLights />
          <Border />
       </Flex>
    )

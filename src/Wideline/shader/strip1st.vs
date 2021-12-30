@@ -43,4 +43,5 @@ void main() {
          transformed = vec3(point, zlevel);
       }
    }
+   vec3 objectNormal = normalize(vec3(transformed.xy, 1));
 }
