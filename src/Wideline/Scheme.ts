@@ -3,7 +3,7 @@ import { ShaderMaterialProps } from "@react-three/fiber"
 import { Color, IUniform, DoubleSide, FrontSide } from "three"
 import vertexSimple from "./shader/simple.vs"
 import vertexStrip from "./shader/strip.vs"
-import vertexStripTerminal from "./shader/stripterminal.vs"
+import vertexStrip1st from "./shader/strip1st.vs"
 import vertexCaps from "./shader/caps.vs"
 import vertexRoundJoin from "./shader/roundJoin.vs"
 import vertexBevel from "./shader/bevel.vs"
@@ -102,7 +102,7 @@ export class Scheme {
     */
    public strip = (props: IScheme[]) => {
       this.stripMain(props)
-      this.stripTerminal(props)
+      this.strip1st(props)
    }
 
    /** draw all strips except first element */
@@ -113,10 +113,10 @@ export class Scheme {
    }
 
    /** draw only the first strip element */
-   private stripTerminal = (props: IScheme[]) => {
+   private strip1st = (props: IScheme[]) => {
       const geometry = boxGeometry()
       this.addGeometry(geometry, "Start")
-      this.addUniforms("terminal", vertexStripTerminal, props)
+      this.addUniforms("strip1st", vertexStrip1st, props)
    }
 
    /** Add custom meshes */
