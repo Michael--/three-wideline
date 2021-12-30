@@ -5,6 +5,7 @@ import { apiExtractor } from "rollup-plugin-api-extractor"
 import commonjs from "@rollup/plugin-commonjs"
 import external from "rollup-plugin-peer-deps-external"
 import { terser } from "rollup-plugin-terser"
+import { visualizer } from "rollup-plugin-visualizer"
 
 const config = defineConfig({
    input: "src/Wideline/index.tsx",
@@ -14,6 +15,7 @@ const config = defineConfig({
       format: "cjs",
       name: "ThreeWideline",
    },
+   external: ["react", "three"],
    plugins: [
       external(),
       commonjs(),
@@ -23,6 +25,14 @@ const config = defineConfig({
       apiExtractor({
          local: true,
          configFile: "./api-extractor.json",
+      }),
+      visualizer({
+         title: "Statistics",
+         filename: "dist/stats.html",
+         template: "treemap",
+         brotliSize: true,
+         gzipSize: true,
+         sourcemap: false,
       }),
    ],
 })
