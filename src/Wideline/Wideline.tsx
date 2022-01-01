@@ -63,7 +63,7 @@ export type Joins = typeof JoinsList[number]
  */
 export interface IWidelineProps {
    /** The shape of the line, some points. */
-   points: Shape
+   points: Shape | Shape[]
 
    /** The line attribute, use an array to draw multiple lines with same geometry. */
    attr: IAttribute | IAttribute[]
@@ -92,6 +92,9 @@ export interface IWidelineProps {
    /** Line rotation */
    rotation?: Euler
 }
+
+/** @internal break in pointlist to cancatenate lines to be used as one */
+const p0 = [[undefined, undefined, undefined]] as unknown as number[]
 
 /**
  * @public
@@ -127,28 +130,33 @@ export function Wideline(props: IWidelineProps) {
       )
    }, [props.points, props.join, props.capsStart, props.capsEnd, props.custom, props.opacity, attr])
 
-   const points = React.useMemo(() => {
+   const apoints = React.useMemo(() => {
       const normalizeShape = (points: Shape) => {
-         const linePoints: number[] = []
+         const linePoints: number[][] = []
          if (points[0] instanceof Vector2) {
             for (let j = 0; j < points.length; j++) {
                const p = points[j] as Vector2
-               linePoints.push(p.x, p.y, 0)
+               linePoints.push([p.x, p.y, 0])
             }
          } else if (points[0] instanceof Vector3) {
             for (let j = 0; j < points.length; j++) {
                const p = points[j] as Vector3
-               linePoints.push(p.x, p.y, p.z)
+               linePoints.push([p.x, p.y, p.z])
             }
          } else {
             const p = points as number[]
             for (let j = 0; j < p.length; j += 2) {
-               linePoints.push(p[j], p[j + 1], 0)
+               linePoints.push([p[j], p[j + 1], 0])
             }
          }
          return linePoints
       }
-      return normalizeShape(props.points)
+
+      // props.points consists of: Shape | Shape[]
+      if (props.points[0] instanceof Vector3 || typeof props.points[0] === "number")
+         return normalizeShape(props.points as Shape)
+
+      return props.points.map(p => normalizeShape(p as Shape).concat(p0)).flat()
    }, [props.points])
 
    const scheme = React.useMemo(() => new Scheme(), [])
@@ -210,48 +218,63 @@ export function Wideline(props: IWidelineProps) {
 
    const val = React.useMemo(() => {
       scheme.transparency = transparency
-      const plength = points.length / 3
 
       let position: number[][] = []
-      const pointA: number[][] = []
       const countPositions = geo.positions.length / 1
       const vertices: IVertices[] = []
       for (let i = 0; i < geo.vertices.length; i++) vertices.push({ index: [], limited: geo.vertices[i].limited })
 
-      /** get a point at given index */
-      const getPoint = (i: number) => {
-         return [points[i * 3 + 0], points[i * 3 + 1], points[i * 3 + 2]]
-      }
-      for (let i = 0; i < plength; i++) {
-         const pi = getPoint(i)
-
-         // add much points as needed
-         for (let n = 0; n < countPositions; n++) pointA.push(pi)
-
-         if (i >= plength - 1) {
-            // append some for 'pointC', 'pointD'
-            for (let n = 0; n < countPositions * 2; n++) pointA.push(pi)
+      const buildLine = (points: number[][]) => {
+         const pointA_D: number[][] = []
+         /** get a point at given index */
+         const getPoint = (i: number) => {
+            return points[i]
          }
+         const plength = points.length
+         let extraEnd = false
+         let extraStart = false
+         for (let i = 0; i < plength; i++) {
+            const pi = getPoint(i)
+            if (i < plength - 2 && getPoint(i + 2)[0] === undefined) extraEnd = true
+            else if (i > 0 && getPoint(i - 1)[0] === undefined) extraStart = true
 
-         if (i < plength - 1) {
-            position = position.concat(geo.positions)
-            geo.vertices.map((v, j) => {
-               v.index.forEach(e => {
-                  switch (vertices[j].limited) {
-                     case "Start":
-                        if (i === 0) vertices[j].index.push(e.map(k => k + i * countPositions))
-                        break
-                     case "End":
-                        if (i === plength - 2) vertices[j].index.push(e.map(k => k + i * countPositions))
-                        break
-                     case undefined:
-                        vertices[j].index.push(e.map(k => k + i * countPositions))
-                        break
-                  }
+            // add much points as needed
+            for (let n = 0; n < countPositions; n++) pointA_D.push(pi)
+
+            if (i == plength - 1) {
+               // append some for 'pointC', 'pointD'
+               for (let n = 0; n < countPositions * 2; n++) pointA_D.push(pi)
+            }
+
+            if (i < plength - 1) {
+               position = position.concat(geo.positions)
+               geo.vertices.map((v, j) => {
+                  v.index.forEach(e => {
+                     switch (vertices[j].limited) {
+                        case "Start":
+                           if (i === 0 || extraStart) {
+                              vertices[j].index.push(e.map(k => k + i * countPositions))
+                           }
+                           break
+                        case "End":
+                           if (i === plength - 2 || extraEnd) {
+                              vertices[j].index.push(e.map(k => k + i * countPositions))
+                           }
+                           break
+
+                        default:
+                           vertices[j].index.push(e.map(k => k + i * countPositions))
+                           break
+                     }
+                  })
                })
-            })
+            }
+            extraEnd = false
+            extraStart = false
          }
+         return pointA_D.flat()
       }
+      const fa = new Float32Array(buildLine(apoints))
 
       let start = 0
       let gcount = 0
@@ -275,7 +298,6 @@ export function Wideline(props: IWidelineProps) {
          if (a.seq < b.seq) return -1
          return a.start - b.start
       })
-      const fa = new Float32Array(pointA.flat())
 
       return {
          anyUpdate: Math.random(),
@@ -286,7 +308,7 @@ export function Wideline(props: IWidelineProps) {
          groups,
          materials: materials.flat(),
       }
-   }, [geo, points])
+   }, [geo, apoints])
 
    return (
       <mesh position={props.position} scale={props.scale} rotation={props.rotation}>

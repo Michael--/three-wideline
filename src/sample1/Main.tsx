@@ -2,6 +2,7 @@ import React from "react"
 import svglogo from "./logo.svg"
 import { HBox, VBox, Body, Border, Flex } from "./Gui"
 import { SampleParts } from "./SampleParts"
+import { SampleMultiple } from "./SampleMultiple"
 import { CustomLineParts } from "./CustomLineParts"
 import { SampleConstruction } from "./SampleConstruction"
 import { SampleLogo } from "./SampleLogo"
@@ -32,6 +33,8 @@ export function Main() {
          <Title />
          <Border />
          <SampleLogo />
+         <Border />
+         <SampleMultiple />
          <Border />
          <SampleParts />
          <Border />
