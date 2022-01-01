@@ -16,7 +16,7 @@ export type Where = "Start" | "End"
 /** @internal Index array of vertices */
 export interface IVertices {
    /** Index array */
-   index: number[]
+   index: number[][]
    /** Line limitations */
    limited?: Where
 }
@@ -51,7 +51,7 @@ export interface IGeometry {
  * Collection of geometry and its shader.
  */
 export interface ISchemeGeometry {
-   positions: number[]
+   positions: number[][]
    vertices: IVertices[]
    shader: ShaderMaterialProps[][]
 }
@@ -189,9 +189,9 @@ export class Scheme {
 
    /** Append a geometry to the result */
    private addGeometry = (geometry: IGeometry, limited?: Where) => {
-      const offset = this.data.positions.length / 3
-      this.data.positions = this.data.positions.concat(geometry.positions.flat())
-      const v = geometry.cells.flat().map(e => e + offset)
+      const offset = this.data.positions.length
+      this.data.positions = this.data.positions.concat(geometry.positions)
+      const v = geometry.cells.map(e => [e[0] + offset, e[1] + offset, e[2] + offset])
       this.data.vertices.push({ index: v, limited })
    }
 

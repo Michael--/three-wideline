@@ -212,25 +212,25 @@ export function Wideline(props: IWidelineProps) {
       scheme.transparency = transparency
       const plength = points.length / 3
 
-      let position: number[] = []
-      const pointA: number[] = []
-      const countPositions = geo.positions.length / 3
+      let position: number[][] = []
+      const pointA: number[][] = []
+      const countPositions = geo.positions.length / 1
       const vertices: IVertices[] = []
       for (let i = 0; i < geo.vertices.length; i++) vertices.push({ index: [], limited: geo.vertices[i].limited })
 
       /** get a point at given index */
       const getPoint = (i: number) => {
-         return { px: points[i * 3 + 0], py: points[i * 3 + 1], pz: points[i * 3 + 1] }
+         return [points[i * 3 + 0], points[i * 3 + 1], points[i * 3 + 2]]
       }
       for (let i = 0; i < plength; i++) {
-         const { px, py, pz } = getPoint(i)
+         const pi = getPoint(i)
 
          // add much points as needed
-         for (let n = 0; n < countPositions; n++) pointA.push(px, py, pz)
+         for (let n = 0; n < countPositions; n++) pointA.push(pi)
 
          if (i >= plength - 1) {
             // append some for 'pointC', 'pointD'
-            for (let n = 0; n < countPositions * 2; n++) pointA.push(px, py, pz)
+            for (let n = 0; n < countPositions * 2; n++) pointA.push(pi)
          }
 
          if (i < plength - 1) {
@@ -239,13 +239,13 @@ export function Wideline(props: IWidelineProps) {
                v.index.forEach(e => {
                   switch (vertices[j].limited) {
                      case "Start":
-                        if (i === 0) vertices[j].index.push(e + i * countPositions)
+                        if (i === 0) vertices[j].index.push(e.map(k => k + i * countPositions))
                         break
                      case "End":
-                        if (i === plength - 2) vertices[j].index.push(e + i * countPositions)
+                        if (i === plength - 2) vertices[j].index.push(e.map(k => k + i * countPositions))
                         break
                      case undefined:
-                        vertices[j].index.push(e + i * countPositions)
+                        vertices[j].index.push(e.map(k => k + i * countPositions))
                         break
                   }
                })
@@ -255,7 +255,7 @@ export function Wideline(props: IWidelineProps) {
 
       let start = 0
       let gcount = 0
-      let cx: number[] = []
+      let cx: number[][] = []
       const materials = geo.shader
       if (vertices.length !== materials.length) throw new Error("Vertices vs. Shader count error")
 
@@ -263,8 +263,10 @@ export function Wideline(props: IWidelineProps) {
       const groups: { start: number; count: number; materialIndex: number; seq: number }[] = []
       for (let i = 0; i < vertices.length; i++) {
          const e = vertices[i]
-         materials[i].forEach((_, seq) => groups.push({ start, count: e.index.length, materialIndex: gcount++, seq }))
-         start += e.index.length
+         materials[i].forEach((_, seq) =>
+            groups.push({ start, count: e.index.length * 3, materialIndex: gcount++, seq }),
+         )
+         start += e.index.length * 3
          cx = cx.concat(e.index)
       }
       // sort by sequence
@@ -273,14 +275,12 @@ export function Wideline(props: IWidelineProps) {
          if (a.seq < b.seq) return -1
          return a.start - b.start
       })
-      const count = plength * countPositions
-      const fa = new Float32Array(pointA)
+      const fa = new Float32Array(pointA.flat())
 
       return {
          anyUpdate: Math.random(),
-         position,
-         cx,
-         count,
+         position: position.flat(),
+         cx: cx.flat(),
          fa,
          offset: countPositions * 3,
          groups,
