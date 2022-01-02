@@ -9,5 +9,5 @@ The shape of the line, some points.
 <b>Signature:</b>
 
 ```typescript
-points: Shape;
+points: Shape | Shape[];
 ```

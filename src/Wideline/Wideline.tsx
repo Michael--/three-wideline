@@ -130,7 +130,8 @@ export function Wideline(props: IWidelineProps) {
       )
    }, [props.points, props.join, props.capsStart, props.capsEnd, props.custom, props.opacity, attr])
 
-   const apoints = React.useMemo(() => {
+   // get an array of points (multiple line with one set of attrbibutes)
+   const aPoints = React.useMemo(() => {
       const normalizeShape = (points: Shape) => {
          const linePoints: number[][] = []
          if (points[0] instanceof Vector2) {
@@ -220,77 +221,96 @@ export function Wideline(props: IWidelineProps) {
       scheme.transparency = transparency
 
       let position: number[][] = []
-      const countPositions = geo.positions.length / 1
-      const vertices: IVertices[] = []
-      for (let i = 0; i < geo.vertices.length; i++) vertices.push({ index: [], limited: geo.vertices[i].limited })
 
       const buildLine = (points: number[][]) => {
-         const pointA_D: number[][] = []
+         // intermediate points to access current position (pointA) and next position (pointB), etc.
+         const pointA: number[][] = []
+         const pointB: number[][] = []
+         const pointC: number[][] = []
+         const pointD: number[][] = []
+         // index is aleady an index array of number, to avoid number[][][] use a type instead
+         type IndexAll = number[][]
+         const indexAll: IndexAll[] = []
+         const plength = points.length
+         /** current index offset */
+         let ofx = 0
+
          /** get a point at given index */
          const getPoint = (i: number) => {
-            return points[i]
+            return points[Math.min(i, plength - 1)]
          }
-         const plength = points.length
-         let extraEnd = false
-         let extraStart = false
-         for (let i = 0; i < plength; i++) {
-            const pi = getPoint(i)
-            if (i < plength - 2 && getPoint(i + 2)[0] === undefined) extraEnd = true
-            else if (i > 0 && getPoint(i - 1)[0] === undefined) extraStart = true
 
-            // add much points as needed
-            for (let n = 0; n < countPositions; n++) pointA_D.push(pi)
+         // loop vertices groups (body, caps, joins, custom)
+         for (let ix = 0; ix < geo.vertices.length; ix++) {
+            // prepare next index for current group
+            const index: number[][] = []
+            const vtx = geo.vertices[ix]
+            const countPositions = vtx.position.length
 
-            if (i == plength - 1) {
-               // append some for 'pointC', 'pointD'
-               for (let n = 0; n < countPositions * 2; n++) pointA_D.push(pi)
+            // add only one line part (body, etc.)
+            const add = (i: number) => {
+               if (i < plength - 1) {
+                  position = position.concat(vtx.position)
+                  vtx.index.forEach(e => index.push([e[0] + ofx, e[1] + ofx, e[2] + ofx]))
+                  ofx += countPositions
+                  // add much points as needed
+                  for (let n = 0; n < countPositions; n++) {
+                     pointA.push(getPoint(i))
+                     pointB.push(getPoint(i + 1))
+                     pointC.push(getPoint(i + 2))
+                     pointD.push(getPoint(i + 3))
+                  }
+               }
             }
 
-            if (i < plength - 1) {
-               position = position.concat(geo.positions)
-               geo.vertices.map((v, j) => {
-                  v.index.forEach(e => {
-                     switch (vertices[j].limited) {
-                        case "Start":
-                           if (i === 0 || extraStart) {
-                              vertices[j].index.push(e.map(k => k + i * countPositions))
-                           }
-                           break
-                        case "End":
-                           if (i === plength - 2 || extraEnd) {
-                              vertices[j].index.push(e.map(k => k + i * countPositions))
-                           }
-                           break
+            // loop over all points, add needed line parts (for any segment, or only for start/end)
+            for (let i = 0; i < plength; i++) {
+               switch (vtx.limited) {
+                  case "Start": {
+                     const atStart = i === 0 || (i > 0 && getPoint(i - 1)[0] === undefined)
+                     if (atStart) add(i)
+                     break
+                  }
 
-                        default:
-                           vertices[j].index.push(e.map(k => k + i * countPositions))
-                           break
-                     }
-                  })
-               })
+                  case "End": {
+                     const atEnd = i === plength - 2 || (i < plength - 2 && getPoint(i + 2)[0] === undefined)
+                     if (atEnd) add(i)
+                     break
+                  }
+
+                  default:
+                     add(i)
+                     break
+               }
             }
-            extraEnd = false
-            extraStart = false
+            indexAll.push(index)
          }
-         return pointA_D.flat()
+
+         return {
+            pA: pointA,
+            pB: pointB,
+            pC: pointC,
+            pD: pointD,
+            idx: indexAll,
+         }
       }
-      const fa = new Float32Array(buildLine(apoints))
+
+      const line = buildLine(aPoints)
 
       let start = 0
       let gcount = 0
       let cx: number[][] = []
       const materials = geo.shader
-      if (vertices.length !== materials.length) throw new Error("Vertices vs. Shader count error")
+      const idx = line.idx
+      if (idx.length !== materials.length) throw new Error("Vertices vs. Shader count error")
 
       // create material groups in the right order
       const groups: { start: number; count: number; materialIndex: number; seq: number }[] = []
-      for (let i = 0; i < vertices.length; i++) {
-         const e = vertices[i]
-         materials[i].forEach((_, seq) =>
-            groups.push({ start, count: e.index.length * 3, materialIndex: gcount++, seq }),
-         )
-         start += e.index.length * 3
-         cx = cx.concat(e.index)
+      for (let i = 0; i < idx.length; i++) {
+         const index = idx[i]
+         materials[i].forEach((_, seq) => groups.push({ start, count: index.length * 3, materialIndex: gcount++, seq }))
+         start += index.length * 3
+         cx = cx.concat(index)
       }
       // sort by sequence
       groups.sort((a, b) => {
@@ -299,16 +319,22 @@ export function Wideline(props: IWidelineProps) {
          return a.start - b.start
       })
 
+      const fa = new Float32Array(line.pA.flat())
+      const fb = new Float32Array(line.pB.flat())
+      const fc = new Float32Array(line.pC.flat())
+      const fd = new Float32Array(line.pD.flat())
       return {
          anyUpdate: Math.random(),
          position: position.flat(),
          cx: cx.flat(),
          fa,
-         offset: countPositions * 3,
+         fb,
+         fc,
+         fd,
          groups,
          materials: materials.flat(),
       }
-   }, [geo, apoints])
+   }, [geo, aPoints])
 
    return (
       <mesh position={props.position} scale={props.scale} rotation={props.rotation}>
@@ -321,24 +347,10 @@ export function Wideline(props: IWidelineProps) {
             />
             <bufferAttribute attach="index" array={new Uint16Array(val.cx)} count={val.cx.length} itemSize={1} />
             <bufferAttribute attachObject={["attributes", "pointA"]} array={val.fa} itemSize={3} />
-            <bufferAttribute
-               attachObject={["attributes", "pointB"]}
-               array={val.fa.slice(val.offset * 1)}
-               itemSize={3}
-            />
-            <bufferAttribute
-               attachObject={["attributes", "pointC"]}
-               array={val.fa.slice(val.offset * 2)}
-               itemSize={3}
-            />
+            <bufferAttribute attachObject={["attributes", "pointB"]} array={val.fb} itemSize={3} />
+            <bufferAttribute attachObject={["attributes", "pointC"]} array={val.fc} itemSize={3} />
             {/* pointD is only used by "strip" shader used when transparent */}
-            {transparency && (
-               <bufferAttribute
-                  attachObject={["attributes", "pointD"]}
-                  array={val.fa.slice(val.offset * 3)}
-                  itemSize={3}
-               />
-            )}
+            {transparency && <bufferAttribute attachObject={["attributes", "pointD"]} array={val.fd} itemSize={3} />}
          </bufferGeometry>
          {val.materials.map((matProps, i) => (
             <shaderMaterial key={i + pkey} attachArray="material" {...matProps} />

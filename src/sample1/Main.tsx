@@ -34,8 +34,6 @@ export function Main() {
          <Border />
          <SampleLogo />
          <Border />
-         <SampleMultiple />
-         <Border />
          <SampleParts />
          <Border />
          <CustomLineParts />
@@ -43,6 +41,8 @@ export function Main() {
          <SampleConstruction />
          <Border />
          <SampleLights />
+         <Border />
+         <SampleMultiple />
          <Border />
       </Flex>
    )
