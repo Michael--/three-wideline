@@ -7,8 +7,9 @@ import { CustomLineParts } from "./CustomLineParts"
 import { SampleConstruction } from "./SampleConstruction"
 import { SampleLogo } from "./SampleLogo"
 import { SampleLights } from "./SampleLights"
-import { Box, Text, Heading, Anchor } from "grommet"
+import { Box, Text, Heading, Anchor, Sidebar, Nav } from "grommet"
 import { name as pname, version } from "../../package.json"
+import { Logo } from "../Wideline"
 
 function Title() {
    const npmlink = "https://www.npmjs.com/package/three-wideline"
@@ -28,21 +29,28 @@ function Title() {
 
 export function Main() {
    return (
-      <Box>
+      <Box gap="small">
          <Title />
-         <Border />
-         <SampleLogo />
-         <Border />
-         <SampleParts />
-         <Border />
-         <CustomLineParts />
-         <Border />
-         <SampleConstruction />
-         <Border />
-         <SampleLights />
-         <Border />
-         <SampleMultiple />
-         <Border />
+         <Box direction="row">
+            <Sidebar background="brand" round="small" header={<img src={svglogo} />}>
+               <Nav gap="small" border="all">
+                  <Text>DEPP</Text>
+               </Nav>
+            </Sidebar>
+            <Box gap="small">
+               <SampleLogo />
+               <SampleParts />
+               <Border />
+               <CustomLineParts />
+               <Border />
+               <SampleConstruction />
+               <Border />
+               <SampleLights />
+               <Border />
+               <SampleMultiple />
+               <Border />
+            </Box>
+         </Box>
       </Box>
    )
 }
