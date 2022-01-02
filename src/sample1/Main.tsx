@@ -1,35 +1,34 @@
 import React from "react"
 import svglogo from "./logo.svg"
-import { HBox, VBox, Body, Border, Flex } from "./Gui"
+import { Border } from "./Gui"
 import { SampleParts } from "./SampleParts"
 import { SampleMultiple } from "./SampleMultiple"
 import { CustomLineParts } from "./CustomLineParts"
 import { SampleConstruction } from "./SampleConstruction"
 import { SampleLogo } from "./SampleLogo"
 import { SampleLights } from "./SampleLights"
+import { Box, Text, Heading, Anchor } from "grommet"
 import { name as pname, version } from "../../package.json"
 
 function Title() {
    const npmlink = "https://www.npmjs.com/package/three-wideline"
    return (
-      <VBox>
-         <HBox>
-            <Body />
-            <img style={{ paddingRight: "20px" }} src={svglogo} className="App-logo" />
-            <h1>{`${pname}`}</h1>
-            <p>{`${version}`}</p>
-            <Body />
-         </HBox>
-         <HBox>
-            <a href={npmlink}>{npmlink}</a>
-         </HBox>
-      </VBox>
+      <Box align="center" border={{ color: "brand", size: "large" }}>
+         <Box direction="row" pad={"medium"} align="center" gap="medium">
+            <img src={svglogo} className="App-logo" />
+            <Box>
+               <Heading>{`${pname}`}</Heading>
+               <Text>{`Version: ${version}`}</Text>
+               <Anchor href={npmlink}>{npmlink}</Anchor>
+            </Box>
+         </Box>
+      </Box>
    )
 }
 
 export function Main() {
    return (
-      <Flex>
+      <Box>
          <Title />
          <Border />
          <SampleLogo />
@@ -44,6 +43,6 @@ export function Main() {
          <Border />
          <SampleMultiple />
          <Border />
-      </Flex>
+      </Box>
    )
 }
