@@ -2,6 +2,7 @@
   "name": "three-wideline",
   "version": "0.2.7",
   "description": "A three js line implementation",
+  "keywords": ["line", "width", "three", "threejs", "join", "caps", "custom", "react", "react-three-fiber"],
   "author": "michael--",
   "repository": {
     "type": "git",
