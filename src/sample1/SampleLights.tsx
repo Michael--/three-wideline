@@ -1,6 +1,6 @@
 import React from "react"
 import { Logo, Wideline } from "../Wideline"
-import { HBox, VBox, Body } from "./Gui"
+import { Box, Paragraph } from "grommet"
 import { ThreeCanvas } from "./ThreeCanvas"
 import { useFrame, GroupProps, MeshProps } from "@react-three/fiber"
 import { Mesh, SpotLight } from "three"
@@ -65,21 +65,20 @@ export function Plane(
 
 export function SampleLights() {
    return (
-      <HBox>
-         <VBox>
-            <p>Some lights used to show the correctness of face normal calculation.</p>
-         </VBox>
-         <Body />
-         <ThreeCanvas width={"400px"} height={"200px"}>
-            <ambientLight intensity={0.5} />
-            <pointLight position={[3, -5, 3]} intensity={0.5} color={"yellow"} />
-            <MovingSpot />
-            <TiltLogo position={[-2.8, 0, 0.8]} scale={[5, 5, 3]} />
-            <TiltLogo position={[2.8, 0, 0.85]} scale={[5, 5, 3]} />
-            <Plane size={5} position={[-1, 1, 0]} color="purple" />
-            <Plane size={5} position={[1, -1, -0.01]} color="green" />
-            <Logo position={[2.5, -1, 3]} />
-         </ThreeCanvas>
-      </HBox>
+      <Box direction="column" pad="small">
+         <Paragraph>Some lights used to show the correctness of face normal calculation.</Paragraph>
+         <Box align="center">
+            <ThreeCanvas width={"400px"} height={"200px"}>
+               <ambientLight intensity={0.5} />
+               <pointLight position={[3, -5, 3]} intensity={0.5} color={"yellow"} />
+               <MovingSpot />
+               <TiltLogo position={[-2.8, 0, 0.8]} scale={[5, 5, 3]} />
+               <TiltLogo position={[2.8, 0, 0.85]} scale={[5, 5, 3]} />
+               <Plane size={5} position={[-1, 1, 0]} color="purple" />
+               <Plane size={5} position={[1, -1, -0.01]} color="green" />
+               <Logo position={[2.5, -1, 3]} />
+            </ThreeCanvas>
+         </Box>
+      </Box>
    )
 }

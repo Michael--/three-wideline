@@ -15,7 +15,7 @@ export function SampleRaycast() {
    }
 
    return (
-      <Box direction="row" align="center" alignSelf="center" border={{ color: "dark-3", size: "medium" }} pad="small">
+      <Box direction="column" align="center" pad="small">
          <Paragraph>
             Raycast the line geometry. OnPointerEnter/Leave adjust the color, onClick rotate the figure.
          </Paragraph>

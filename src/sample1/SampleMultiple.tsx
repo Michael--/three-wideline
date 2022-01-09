@@ -1,6 +1,6 @@
 import React from "react"
 import { Wideline, generatePointsInterleaved } from "../Wideline"
-import { HBox, VBox, Body } from "./Gui"
+import { Box, Paragraph } from "grommet"
 import { ThreeCanvas } from "./ThreeCanvas"
 
 export function SampleMultiple() {
@@ -10,22 +10,21 @@ export function SampleMultiple() {
    const p4 = React.useMemo(() => [-2, -1.5, 2.2, -1.4], [])
 
    return (
-      <HBox>
-         <VBox>
-            <p>One line containing some line parts.</p>
-            <p>Both are interpreted as one, only one set of shaders are used.</p>
-         </VBox>
-         <Body />
-         <ThreeCanvas scale={2} width={"400px"} height={"200px"}>
-            <ambientLight intensity={1} />
-            <Wideline
-               points={[p1, p2, p3, p4]}
-               attr={{ color: "yellow", offals: "red", width: 0.3 }}
-               join={"Round"}
-               capsStart={"Top"}
-               capsEnd={"Round"}
-            />
-         </ThreeCanvas>
-      </HBox>
+      <Box direction="column" pad="small">
+         <Paragraph>One line containing some line parts.</Paragraph>
+         <Paragraph>Both are interpreted as one, only one set of shaders are used.</Paragraph>
+         <Box align="center">
+            <ThreeCanvas scale={2} width={"400px"} height={"200px"}>
+               <ambientLight intensity={1} />
+               <Wideline
+                  points={[p1, p2, p3, p4]}
+                  attr={{ color: "yellow", offals: "red", width: 0.3 }}
+                  join={"Round"}
+                  capsStart={"Top"}
+                  capsEnd={"Round"}
+               />
+            </ThreeCanvas>
+         </Box>
+      </Box>
    )
 }

@@ -1,20 +1,9 @@
 import React from "react"
-import { IAttribute, Wideline, Joins, JoinsList, Caps, CapsList } from "../Wideline"
+import { IAttribute, Wideline, JoinsList, CapsList } from "../Wideline"
 import { generatePointsInterleaved } from "../Wideline"
 import { SketchPicker, RGBColor } from "react-color"
-import { Popover, HBox, VBox, Body, Button, Checkbox } from "./Gui"
+import { Box, Paragraph, DropButton, Text, CheckBox, Select, RangeInput } from "grommet"
 import { ThreeCanvas } from "./ThreeCanvas"
-import Select from "react-select"
-
-type JoinItem = {
-   value: Joins
-   label: string
-}
-
-type CapsItem = {
-   value: Caps
-   label: string
-}
 
 function toHexColor(c: RGBColor): string {
    const toHex = (v: number) => {
@@ -31,46 +20,13 @@ export function SampleConstruction() {
    const [second, setSecond] = React.useState(false)
    const [color1, setColor1] = React.useState<RGBColor>({ a: 1.0, r: 255, g: 0, b: 0 })
    const [color2, setColor2] = React.useState<RGBColor>({ a: 1.0, r: 255, g: 255, b: 0 })
-   const [picker, setPicker] = React.useState({ show: -1, x: 0, y: 0 })
    const [vx, setVx] = React.useState({ running: false, x: 0 })
 
-   const joinlist = React.useMemo(
-      () =>
-         JoinsList.map(e => {
-            const a: JoinItem = { value: e, label: e }
-            return a
-         }),
-      [],
-   )
-   const capslist = React.useMemo(
-      () =>
-         CapsList.map(e => {
-            const a: CapsItem = { value: e, label: e }
-            return a
-         }),
-      [],
-   )
+   const joinlist = React.useMemo(() => JoinsList.map(e => e), [])
+   const capslist = React.useMemo(() => CapsList.map(e => e), [])
    const [join, setJoin] = React.useState(joinlist[1])
    const [capsStart, setCapsStart] = React.useState(capslist[0])
    const [capsEnd, setCapsEnd] = React.useState(capslist[0])
-
-   const styleColor = (color: RGBColor): React.CSSProperties => {
-      return {
-         borderRadius: "4px",
-         padding: "4px",
-         backgroundColor: toHexColor(color),
-         // color: e.g. inverse of color,
-      }
-   }
-
-   const styleCover: React.CSSProperties = {
-      position: "fixed",
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      border: "none",
-   }
 
    React.useEffect(() => {
       if (vx.running) {
@@ -107,84 +63,79 @@ export function SampleConstruction() {
    }, [second, color1, color2, width, width2])
 
    return (
-      <HBox>
-         <VBox>
-            <p>Adjust some features of the displayed line.</p>
-            <HBox>
-               <Button onClick={(x, y) => setPicker({ show: 0, x, y })}>
-                  <p style={styleColor(color1)}>Color</p>
-               </Button>
+      <Box direction="column" pad="small" gap="small">
+         <Paragraph>Adjust some features of the displayed line.</Paragraph>
+         <Box gap="small">
+            <Box direction="row" gap="small">
+               <DropButton
+                  primary
+                  color={toHexColor(color1)}
+                  dropAlign={{ top: "bottom" }}
+                  dropContent={<SketchPicker color={color1} onChange={c => setColor1(c.rgb)} />}
+                  label={"Color"}
+               />
                {second && (
-                  <Button onClick={(x, y) => setPicker({ show: 1, x, y })}>
-                     <p style={styleColor(color2)}>Color2</p>
-                  </Button>
+                  <DropButton
+                     primary
+                     color={toHexColor(color2)}
+                     dropAlign={{ top: "bottom" }}
+                     dropContent={<SketchPicker color={color2} onChange={c => setColor2(c.rgb)} />}
+                     label={"Color2"}
+                  />
                )}
-               <Checkbox checked={second} onChange={c => setSecond(c)}>
-                  <p>show 2nd Attribute</p>
-               </Checkbox>
-               {picker.show >= 0 ? (
-                  <Popover x={picker.x} y={picker.y}>
-                     <Button style={styleCover} onClick={(x, y) => setPicker({ show: -1, x, y })}></Button>
-                     <SketchPicker
-                        color={picker.show === 0 ? color1 : color2}
-                        onChange={c => (picker.show === 0 ? setColor1(c.rgb) : setColor2(c.rgb))}
-                     />
-                  </Popover>
-               ) : undefined}
-               <Body />
-            </HBox>
-            <HBox>
-               <p>Join</p>
-               <Select value={join} onChange={e => setJoin({ ...join, ...e })} options={joinlist} />
-               <p>Start</p>
-               <Select value={capsStart} onChange={e => setCapsStart({ ...capsStart, ...e })} options={capslist} />
-               <p>End</p>
-               <Select value={capsEnd} onChange={e => setCapsEnd({ ...capsEnd, ...e })} options={capslist} />
-               <Body />
-            </HBox>
-            <HBox>
-               <VBox>
-                  <HBox>
-                     <Button onClick={() => setEdges(Math.min(edges + 1, 10))}>▲</Button>
-                     <Button onClick={() => setEdges(Math.max(edges - 1, 1))}>▼</Button>
-                     <p>Edges: {edges}</p>
-                     <Body />
-                  </HBox>
-                  <HBox>
-                     <Button onClick={() => setWidth(Math.min(width + 0.1, 1))}>▲</Button>
-                     <Button onClick={() => setWidth(Math.max(width - 0.1, 0.1))}>▼</Button>
-                     <p style={{ marginRight: "40px" }}>Width: {width.toFixed(1)}</p>
-                     {second && (
-                        <HBox>
-                           <Button onClick={() => setWidth2(Math.min(width2 + 0.1, 1))}>▲</Button>
-                           <Button onClick={() => setWidth2(Math.max(width2 - 0.1, 0.1))}>▼</Button>
-                           <p style={{ marginRight: "40px" }}>Width2: {width2.toFixed(1)}</p>
-                        </HBox>
-                     )}
-                     <p>Opacity: {(color1.a ?? 1.0).toFixed(1)}</p>
-                  </HBox>
-                  <HBox>
-                     <Checkbox checked={vx.running} onChange={c => setVx({ ...vx, running: c })}>
-                        <p>Animation</p>
-                     </Checkbox>
-                     <Body />
-                  </HBox>
-               </VBox>
-               <Body />
-            </HBox>
-         </VBox>
-         <Body />
+               <CheckBox
+                  checked={second}
+                  label="show 2nd Attribute"
+                  onChange={event => setSecond(event.target.checked)}
+               />
+            </Box>
+            <Box direction="row" gap="small" align="center">
+               <Select options={joinlist} value={join} onChange={({ option }) => setJoin(option)} />
+               <Text>Join</Text>
+            </Box>
+            <Box direction="row" gap="small" align="center">
+               <Select options={capslist} value={capsStart} onChange={({ option }) => setCapsStart(option)} />
+               <Text>Caps Start</Text>
+            </Box>
+            <Box direction="row" gap="small" align="center">
+               <Select options={capslist} value={capsEnd} onChange={({ option }) => setCapsEnd(option)} />
+               <Text>Caps End</Text>
+            </Box>
+            <Box direction="row" gap="small" align="center">
+               <RangeInput value={edges} min={1} max={25} onChange={e => setEdges(+e.target.value)} />
+               <Text>Edges</Text>
+               <Text>{edges}</Text>
+            </Box>
+            <Box direction="row" gap="small" align="center">
+               <RangeInput value={width * 100} min={0} max={100} onChange={e => setWidth(+e.target.value / 100)} />
+               <Text>Width</Text>
+               <Text>{width.toFixed(2)}</Text>
+            </Box>
+            {second && (
+               <Box direction="row" gap="small" align="center">
+                  <RangeInput value={width2 * 100} min={0} max={100} onChange={e => setWidth2(+e.target.value / 100)} />
+                  <Text>Width2</Text>
+                  <Text>{width2.toFixed(2)}</Text>
+               </Box>
+            )}
+            <Text>Opacity: {(color1.a ?? 1.0).toFixed(1)}</Text>
+            <CheckBox
+               checked={vx.running}
+               label="Animation"
+               onChange={event => setVx({ ...vx, running: event.target.checked })}
+            />
+         </Box>
          <ThreeCanvas scale={4} width={"600px"} height={"200px"}>
             <ambientLight intensity={1} />
             <Wideline
                points={points}
                attr={attr}
-               join={join.value}
-               capsStart={capsStart.value}
-               capsEnd={capsEnd.value}
+               join={join}
+               capsStart={capsStart}
+               capsEnd={capsEnd}
                opacity={color1.a}
             />
          </ThreeCanvas>
-      </HBox>
+      </Box>
    )
 }

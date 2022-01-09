@@ -7,14 +7,14 @@ import { SampleConstruction } from "./SampleConstruction"
 import { SampleLogo } from "./SampleLogo"
 import { SampleLights } from "./SampleLights"
 import { SampleRaycast } from "./SampleRaycast"
-import { Box, Text, Heading, Anchor, Sidebar, Nav, Paragraph } from "grommet"
+import { Box, Text, Heading, Anchor, Sidebar, Nav, RadioButton } from "grommet"
 import { name as pname, version } from "../../package.json"
 import { Route, Switch, useLocation } from "wouter"
 
 function Title() {
    const npmlink = "https://www.npmjs.com/package/three-wideline"
    return (
-      <Box align="center" border={{ color: "brand", size: "large" }}>
+      <Box align="center" round="small" background={{ color: "brand", size: "large" }}>
          <Box direction="row" pad={"medium"} align="center" gap="medium">
             <img src={svglogo} className="App-logo" />
             <Box>
@@ -41,24 +41,6 @@ const pages: IPage[] = [
    { route: "Raycast" },
 ]
 
-const ActiveLink = (props: { href: string; children?: React.ReactNode }) => {
-   const [location, setLocation] = useLocation()
-   const isActive = location.includes(props.href)
-
-   return (
-      <div
-         {...props}
-         className={isActive ? "active" : ""}
-         onClick={() => {
-            setLocation(props.href ?? "")
-         }}
-      >
-         <a>{props.children}</a>
-         {isActive && <a>{` *${isActive}* ${location}`}</a>}
-      </div>
-   )
-}
-
 export function Main() {
    const [location, setLocation] = useLocation()
 
@@ -68,17 +50,21 @@ export function Main() {
    return (
       <Box gap="small">
          <Title />
-         <Box direction="row">
-            <Sidebar background="brand" round="small" header={<img src={svglogo} />}>
-               <Nav gap="small" border="all">
+         <Box direction="row" gap="small">
+            <Sidebar background="brand" round="small" header={<Heading level={3}>Samples</Heading>}>
+               <Nav gap="small">
                   {pages.map((e, i) => (
-                     <ActiveLink key={i} href={e.route}>
-                        {e.route}
-                     </ActiveLink>
+                     <RadioButton
+                        key={i}
+                        name={e.route}
+                        label={e.route}
+                        checked={location.includes(e.route)}
+                        onChange={() => setLocation(e.route ?? "")}
+                     />
                   ))}
                </Nav>
             </Sidebar>
-            <Box gap="small">
+            <Box border={{ color: "dark-3", size: "medium" }}>
                <Switch>
                   <Route path="/Logo">
                      <SampleLogo />
