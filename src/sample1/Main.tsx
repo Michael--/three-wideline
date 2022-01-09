@@ -6,6 +6,7 @@ import { CustomLineParts } from "./CustomLineParts"
 import { SampleConstruction } from "./SampleConstruction"
 import { SampleLogo } from "./SampleLogo"
 import { SampleLights } from "./SampleLights"
+import { SampleRaycast } from "./SampleRaycast"
 import { Box, Text, Heading, Anchor, Sidebar, Nav, Paragraph } from "grommet"
 import { name as pname, version } from "../../package.json"
 import { Route, Switch, useLocation } from "wouter"
@@ -37,6 +38,7 @@ const pages: IPage[] = [
    { route: "Custom" },
    { route: "Lights" },
    { route: "Multiple" },
+   { route: "Raycast" },
 ]
 
 const ActiveLink = (props: { href: string; children?: React.ReactNode }) => {
@@ -95,6 +97,9 @@ export function Main() {
                   </Route>
                   <Route path="/Multiple">
                      <SampleMultiple />
+                  </Route>
+                  <Route path="/Raycast">
+                     <SampleRaycast />
                   </Route>
                   <Route>404, Not Found!</Route>
                </Switch>
