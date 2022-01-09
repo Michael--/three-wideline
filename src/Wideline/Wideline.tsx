@@ -1,7 +1,8 @@
 import React from "react"
 import { Vector3 as FiberVector3, Euler } from "@react-three/fiber"
-import { Color, ColorRepresentation, Vector2, Vector3 } from "three"
-import { Scheme, IVertices, IGeometry, roundCapGeometry, squareCapGeometry, topCapGeometry, IScheme } from "./Scheme"
+import { Color, ColorRepresentation, Vector2, Vector3, Matrix4, Ray, Raycaster, Intersection, Object3D } from "three"
+import { Scheme, IGeometry, roundCapGeometry, squareCapGeometry, topCapGeometry, IScheme } from "./Scheme"
+import { EventHandlers } from "@react-three/fiber/dist/declarations/src/core/events"
 
 /**
  * @public
@@ -91,6 +92,12 @@ export interface IWidelineProps {
 
    /** Line rotation */
    rotation?: Euler
+
+   /** disable raycast options, could be useful for busy scenes to optimize cpu footprint (tons of lines) */
+   noRaycast?: boolean
+
+   /** some core event handler like onClick() */
+   events?: EventHandlers
 }
 
 /** @internal break in pointlist to cancatenate lines to be used as one */
@@ -336,8 +343,63 @@ export function Wideline(props: IWidelineProps) {
       }
    }, [geo, aPoints])
 
+   const mref = React.useRef<THREE.Mesh>(null)
+
+   let raycast: ((raycaster: Raycaster, intersects: Intersection[]) => void) | undefined = undefined
+   if (props.noRaycast !== true)
+      raycast = React.useCallback((raycaster: Raycaster, intersects: Intersection[]) => {
+         if (mref.current !== null) {
+            const interRay = new Vector3()
+            const matrixWorld = mref.current.matrixWorld
+
+            const inverseMatrix = new Matrix4()
+            inverseMatrix.copy(matrixWorld).invert()
+            const ray = new Ray()
+            ray.copy(raycaster.ray).applyMatrix4(inverseMatrix)
+
+            const vStart = new Vector3()
+            const vEnd = new Vector3()
+            const interSegment = new Vector3()
+
+            const width = attr.length > 0 && attr[0].width !== undefined ? attr[0].width : 1
+
+            const plength = aPoints.length
+            for (let i = 0; i < plength - 1; i++) {
+               vStart.fromArray(aPoints[i], 0)
+               vEnd.fromArray(aPoints[i + 1], 0)
+
+               const precision = width / 2
+               const precisionSq = precision * precision
+               const distSq = ray.distanceSqToSegment(vStart, vEnd, interRay, interSegment)
+               if (distSq > precisionSq) continue
+
+               interRay.applyMatrix4(matrixWorld) // Move back to world space for distance calculation
+               const distance = raycaster.ray.origin.distanceTo(interRay)
+               if (distance < raycaster.near || distance > raycaster.far) continue
+
+               intersects.push({
+                  distance: distance,
+                  point: interSegment.clone().applyMatrix4(matrixWorld),
+                  index: i,
+                  face: null,
+                  faceIndex: undefined,
+                  object: mref.current as Object3D,
+               })
+               // break loop on first found intersection
+               break
+            }
+         }
+      }, [])
+
    return (
-      <mesh position={props.position} scale={props.scale} rotation={props.rotation}>
+      <mesh
+         ref={mref}
+         position={props.position}
+         scale={props.scale}
+         rotation={props.rotation}
+         raycast={raycast}
+         {...props.events}
+      >
          <bufferGeometry key={val.anyUpdate} attach="geometry" groups={val.groups}>
             <bufferAttribute
                attachObject={["attributes", "position"]}
