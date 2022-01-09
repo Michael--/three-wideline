@@ -31,7 +31,7 @@
   ],
   "scripts": {
     "prep-sample1": "echo 'import start from \"./sample1/index\"\nstart()' > src/index.tsx",
-    "debug-sample1": "npm run prep-sample1 && vite --config src/sample1/vite.config.js --host",
+    "debug-sample1": "npm run prep-sample1 && vite --config src/sample1/vite.config.js",
     "build-sample1": "npm run prep-sample1 && vite build --config src/sample1/vite.config.js --base=./",
     "apidoc": "api-documenter markdown --i ./dist",
     "start": "npm run debug-sample1",

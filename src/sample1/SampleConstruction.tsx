@@ -20,7 +20,7 @@ export function SampleConstruction() {
    const [second, setSecond] = React.useState(false)
    const [color1, setColor1] = React.useState<RGBColor>({ a: 1.0, r: 255, g: 0, b: 0 })
    const [color2, setColor2] = React.useState<RGBColor>({ a: 1.0, r: 255, g: 255, b: 0 })
-   const [vx, setVx] = React.useState({ running: false, x: 0 })
+   const [vx, setVx] = React.useState({ running: true, x: 0 })
 
    const joinlist = React.useMemo(() => JoinsList.map(e => e), [])
    const capslist = React.useMemo(() => CapsList.map(e => e), [])

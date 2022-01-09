@@ -9,7 +9,7 @@ import { SampleLights } from "./SampleLights"
 import { SampleRaycast } from "./SampleRaycast"
 import { Box, Text, Heading, Anchor, Sidebar, Nav, RadioButton } from "grommet"
 import { name as pname, version } from "../../package.json"
-import { Route, Switch, useLocation } from "wouter"
+import { useLocation } from "wouter"
 
 function Title() {
    const npmlink = "https://www.npmjs.com/package/three-wideline"
@@ -29,16 +29,17 @@ function Title() {
 
 interface IPage {
    route: string
+   page: JSX.Element
 }
 
 const pages: IPage[] = [
-   { route: "Logo" },
-   { route: "Parts" },
-   { route: "Construction" },
-   { route: "Custom" },
-   { route: "Lights" },
-   { route: "Multiple" },
-   { route: "Raycast" },
+   { route: "Logo", page: <SampleLogo /> },
+   { route: "Parts", page: <SampleParts /> },
+   { route: "Construction", page: <SampleConstruction /> },
+   { route: "Custom", page: <CustomLineParts /> },
+   { route: "Lights", page: <SampleLights /> },
+   { route: "Multiple", page: <SampleMultiple /> },
+   { route: "Raycast", page: <SampleRaycast /> },
 ]
 
 export function Main() {
@@ -47,6 +48,9 @@ export function Main() {
    React.useEffect(() => {
       if (!location.includes(pages[0].route)) setLocation(pages[0].route)
    }, [])
+
+   const page = React.useMemo(() => pages.find(e => location.endsWith(e.route))?.page, [location])
+
    return (
       <Box gap="small">
          <Title />
@@ -64,32 +68,7 @@ export function Main() {
                   ))}
                </Nav>
             </Sidebar>
-            <Box border={{ color: "dark-3", size: "medium" }}>
-               <Switch>
-                  <Route path="/Logo">
-                     <SampleLogo />
-                  </Route>
-                  <Route path="/Parts">
-                     <SampleParts />
-                  </Route>
-                  <Route path="/Construction">
-                     <SampleConstruction />
-                  </Route>
-                  <Route path="/Custom">
-                     <CustomLineParts />
-                  </Route>
-                  <Route path="/Lights">
-                     <SampleLights />
-                  </Route>
-                  <Route path="/Multiple">
-                     <SampleMultiple />
-                  </Route>
-                  <Route path="/Raycast">
-                     <SampleRaycast />
-                  </Route>
-                  <Route>404, Not Found!</Route>
-               </Switch>
-            </Box>
+            <Box border={{ color: "dark-3", size: "medium" }}>{page}</Box>
          </Box>
       </Box>
    )
