@@ -30,6 +30,7 @@ export function SampleRaycast() {
                capsStart={"Round"}
                capsEnd={"Top"}
                events={myEvents}
+               boundingSphere={{ color: "pink", opacity: 0.25 }}
             />
          </ThreeCanvas>
       </Box>

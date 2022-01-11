@@ -17,6 +17,7 @@ export interface IWidelineProps
 |  Property | Type | Description |
 |  --- | --- | --- |
 |  [attr](./three-wideline.iwidelineprops.attr.md) | [IAttribute](./three-wideline.iattribute.md) \| [IAttribute](./three-wideline.iattribute.md)<!-- -->\[\] | The line attribute, use an array to draw multiple lines with same geometry. |
+|  [boundingSphere?](./three-wideline.iwidelineprops.boundingsphere.md) | { color: ColorRepresentation; opacity: number; } | <i>(Optional)</i> show for debugging purpose the bounding sphere of the line |
 |  [capsEnd?](./three-wideline.iwidelineprops.capsend.md) | [Caps](./three-wideline.caps.md) \| [IGeometry](./three-wideline.igeometry.md) | <i>(Optional)</i> The end cap of the line |
 |  [capsStart?](./three-wideline.iwidelineprops.capsstart.md) | [Caps](./three-wideline.caps.md) \| [IGeometry](./three-wideline.igeometry.md) | <i>(Optional)</i> The start cap of the line |
 |  [custom?](./three-wideline.iwidelineprops.custom.md) | [ICustom](./three-wideline.icustom.md)<!-- -->\[\] | <b><i>(BETA)</i></b> <i>(Optional)</i> A user defined custom element for any segment of the line |

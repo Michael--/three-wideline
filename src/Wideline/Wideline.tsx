@@ -1,6 +1,19 @@
 import React from "react"
 import { Vector3 as FiberVector3, Euler } from "@react-three/fiber"
-import { Color, ColorRepresentation, Vector2, Vector3, Matrix4, Ray, Raycaster, Intersection, Object3D } from "three"
+import {
+   Color,
+   ColorRepresentation,
+   Vector2,
+   Vector3,
+   Matrix4,
+   Ray,
+   Raycaster,
+   Intersection,
+   Object3D,
+   Box3,
+   Sphere,
+   BufferGeometry,
+} from "three"
 import { Scheme, IGeometry, roundCapGeometry, squareCapGeometry, topCapGeometry, IScheme } from "./Scheme"
 import { EventHandlers } from "@react-three/fiber/dist/declarations/src/core/events"
 
@@ -95,6 +108,9 @@ export interface IWidelineProps {
 
    /** disable raycast options, could be useful for busy scenes to optimize cpu footprint (tons of lines) */
    noRaycast?: boolean
+
+   /** show for debugging purpose the bounding sphere of the line */
+   boundingSphere?: { color: ColorRepresentation; opacity: number }
 
    /** some core event handler like onClick() */
    events?: EventHandlers
@@ -344,6 +360,54 @@ export function Wideline(props: IWidelineProps) {
    }, [geo, aPoints])
 
    const mref = React.useRef<THREE.Mesh>(null)
+   const [sphere, setSphere] = React.useState<JSX.Element | undefined>(undefined)
+
+   const onUpdate = (geometry: BufferGeometry) => {
+      const plength = aPoints.length
+      const px = new Vector3()
+      const ax: Vector3[] = []
+      for (let i = 0; i < plength; i++) {
+         px.fromArray(aPoints[i], 0)
+         ax.push(px.clone())
+      }
+
+      const cSphere = () => {
+         if (mref.current !== null) {
+            const mesh = mref.current
+            geometry.boundingSphere = new Sphere()
+            geometry.boundingSphere.setFromPoints(ax)
+            geometry.boundingSphere.applyMatrix4(mesh.matrix)
+
+            if (props.boundingSphere) {
+               const bs = geometry.boundingSphere
+               const s = (
+                  <mesh position={bs?.center}>
+                     <sphereBufferGeometry attach="geometry" args={[bs?.radius, 15, 15]} />
+                     <meshStandardMaterial
+                        attach="material"
+                        color={props.boundingSphere.color}
+                        transparent={true}
+                        opacity={props.boundingSphere.opacity}
+                     />
+                  </mesh>
+               )
+               setSphere(s)
+            }
+         }
+      }
+
+      const cBox = () => {
+         if (mref.current !== null) {
+            const mesh = mref.current
+            geometry.boundingBox = new Box3()
+            geometry.boundingBox.setFromPoints(ax)
+            geometry.boundingBox.applyMatrix4(mesh.matrix)
+         }
+      }
+
+      geometry.computeBoundingSphere = cSphere
+      geometry.computeBoundingBox = cBox
+   }
 
    let raycast: ((raycaster: Raycaster, intersects: Intersection[]) => void) | undefined = undefined
    if (props.noRaycast !== true)
@@ -356,6 +420,12 @@ export function Wideline(props: IWidelineProps) {
             inverseMatrix.copy(matrixWorld).invert()
             const ray = new Ray()
             ray.copy(raycaster.ray).applyMatrix4(inverseMatrix)
+
+            // fast check bounding sphere first
+            const geometry = mref.current.geometry
+            if (geometry.boundingSphere === null) geometry.computeBoundingSphere()
+            if (geometry.boundingSphere !== null && ray.intersectSphere(geometry.boundingSphere, interRay) === null)
+               return
 
             const vStart = new Vector3()
             const vEnd = new Vector3()
@@ -392,31 +462,34 @@ export function Wideline(props: IWidelineProps) {
       }, [])
 
    return (
-      <mesh
-         ref={mref}
-         position={props.position}
-         scale={props.scale}
-         rotation={props.rotation}
-         raycast={raycast}
-         {...props.events}
-      >
-         <bufferGeometry key={val.anyUpdate} attach="geometry" groups={val.groups}>
-            <bufferAttribute
-               attachObject={["attributes", "position"]}
-               count={val.position.length / 3}
-               array={new Float32Array(val.position)}
-               itemSize={3}
-            />
-            <bufferAttribute attach="index" array={new Uint16Array(val.cx)} count={val.cx.length} itemSize={1} />
-            <bufferAttribute attachObject={["attributes", "pointA"]} array={val.fa} itemSize={3} />
-            <bufferAttribute attachObject={["attributes", "pointB"]} array={val.fb} itemSize={3} />
-            <bufferAttribute attachObject={["attributes", "pointC"]} array={val.fc} itemSize={3} />
-            {/* pointD is only used by "strip" shader used when transparent */}
-            {transparency && <bufferAttribute attachObject={["attributes", "pointD"]} array={val.fd} itemSize={3} />}
-         </bufferGeometry>
-         {val.materials.map((matProps, i) => (
-            <shaderMaterial key={i + pkey} attachArray="material" {...matProps} />
-         ))}
-      </mesh>
+      <group>
+         <mesh
+            ref={mref}
+            position={props.position}
+            scale={props.scale}
+            rotation={props.rotation}
+            raycast={raycast}
+            {...props.events}
+         >
+            <bufferGeometry key={val.anyUpdate} attach="geometry" groups={val.groups} onUpdate={onUpdate}>
+               <bufferAttribute
+                  attachObject={["attributes", "position"]}
+                  count={val.position.length / 3}
+                  array={new Float32Array(val.position)}
+                  itemSize={3}
+               />
+               <bufferAttribute attach="index" array={new Uint16Array(val.cx)} count={val.cx.length} itemSize={1} />
+               <bufferAttribute attachObject={["attributes", "pointA"]} array={val.fa} itemSize={3} />
+               <bufferAttribute attachObject={["attributes", "pointB"]} array={val.fb} itemSize={3} />
+               <bufferAttribute attachObject={["attributes", "pointC"]} array={val.fc} itemSize={3} />
+               {/* pointD is only used by "strip" shader used when transparent */}
+               {transparency && <bufferAttribute attachObject={["attributes", "pointD"]} array={val.fd} itemSize={3} />}
+            </bufferGeometry>
+            {val.materials.map((matProps, i) => (
+               <shaderMaterial key={i + pkey} attachArray="material" {...matProps} />
+            ))}
+         </mesh>
+         {sphere}
+      </group>
    )
 }
