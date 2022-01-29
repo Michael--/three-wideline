@@ -1,12 +1,13 @@
 import React from "react"
 import { ThreeCanvas } from "./ThreeCanvas"
 import { Box, Paragraph } from "grommet"
-import { Wideline } from "../Wideline"
+import { Logo, Wideline } from "../Wideline"
 import { EventHandlers } from "@react-three/fiber/dist/declarations/src/core/events"
 
 export function SampleRaycast() {
    const [color, setColor] = React.useState("yellow")
    const [rotation, setRotation] = React.useState(0)
+   const [rotation2, setRotation2] = React.useState(0)
 
    const myEvents: EventHandlers = {
       onPointerEnter: () => setColor("red"),
@@ -31,6 +32,18 @@ export function SampleRaycast() {
                capsEnd={"Top"}
                events={myEvents}
                boundingSphere={{ color: "pink", opacity: 0.25 }}
+            />
+            <Logo
+               scale={2}
+               rotation={[0, 0, rotation2]}
+               position={[4, 2, 0.1]}
+               onClick={() => setRotation2(rotation2 - 0.1)}
+            />
+            <Logo
+               scale={2}
+               rotation={[0, 0, rotation2]}
+               position={[-4, -2, 0.1]}
+               onClick={() => setRotation2(rotation2 + 0.1)}
             />
          </ThreeCanvas>
       </Box>
