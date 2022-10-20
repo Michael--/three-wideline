@@ -4,7 +4,7 @@ import { string } from "rollup-plugin-string"
 import { apiExtractor } from "rollup-plugin-api-extractor"
 import commonjs from "@rollup/plugin-commonjs"
 import external from "rollup-plugin-peer-deps-external"
-import { terser } from "rollup-plugin-terser"
+// import { terser } from "rollup-plugin-terser"
 import { visualizer } from "rollup-plugin-visualizer"
 
 const config = defineConfig({
@@ -21,7 +21,7 @@ const config = defineConfig({
       commonjs(),
       typescript({ tsconfig: "tsconfig-dist.json" }),
       string({ include: /\.(vs|fs)$/ }),
-      terser(),
+      // terser(),
       apiExtractor({
          local: true,
          configFile: "./api-extractor.json",
