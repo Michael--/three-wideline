@@ -7,5 +7,8 @@ export default defineConfig({
       outDir: "build/sample1",
       chunkSizeWarningLimit: 1500,
    },
+   server: {
+      port: 3000,
+   },
    plugins: [react(), rawPlugin({ fileRegex: /\.(vs|fs)$/ })],
 })
