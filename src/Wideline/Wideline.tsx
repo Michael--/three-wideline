@@ -473,20 +473,20 @@ export function Wideline(props: IWidelineProps) {
          >
             <bufferGeometry key={val.anyUpdate} attach="geometry" groups={val.groups} onUpdate={onUpdate}>
                <bufferAttribute
-                  attachObject={["attributes", "position"]}
+                  attach={"attributes-position"}
                   count={val.position.length / 3}
                   array={new Float32Array(val.position)}
                   itemSize={3}
                />
                <bufferAttribute attach="index" array={new Uint16Array(val.cx)} count={val.cx.length} itemSize={1} />
-               <bufferAttribute attachObject={["attributes", "pointA"]} array={val.fa} itemSize={3} />
-               <bufferAttribute attachObject={["attributes", "pointB"]} array={val.fb} itemSize={3} />
-               <bufferAttribute attachObject={["attributes", "pointC"]} array={val.fc} itemSize={3} />
+               <bufferAttribute attach={"attributes-pointA"} array={val.fa} itemSize={3} />
+               <bufferAttribute attach={"attributes-pointB"} array={val.fb} itemSize={3} />
+               <bufferAttribute attach={"attributes-pointC"} array={val.fc} itemSize={3} />
                {/* pointD is only used by "strip" shader used when transparent */}
-               {transparency && <bufferAttribute attachObject={["attributes", "pointD"]} array={val.fd} itemSize={3} />}
+               {transparency && <bufferAttribute attach={"attributes-pointD"} array={val.fd} itemSize={3} />}
             </bufferGeometry>
             {val.materials.map((matProps, i) => (
-               <shaderMaterial key={i + pkey} attachArray="material" {...matProps} />
+               <shaderMaterial key={i + pkey} attach={`material-${i}`} {...matProps} />
             ))}
          </mesh>
          {sphere}
