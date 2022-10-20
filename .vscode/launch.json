@@ -5,13 +5,13 @@
    "version": "0.2.0",
    "configurations": [
       {
-         "type": "pwa-chrome",
+         "type": "chrome",
          "request": "launch",
          "name": "Launch Edge against localhost",
          "url": "http://localhost:3000",
          "webRoot": "${workspaceFolder}",
-         "preLaunchTask": "sample",     
-         "smartStep": true,
+         "preLaunchTask": "sample",
+         "smartStep": true
       }
    ]
 }

@@ -3,14 +3,14 @@ import { Logo, Wideline } from "../Wideline"
 import { Box, Paragraph } from "grommet"
 import { ThreeCanvas } from "./ThreeCanvas"
 import { useFrame, GroupProps, MeshProps } from "@react-three/fiber"
-import { Mesh, SpotLight } from "three"
+import { Group, SpotLight } from "three"
 
 function TiltLogo(props?: GroupProps) {
-   const ref = React.useRef<Mesh>(null)
+   const ref = React.useRef<Group>(null)
    const p = React.useRef(0)
    const d = React.useRef(-1)
    useFrame((_, delta) => {
-      if (ref?.current !== null && d.current !== null) {
+      if (ref?.current != null && d.current !== null) {
          if (p.current < -1 && d.current < 0) d.current = 1
          else if (p.current > 1 && d.current > 0) d.current = -1
          p.current += delta * d.current

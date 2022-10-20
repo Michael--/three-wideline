@@ -2,7 +2,7 @@ import React from "react"
 import { Logo } from "../Wideline"
 import { ThreeCanvas } from "./ThreeCanvas"
 import { MeshProps, useFrame, GroupProps } from "@react-three/fiber"
-import { Mesh } from "three"
+import { Mesh, Group } from "three"
 import { Box, Paragraph } from "grommet"
 
 function MeshBox(props: MeshProps) {
@@ -24,10 +24,10 @@ function MeshBox(props: MeshProps) {
 }
 
 function MovingLogo(props?: GroupProps) {
-   const ref = React.useRef<Mesh>(null)
+   const ref = React.useRef<Group>(null)
    const p = React.useRef(0)
    useFrame((_, delta) => {
-      if (ref?.current !== null) {
+      if (ref?.current != null) {
          ref.current.rotation.y += delta
          p.current += delta
          ref.current.position.x = 1.5 * Math.sin(p.current * 0.5)
