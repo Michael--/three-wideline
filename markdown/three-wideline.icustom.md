@@ -14,8 +14,8 @@ export interface ICustom
 
 ## Properties
 
-|  Property | Type | Description |
-|  --- | --- | --- |
-|  [geometry](./three-wideline.icustom.geometry.md) | [IGeometry](./three-wideline.igeometry.md) | The user defined geometry |
-|  [scheme](./three-wideline.icustom.scheme.md) | [IScheme](./three-wideline.ischeme.md) | How it appear |
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [geometry](./three-wideline.icustom.geometry.md) |  | [IGeometry](./three-wideline.igeometry.md) | The user defined geometry |
+|  [scheme](./three-wideline.icustom.scheme.md) |  | [IScheme](./three-wideline.ischeme.md) | How it appear |
 

@@ -14,9 +14,9 @@ export interface IAttribute
 
 ## Properties
 
-|  Property | Type | Description |
-|  --- | --- | --- |
-|  [color?](./three-wideline.iattribute.color.md) | ColorRepresentation | <i>(Optional)</i> The main color of the line |
-|  [offals?](./three-wideline.iattribute.offals.md) | ColorRepresentation | <i>(Optional)</i> Show some inner parts with an alternative color, e.g. miter, bevel ... |
-|  [width?](./three-wideline.iattribute.width.md) | number | <i>(Optional)</i> The with of the line |
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [color?](./three-wideline.iattribute.color.md) |  | ColorRepresentation | <i>(Optional)</i> The main color of the line |
+|  [offals?](./three-wideline.iattribute.offals.md) |  | ColorRepresentation | <i>(Optional)</i> Show some inner parts with an alternative color, e.g. miter, bevel ... |
+|  [width?](./three-wideline.iattribute.width.md) |  | number | <i>(Optional)</i> The with of the line |
 

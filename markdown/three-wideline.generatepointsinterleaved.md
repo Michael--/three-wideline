@@ -17,8 +17,8 @@ export declare function generatePointsInterleaved(count: number, width?: number,
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  count | number | How many points the line will have, must &gt;<!-- -->= 2. |
-|  width | number | The width of the virtual box the line are generated. |
-|  height | number | The height of the virtual box the line are generated. |
+|  width | number | <i>(Optional)</i> The width of the virtual box the line are generated. |
+|  height | number | <i>(Optional)</i> The height of the virtual box the line are generated. |
 
 <b>Returns:</b>
 

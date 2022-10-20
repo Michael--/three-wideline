@@ -36,7 +36,7 @@
     "apidoc": "api-documenter markdown --i ./dist",
     "start": "npm run debug-sample1",
     "build": "npm run build-sample1",
-    "dist": "rollup --config rollup.config.js && npm run apidoc",
+    "dist": "rollup --config rollup.config.mjs && npm run apidoc",
     "prepack": "npm run lint && npm run dist",
     "lint": "eslint --ext .tsx,.ts,.jsx,.js src/"
   },

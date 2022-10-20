@@ -14,8 +14,8 @@ export interface IGeometry
 
 ## Properties
 
-|  Property | Type | Description |
-|  --- | --- | --- |
-|  [cells](./three-wideline.igeometry.cells.md) | number\[\]\[\] | Cell definition, the vertices of the geometry |
-|  [positions](./three-wideline.igeometry.positions.md) | number\[\]\[\] | Position (x,y) list |
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [cells](./three-wideline.igeometry.cells.md) |  | number\[\]\[\] | Cell definition, the vertices of the geometry |
+|  [positions](./three-wideline.igeometry.positions.md) |  | number\[\]\[\] | Position (x,y) list |
 

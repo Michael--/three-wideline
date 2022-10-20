@@ -16,7 +16,7 @@ export declare function Logo(props?: GroupProps): JSX.Element;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  props | GroupProps | all possible three js group properties |
+|  props | GroupProps | <i>(Optional)</i> all possible three js group properties |
 
 <b>Returns:</b>
 
