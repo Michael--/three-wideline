@@ -382,7 +382,7 @@ export function Wideline(props: IWidelineProps) {
                const bs = geometry.boundingSphere
                const s = (
                   <mesh position={bs?.center}>
-                     <sphereBufferGeometry attach="geometry" args={[bs?.radius, 15, 15]} />
+                     <sphereGeometry attach="geometry" args={[bs?.radius, 15, 15]} />
                      <meshStandardMaterial
                         attach="material"
                         color={props.boundingSphere.color}

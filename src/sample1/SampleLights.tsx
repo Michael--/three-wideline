@@ -57,7 +57,7 @@ export function Plane(
 ) {
    return (
       <mesh {...props}>
-         <planeBufferGeometry attach="geometry" args={[props.size, props.size, 3, 8]} />
+         <planeGeometry attach="geometry" args={[props.size, props.size, 3, 8]} />
          <meshStandardMaterial attach="material" color={props.color} />
       </mesh>
    )
