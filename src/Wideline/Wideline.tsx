@@ -57,7 +57,7 @@ export const CapsList = ["Butt", "Round", "Square", "Top"] as const
  * @public
  * Line cap representation.
  */
-export type Caps = typeof CapsList[number]
+export type Caps = (typeof CapsList)[number]
 
 /**
  * @public
@@ -69,7 +69,7 @@ export const JoinsList = ["None", "Bevel", "Miter", "Round"] as const
  * @public
  * Line join representation.
  */
-export type Joins = typeof JoinsList[number]
+export type Joins = (typeof JoinsList)[number]
 
 /**
  * @public

@@ -9,7 +9,7 @@ Line cap representation.
 <b>Signature:</b>
 
 ```typescript
-export declare type Caps = typeof CapsList[number];
+export type Caps = (typeof CapsList)[number];
 ```
 <b>References:</b> [CapsList](./three-wideline.capslist.md)
 

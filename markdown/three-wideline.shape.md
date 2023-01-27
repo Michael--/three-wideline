@@ -9,5 +9,5 @@ Shape point definition.
 <b>Signature:</b>
 
 ```typescript
-export declare type Shape = Vector3[] | Vector2[] | number[];
+export type Shape = Vector3[] | Vector2[] | number[];
 ```

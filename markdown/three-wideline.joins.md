@@ -9,7 +9,7 @@ Line join representation.
 <b>Signature:</b>
 
 ```typescript
-export declare type Joins = typeof JoinsList[number];
+export type Joins = (typeof JoinsList)[number];
 ```
 <b>References:</b> [JoinsList](./three-wideline.joinslist.md)
 
