@@ -6,7 +6,7 @@
 
 Display the three-wideline logo as line drawn by itself.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function Logo(props?: GroupProps): JSX.Element;
@@ -16,9 +16,9 @@ export declare function Logo(props?: GroupProps): JSX.Element;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  props | GroupProps | <i>(Optional)</i> all possible three js group properties |
+|  props | GroupProps | _(Optional)_ all possible three js group properties |
 
-<b>Returns:</b>
+**Returns:**
 
 JSX.Element
 

@@ -6,7 +6,7 @@
 
 Color
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 color?: Color;

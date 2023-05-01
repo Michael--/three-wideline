@@ -6,7 +6,7 @@
 
 The user defined geometry
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 geometry: IGeometry;

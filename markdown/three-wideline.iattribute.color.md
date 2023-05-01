@@ -6,7 +6,7 @@
 
 The main color of the line
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 color?: ColorRepresentation;

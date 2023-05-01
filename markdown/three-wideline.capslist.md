@@ -6,7 +6,7 @@
 
 Line cap representation.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 CapsList: readonly ["Butt", "Round", "Square", "Top"]

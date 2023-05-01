@@ -6,7 +6,7 @@
 
 Generate a Zig-Zag line. First points is left top. The last point is right bottom for even count, or right top for odd count.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function generatePointsInterleaved(count: number, width?: number, height?: number): number[];
@@ -17,10 +17,10 @@ export declare function generatePointsInterleaved(count: number, width?: number,
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  count | number | How many points the line will have, must &gt;<!-- -->= 2. |
-|  width | number | <i>(Optional)</i> The width of the virtual box the line are generated. |
-|  height | number | <i>(Optional)</i> The height of the virtual box the line are generated. |
+|  width | number | _(Optional)_ The width of the virtual box the line are generated. |
+|  height | number | _(Optional)_ The height of the virtual box the line are generated. |
 
-<b>Returns:</b>
+**Returns:**
 
 number\[\]
 

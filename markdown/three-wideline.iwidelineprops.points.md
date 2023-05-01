@@ -6,7 +6,7 @@
 
 The shape of the line, some points.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 points: Shape | Shape[];

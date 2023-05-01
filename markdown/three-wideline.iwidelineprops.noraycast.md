@@ -6,7 +6,7 @@
 
 disable raycast options, could be useful for busy scenes to optimize cpu footprint (tons of lines)
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 noRaycast?: boolean;

@@ -6,7 +6,7 @@
 
 Scheme/Attribute of a shader segment.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface IScheme 
@@ -16,7 +16,7 @@ export interface IScheme
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [color?](./three-wideline.ischeme.color.md) |  | Color | <i>(Optional)</i> Color |
-|  [opacity?](./three-wideline.ischeme.opacity.md) |  | number | <i>(Optional)</i> Opacity |
-|  [width?](./three-wideline.ischeme.width.md) |  | number | <i>(Optional)</i> Width |
+|  [color?](./three-wideline.ischeme.color.md) |  | Color | _(Optional)_ Color |
+|  [opacity?](./three-wideline.ischeme.opacity.md) |  | number | _(Optional)_ Opacity |
+|  [width?](./three-wideline.ischeme.width.md) |  | number | _(Optional)_ Width |
 

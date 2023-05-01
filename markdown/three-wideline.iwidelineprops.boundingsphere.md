@@ -6,7 +6,7 @@
 
 show for debugging purpose the bounding sphere of the line
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 boundingSphere?: {

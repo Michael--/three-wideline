@@ -6,7 +6,7 @@
 
 Line scale
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 scale?: FiberVector3;

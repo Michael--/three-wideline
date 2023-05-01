@@ -6,7 +6,7 @@
 
 Appearing of the line, mainly width and color.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface IAttribute 
@@ -16,7 +16,7 @@ export interface IAttribute
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [color?](./three-wideline.iattribute.color.md) |  | ColorRepresentation | <i>(Optional)</i> The main color of the line |
-|  [offals?](./three-wideline.iattribute.offals.md) |  | ColorRepresentation | <i>(Optional)</i> Show some inner parts with an alternative color, e.g. miter, bevel ... |
-|  [width?](./three-wideline.iattribute.width.md) |  | number | <i>(Optional)</i> The with of the line |
+|  [color?](./three-wideline.iattribute.color.md) |  | ColorRepresentation | _(Optional)_ The main color of the line |
+|  [offals?](./three-wideline.iattribute.offals.md) |  | ColorRepresentation | _(Optional)_ Show some inner parts with an alternative color, e.g. miter, bevel ... |
+|  [width?](./three-wideline.iattribute.width.md) |  | number | _(Optional)_ The with of the line |
 

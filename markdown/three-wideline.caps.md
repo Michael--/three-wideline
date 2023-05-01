@@ -6,10 +6,10 @@
 
 Line cap representation.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type Caps = (typeof CapsList)[number];
 ```
-<b>References:</b> [CapsList](./three-wideline.capslist.md)
+**References:** [CapsList](./three-wideline.capslist.md)
 

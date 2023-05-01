@@ -6,7 +6,7 @@
 
 The with of the line
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 width?: number;

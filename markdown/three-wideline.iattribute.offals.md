@@ -6,7 +6,7 @@
 
 Show some inner parts with an alternative color, e.g. miter, bevel ...
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 offals?: ColorRepresentation;

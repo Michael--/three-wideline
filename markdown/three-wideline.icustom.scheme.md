@@ -6,7 +6,7 @@
 
 How it appear
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 scheme: IScheme;

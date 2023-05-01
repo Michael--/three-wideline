@@ -6,7 +6,7 @@
 
 Line opacity, is less than 1, the line is transparent. Optimized shader are used in that case.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 opacity?: number;

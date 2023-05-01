@@ -6,7 +6,7 @@
 
 The line attribute, use an array to draw multiple lines with same geometry.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 attr: IAttribute | IAttribute[];

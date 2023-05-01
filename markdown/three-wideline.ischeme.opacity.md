@@ -6,7 +6,7 @@
 
 Opacity
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 opacity?: number;

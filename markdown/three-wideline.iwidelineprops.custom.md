@@ -9,7 +9,7 @@
 
 A user defined custom element for any segment of the line
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 custom?: ICustom[];

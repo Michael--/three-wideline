@@ -6,7 +6,7 @@
 
 Shape point definition.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type Shape = Vector3[] | Vector2[] | number[];

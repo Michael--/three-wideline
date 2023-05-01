@@ -6,7 +6,7 @@
 
 Position (x,y) list
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 positions: number[][];

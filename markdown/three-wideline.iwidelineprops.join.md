@@ -6,7 +6,7 @@
 
 Which joins are used
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 join?: Joins;

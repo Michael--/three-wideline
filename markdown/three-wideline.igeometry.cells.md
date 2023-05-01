@@ -6,7 +6,7 @@
 
 Cell definition, the vertices of the geometry
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 cells: number[][];

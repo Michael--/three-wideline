@@ -6,7 +6,7 @@
 
 Custom element definition
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface ICustom 

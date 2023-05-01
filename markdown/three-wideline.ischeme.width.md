@@ -6,7 +6,7 @@
 
 Width
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 width?: number;

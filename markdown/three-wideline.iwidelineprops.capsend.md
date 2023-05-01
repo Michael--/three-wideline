@@ -6,7 +6,7 @@
 
 The end cap of the line
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 capsEnd?: Caps | IGeometry;

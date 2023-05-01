@@ -6,7 +6,7 @@
 
 The start cap of the line
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 capsStart?: Caps | IGeometry;

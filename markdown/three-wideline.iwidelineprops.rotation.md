@@ -6,7 +6,7 @@
 
 Line rotation
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 rotation?: Euler;

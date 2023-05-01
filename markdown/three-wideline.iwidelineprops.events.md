@@ -6,7 +6,7 @@
 
 some core event handler like onClick()
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 events?: EventHandlers;

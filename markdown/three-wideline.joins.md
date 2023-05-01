@@ -6,10 +6,10 @@
 
 Line join representation.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type Joins = (typeof JoinsList)[number];
 ```
-<b>References:</b> [JoinsList](./three-wideline.joinslist.md)
+**References:** [JoinsList](./three-wideline.joinslist.md)
 

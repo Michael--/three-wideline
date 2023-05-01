@@ -6,7 +6,7 @@
 
 Line join representation.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 JoinsList: readonly ["None", "Bevel", "Miter", "Round"]

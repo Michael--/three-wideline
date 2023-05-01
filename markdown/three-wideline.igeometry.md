@@ -6,7 +6,7 @@
 
 Geometry definition on excatly one line part, which can be a line segment, or for example a cap or join.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface IGeometry 

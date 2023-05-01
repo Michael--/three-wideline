@@ -6,7 +6,7 @@
 
 Displayed a 2D-Line as indexed mesh, whereby the mesh consists of the determined line options. A geometry is calculated which are drawn by several vertex shader.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function Wideline(props: IWidelineProps): JSX.Element;
@@ -18,7 +18,7 @@ export declare function Wideline(props: IWidelineProps): JSX.Element;
 |  --- | --- | --- |
 |  props | [IWidelineProps](./three-wideline.iwidelineprops.md) |  |
 
-<b>Returns:</b>
+**Returns:**
 
 JSX.Element
 

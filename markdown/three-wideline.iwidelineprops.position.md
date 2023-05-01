@@ -6,7 +6,7 @@
 
 Line local position.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 position?: FiberVector3;
