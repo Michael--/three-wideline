@@ -127,7 +127,10 @@ export function SamplePerformanceAnalysis() {
                insights.push("💡 Construction: Consider throttling geometry updates for better performance")
             }
          }
-         insights.push("💡 Construction: Geometry regeneration on every frame is expensive")
+         // Remove the generic expensive geometry hint since we now have specific optimization detection
+         if (!data.samples.construction.animationFrequency?.includes("geometry:")) {
+            insights.push("💡 Construction: Geometry regeneration on every frame is expensive")
+         }
       }
 
       return insights

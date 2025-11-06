@@ -18,6 +18,7 @@ export function usePerformanceMonitor(componentName: string, enabled = true) {
    const renderCountRef = useRef(0)
    const lastRenderTimeRef = useRef<number>(0)
    const renderTimesRef = useRef<number[]>([])
+   const slowRenderCountRef = useRef(0)
 
    useEffect(() => {
       if (!enabled || typeof window === "undefined") return
@@ -36,8 +37,13 @@ export function usePerformanceMonitor(componentName: string, enabled = true) {
             renderTimesRef.current.shift()
          }
 
-         // Log performance metrics
-         if (process.env.NODE_ENV === "development") {
+         // Log performance metrics less frequently (every 30 renders or when significant changes occur)
+         const shouldLog =
+            renderCountRef.current % 30 === 0 ||
+            renderTime > 30 || // Log very slow renders immediately
+            (renderTime > 16.67 && slowRenderCountRef.current < 3) // Log first few slow renders
+
+         if (shouldLog && process.env.NODE_ENV === "development") {
             const avgTime = renderTimesRef.current.reduce((a, b) => a + b, 0) / renderTimesRef.current.length
             const maxTime = Math.max(...renderTimesRef.current)
             const minTime = Math.min(...renderTimesRef.current)
@@ -49,13 +55,23 @@ export function usePerformanceMonitor(componentName: string, enabled = true) {
                minTime: `${minTime.toFixed(2)}ms`,
                maxTime: `${maxTime.toFixed(2)}ms`,
             })
+         }
 
-            // Warn about slow renders
-            if (renderTime > 16.67) {
-               // More than one frame at 60fps
+         // Warn about slow renders less frequently
+         if (renderTime > 16.67) {
+            slowRenderCountRef.current++
+
+            // Only warn every 10 slow renders to reduce noise
+            if (slowRenderCountRef.current % 10 === 0 && process.env.NODE_ENV === "development") {
+               const avgTime = renderTimesRef.current.reduce((a, b) => a + b, 0) / renderTimesRef.current.length
                console.warn(
-                  `[Performance] ${componentName}: Slow render detected (${renderTime.toFixed(2)}ms > 16.67ms)`,
+                  `[Performance] ${componentName}: Multiple slow renders detected (avg: ${avgTime.toFixed(2)}ms, count: ${slowRenderCountRef.current})`,
                )
+            }
+         } else {
+            // Reset slow render counter when we have fast renders
+            if (slowRenderCountRef.current > 0) {
+               slowRenderCountRef.current = Math.max(0, slowRenderCountRef.current - 1)
             }
          }
 

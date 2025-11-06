@@ -163,16 +163,18 @@ export function Wideline(props: IWidelineProps) {
    const transparency = React.useMemo(() => (props.opacity !== undefined ? props.opacity < 1 : false), [props.opacity])
 
    const pkey = React.useMemo(() => {
+      // Create a more stable key that doesn't change on every animation frame
+      // Only include structural changes, not animation values
       return (
          props.points.length.toString() +
-         attr.map(e => `${e.width}${e.color}${e.offals}`) +
+         attr.map(e => `${e.width}${e.color}${e.offals}`).join("") +
          props.join +
          props.capsStart +
          props.capsEnd +
          props.custom?.length +
-         (props.opacity !== undefined ? props.opacity.toFixed(2) : "")
+         (props.opacity !== undefined ? Math.round(props.opacity * 100) / 100 : "") // Round opacity to reduce changes
       )
-   }, [props.points, props.join, props.capsStart, props.capsEnd, props.custom, props.opacity, attr])
+   }, [props.points.length, props.join, props.capsStart, props.capsEnd, props.custom?.length, props.opacity, attr])
 
    // get an array of points (multiple line with one set of attrbibutes)
    const aPoints = React.useMemo(() => {
