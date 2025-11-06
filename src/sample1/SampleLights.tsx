@@ -2,8 +2,11 @@ import React from "react"
 import { Logo, Wideline } from "../Wideline"
 import { Box, Paragraph } from "grommet"
 import { ThreeCanvas } from "./ThreeCanvas"
-import { useFrame, GroupProps, MeshProps } from "@react-three/fiber"
+import { useFrame, ThreeElements } from "@react-three/fiber"
 import { Group, SpotLight } from "three"
+
+type MeshProps = ThreeElements["mesh"]
+type GroupProps = ThreeElements["group"]
 
 function TiltLogo(props?: GroupProps) {
    const ref = React.useRef<Group>(null)

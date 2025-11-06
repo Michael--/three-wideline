@@ -1,9 +1,12 @@
 import React from "react"
 import { Logo } from "../Wideline"
 import { ThreeCanvas } from "./ThreeCanvas"
-import { MeshProps, useFrame, GroupProps } from "@react-three/fiber"
+import { useFrame, ThreeElements } from "@react-three/fiber"
 import { Mesh, Group } from "three"
 import { Box, Paragraph } from "grommet"
+
+type MeshProps = ThreeElements["mesh"]
+type GroupProps = ThreeElements["group"]
 
 function MeshBox(props: MeshProps) {
    const ref = React.useRef<Mesh>(null)
