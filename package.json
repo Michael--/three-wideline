@@ -47,6 +47,14 @@
       "module-update-info": "ncu --interactive --format group",
       "prepare": "husky"
    },
+   "lint-staged": {
+      "*.{ts,tsx,js,jsx}": [
+         "eslint",
+         "prettier --write"
+      ],
+      "*.{md,json}": "prettier --write",
+      "**/*": "cspell"
+   },
    "browserslist": {
       "production": [
          ">0.2%",
@@ -86,6 +94,7 @@
       "eslint-plugin-react": "^7.37.5",
       "grommet": "^2.50.0",
       "husky": "^9.1.7",
+      "lint-staged": "^16.2.6",
       "polished": "^4.3.1",
       "prettier": "^3.6.2",
       "react": "^19.2.0",
