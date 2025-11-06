@@ -78,7 +78,6 @@
       "@react-three/fiber": "^9.4.0",
       "@rollup/plugin-commonjs": "^29.0.0",
       "@rollup/plugin-typescript": "^12.3.0",
-      "@testing-library/jest-dom": "^6.9.1",
       "@testing-library/react": "^16.3.0",
       "@types/node": "^24.10.0",
       "@types/react": "^19.2.2",

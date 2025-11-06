@@ -1,0 +1,43 @@
+{
+   "recommendations": [
+      // TypeScript & JavaScript
+      "ms-vscode.vscode-typescript-next",
+      "bradlc.vscode-tailwindcss",
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+
+      // Testing
+      "vitest.explorer",
+      "ms-vscode.vscode-json",
+
+      // React & Three.js
+      "ms-vscode.vscode-json",
+      "bradlc.vscode-tailwindcss",
+
+      // Git
+      "mhutchie.git-graph",
+      "gruntfuggly.todo-tree",
+
+      // General Development
+      "ms-vscode.vscode-json",
+      "redhat.vscode-yaml",
+      "ms-vscode.vscode-markdownlint",
+
+      // Theme & Icons
+      "ms-vscode.vscode-icons",
+      "ms-vscode.vscode-theme-onedark"
+   ],
+   "unwantedRecommendations": [
+      // Avoid Jest-related extensions that might conflict with Vitest
+      "orta.vscode-jest",
+      "andys8.jest-snippets",
+      "ms-vscode.vscode-jest",
+
+      // Avoid conflicting formatters
+      "hookyqr.beautify",
+
+      // Avoid old/unnecessary extensions
+      "ms-vscode.vscode-typescript",
+      "eg2.tslint"
+   ]
+}

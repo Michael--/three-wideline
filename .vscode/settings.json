@@ -1,0 +1,57 @@
+{
+   // Editor settings
+   "editor.formatOnSave": true,
+   "editor.defaultFormatter": "esbenp.prettier-vscode",
+   "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+   },
+
+   // TypeScript settings
+   "typescript.preferences.importModuleSpecifier": "relative",
+   "typescript.suggest.autoImports": true,
+   "typescript.updateImportsOnFileMove.enabled": "always",
+
+   // Testing - ensure Vitest is used, not Jest
+   "testExplorer.useNativeTesting": true,
+   "vitest.enable": true,
+   "vitest.commandLine": "npm test",
+
+   // Disable Jest-related settings that might interfere
+   "jest.disabledWorkspaceFolders": ["**"],
+
+   // Prettier settings
+   "prettier.configPath": ".prettierrc",
+   "prettier.ignorePath": ".prettierignore",
+
+   // ESLint settings
+   "eslint.workingDirectories": ["."],
+   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+
+   // File associations
+   "files.associations": {
+      "*.vs": "glsl",
+      "*.fs": "glsl",
+      "*.vert": "glsl",
+      "*.frag": "glsl"
+   },
+
+   // Search exclude
+   "search.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/build": true,
+      "**/.git": true,
+      "**/coverage": true
+   },
+
+   // Git settings
+   "git.autofetch": true,
+   "git.confirmSync": false,
+
+   // Terminal settings
+   "terminal.integrated.shell.osx": "/bin/zsh",
+
+   // Theme
+   "workbench.iconTheme": "vscode-icons",
+   "workbench.colorTheme": "Default Dark Modern"
+}
