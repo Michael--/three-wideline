@@ -16,6 +16,11 @@ export function ThreeCanvas(props: {
             width: width,
             height: height,
          }}
+         gl={{
+            powerPreference: "high-performance",
+            preserveDrawingBuffer: true,
+            failIfMajorPerformanceCaveat: false,
+         }}
       >
          <group scale={[props.scale ?? 1, props.scale ?? 1, props.scale ?? 1]}>{props.children}</group>
       </Canvas>
