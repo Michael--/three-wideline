@@ -20,7 +20,7 @@ export function SampleConstruction() {
    const [second, setSecond] = React.useState(false)
    const [color1, setColor1] = React.useState<RGBColor>({ a: 1.0, r: 255, g: 0, b: 0 })
    const [color2, setColor2] = React.useState<RGBColor>({ a: 1.0, r: 255, g: 255, b: 0 })
-   const [vx, setVx] = React.useState({ running: true, x: 0 })
+   const [vx, setVx] = React.useState({ running: true, x: 0, geometryX: 0 })
 
    const joinlist = React.useMemo(() => JoinsList.map(e => e), [])
    const capslist = React.useMemo(() => CapsList.map(e => e), [])
@@ -32,15 +32,31 @@ export function SampleConstruction() {
       if (vx.running) {
          let animationId: number
          let lastTime = 0
+         let frameCounter = 0
          const targetFPS = 60
          const frameTime = 1000 / targetFPS // ~16.67ms
+         const geometryUpdateInterval = 3 // Update geometry every 3 frames (~20 FPS geometry updates)
 
          const animate = (currentTime: number) => {
             if (currentTime - lastTime >= frameTime) {
                // Time-based animation: ensure consistent speed regardless of frame rate
                const deltaTime = (currentTime - lastTime) / 1000 // Convert to seconds
                const speed = 0.15 // Units per second (was 0.5, now smoother)
-               setVx(v => ({ running: true, x: v.x + speed * deltaTime }))
+
+               frameCounter++
+
+               setVx(v => {
+                  const newX = v.x + speed * deltaTime
+                  // Update geometry only every N frames to reduce expensive calculations
+                  const newGeometryX = frameCounter % geometryUpdateInterval === 0 ? newX : v.geometryX
+
+                  return {
+                     running: true,
+                     x: newX,
+                     geometryX: newGeometryX,
+                  }
+               })
+
                lastTime = currentTime
             }
             animationId = requestAnimationFrame(animate)
@@ -55,8 +71,8 @@ export function SampleConstruction() {
    }, [vx.running])
 
    const points = React.useMemo(
-      () => generatePointsInterleaved(edges + 1, Math.cos(vx.x) * 5, Math.cos(vx.x / 2.5)),
-      [edges, vx.x],
+      () => generatePointsInterleaved(edges + 1, Math.cos(vx.geometryX) * 5, Math.cos(vx.geometryX / 2.5)),
+      [edges, vx.geometryX],
    )
    const attr = React.useMemo(() => {
       const attr: IAttribute[] = [

@@ -87,8 +87,8 @@ export function SamplePerformanceAnalysis() {
          results.samples.construction = {
             renderTime: constructionResult.avgTime,
             memoryBefore: getMemoryUsage(),
-            animationFrequency: "~60 FPS (requestAnimationFrame, time-based)",
-            notes: "Optimized: Time-based animation with requestAnimationFrame for consistent performance",
+            animationFrequency: "~60 FPS (requestAnimationFrame, time-based, geometry: ~20 FPS)",
+            notes: "Optimized: Time-based animation + geometry updates every 3 frames for better performance",
          }
 
          console.warn(`📊 Construction: ${constructionResult.avgTime.toFixed(2)}ms avg render time`)
@@ -121,6 +121,11 @@ export function SamplePerformanceAnalysis() {
             insights.push("💡 Construction: Consider using requestAnimationFrame for smoother animation")
          } else {
             insights.push("✅ Construction: Animation optimized with requestAnimationFrame")
+            if (data.samples.construction.animationFrequency?.includes("geometry:")) {
+               insights.push("✅ Construction: Geometry updates throttled for better performance")
+            } else {
+               insights.push("💡 Construction: Consider throttling geometry updates for better performance")
+            }
          }
          insights.push("💡 Construction: Geometry regeneration on every frame is expensive")
       }
