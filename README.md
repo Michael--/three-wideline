@@ -19,20 +19,22 @@ Most of the shader are reused here with small adjustments.
 
 ## Todo
 
-* raycast
-* check/adjust uv mapping
-* multiple lines with one attribute set
+- raycast
+- check/adjust uv mapping
+- multiple lines with one attribute set
 
 ## Repository
+
 Github: [three-wideline](https://github.com/Michael--/three-wideline)
 
 ## Example
+
 An running demo example from the repository is avaiable here [Wideline example](https://www.number10.de/sample1).
 
 Samples at codesandbox:
-* [logo](https://codesandbox.io/s/three-wideline-logo-u19je)
-* [animated](https://codesandbox.io/s/three-wideline-animated-tue8d)
- 
+
+- [logo](https://codesandbox.io/s/three-wideline-logo-u19je)
+- [animated](https://codesandbox.io/s/three-wideline-animated-tue8d)
 
 How to draw the Wideline Logo as a three js line using typescript and react.
 
