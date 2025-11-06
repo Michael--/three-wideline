@@ -44,5 +44,5 @@ void main() {
 
       transformed = vec3(pos, zlevel);
    }
-   vec3 objectNormal = normalize(vec3(transformed.xy, 1));
+   vec3 objectNormal = normalize(vec3(transformed.xy, 1)); // varying: used in fragment shader
 }

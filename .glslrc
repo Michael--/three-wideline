@@ -1,0 +1,9 @@
+{
+   "includes": [],
+   "compiler": {
+      "version": "300 es"
+   },
+   "varyings": [
+      "objectNormal"
+   ]
+}
