@@ -13,10 +13,10 @@ importers:
         version: 9.122.0(@react-three/fiber@8.18.0(@types/react@18.3.26)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.152.2))(@types/react@18.3.26)(@types/three@0.151.0)(immer@9.0.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.152.2)(use-sync-external-store@1.6.0(react@18.3.1))
     devDependencies:
       '@microsoft/api-documenter':
-        specifier: ^7.22.2
+        specifier: ^7.27.4
         version: 7.27.4(@types/node@18.19.130)
       '@microsoft/api-extractor':
-        specifier: ^7.34.6
+        specifier: ^7.54.0
         version: 7.54.0(@types/node@18.19.130)
       '@react-three/fiber':
         specifier: ^8.13.0
@@ -34,7 +34,7 @@ importers:
         specifier: ^18.2.0
         version: 18.3.26
       '@types/react-color':
-        specifier: ^3.0.6
+        specifier: ^3.0.13
         version: 3.0.13(@types/react@18.3.26)
       '@types/react-dom':
         specifier: ^18.2.1
@@ -73,13 +73,13 @@ importers:
         specifier: ^4.2.1
         version: 4.2.5(eslint-config-prettier@8.10.2(eslint@8.57.1))(eslint@8.57.1)(prettier@2.8.8)
       eslint-plugin-react:
-        specifier: ^7.32.2
+        specifier: ^7.37.5
         version: 7.37.5(eslint@8.57.1)
       grommet:
-        specifier: ^2.32.0
+        specifier: ^2.50.0
         version: 2.50.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@5.3.11(@babel/core@7.28.5)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1))
       polished:
-        specifier: ^4.2.2
+        specifier: ^4.3.1
         version: 4.3.1
       prettier:
         specifier: ^2.8.8
@@ -121,13 +121,13 @@ importers:
         specifier: ^0.152.2
         version: 0.152.2
       typescript:
-        specifier: ^5.0.4
+        specifier: ^5.9.3
         version: 5.9.3
       vite:
         specifier: ^4.3.3
         version: 4.5.14(@types/node@18.19.130)(terser@5.44.1)
       vite-raw-plugin:
-        specifier: ^1.0.1
+        specifier: ^1.0.2
         version: 1.0.2
       wouter:
         specifier: ^2.10.1
