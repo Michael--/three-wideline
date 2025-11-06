@@ -16,6 +16,7 @@ import {
    Mesh,
 } from "three"
 import { Scheme, IGeometry, roundCapGeometry, squareCapGeometry, topCapGeometry, IScheme } from "./Scheme"
+import { normalizeShape, createMaterialGroups, MaterialGroup } from "./internal-utils"
 import { EventHandlers } from "@react-three/fiber/dist/declarations/src/core/events"
 
 /**
@@ -156,27 +157,6 @@ export function Wideline(props: IWidelineProps) {
 
    // get an array of points (multiple line with one set of attrbibutes)
    const aPoints = React.useMemo(() => {
-      const normalizeShape = (points: Shape) => {
-         const linePoints: number[][] = []
-         if (points[0] instanceof Vector2) {
-            for (let j = 0; j < points.length; j++) {
-               const p = points[j] as Vector2
-               linePoints.push([p.x, p.y, 0])
-            }
-         } else if (points[0] instanceof Vector3) {
-            for (let j = 0; j < points.length; j++) {
-               const p = points[j] as Vector3
-               linePoints.push([p.x, p.y, p.z])
-            }
-         } else {
-            const p = points as number[]
-            for (let j = 0; j < p.length; j += 2) {
-               linePoints.push([p[j], p[j + 1], 0])
-            }
-         }
-         return linePoints
-      }
-
       // props.points consists of: Shape | Shape[]
       if (props.points[0] instanceof Vector3 || typeof props.points[0] === "number")
          return normalizeShape(props.points as Shape)
@@ -321,27 +301,18 @@ export function Wideline(props: IWidelineProps) {
 
       const line = buildLine(aPoints)
 
-      let start = 0
-      let gcount = 0
-      let cx: number[][] = []
       const materials = geo.shader
       const idx = line.idx
       if (idx.length !== materials.length) throw new Error("Vertices vs. Shader count error")
 
       // create material groups in the right order
-      const groups: { start: number; count: number; materialIndex: number; seq: number }[] = []
+      const groups: MaterialGroup[] = createMaterialGroups(idx, materials)
+
+      // concatenate all indices
+      let cx: number[][] = []
       for (let i = 0; i < idx.length; i++) {
-         const index = idx[i]
-         materials[i].forEach((_, seq) => groups.push({ start, count: index.length * 3, materialIndex: gcount++, seq }))
-         start += index.length * 3
-         cx = cx.concat(index)
+         cx = cx.concat(idx[i])
       }
-      // sort by sequence
-      groups.sort((a, b) => {
-         if (a.seq > b.seq) return 1
-         if (a.seq < b.seq) return -1
-         return a.start - b.start
-      })
 
       const fa = new Float32Array(line.pA.flat())
       const fb = new Float32Array(line.pB.flat())
