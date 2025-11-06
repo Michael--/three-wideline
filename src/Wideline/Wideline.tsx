@@ -1,4 +1,4 @@
-import React from "react"
+import React, { JSX } from "react"
 import { Vector3 as FiberVector3, Euler } from "@react-three/fiber"
 import {
    Color,
@@ -13,6 +13,7 @@ import {
    Box3,
    Sphere,
    BufferGeometry,
+   Mesh,
 } from "three"
 import { Scheme, IGeometry, roundCapGeometry, squareCapGeometry, topCapGeometry, IScheme } from "./Scheme"
 import { EventHandlers } from "@react-three/fiber/dist/declarations/src/core/events"
@@ -359,7 +360,7 @@ export function Wideline(props: IWidelineProps) {
       }
    }, [geo, aPoints])
 
-   const mref = React.useRef<THREE.Mesh>(null)
+   const mref = React.useRef<Mesh>(null)
    const [sphere, setSphere] = React.useState<JSX.Element | undefined>(undefined)
 
    const onUpdate = (geometry: BufferGeometry) => {
@@ -472,18 +473,13 @@ export function Wideline(props: IWidelineProps) {
             {...props.events}
          >
             <bufferGeometry key={val.anyUpdate} attach="geometry" groups={val.groups} onUpdate={onUpdate}>
-               <bufferAttribute
-                  attach={"attributes-position"}
-                  count={val.position.length / 3}
-                  array={new Float32Array(val.position)}
-                  itemSize={3}
-               />
-               <bufferAttribute attach="index" array={new Uint16Array(val.cx)} count={val.cx.length} itemSize={1} />
-               <bufferAttribute attach={"attributes-pointA"} array={val.fa} itemSize={3} />
-               <bufferAttribute attach={"attributes-pointB"} array={val.fb} itemSize={3} />
-               <bufferAttribute attach={"attributes-pointC"} array={val.fc} itemSize={3} />
+               <bufferAttribute attach={"attributes-position"} args={[new Float32Array(val.position), 3]} />
+               <bufferAttribute attach="index" args={[new Uint16Array(val.cx), 1]} />
+               <bufferAttribute attach={"attributes-pointA"} args={[val.fa, 3]} />
+               <bufferAttribute attach={"attributes-pointB"} args={[val.fb, 3]} />
+               <bufferAttribute attach={"attributes-pointC"} args={[val.fc, 3]} />
                {/* pointD is only used by "strip" shader used when transparent */}
-               {transparency && <bufferAttribute attach={"attributes-pointD"} array={val.fd} itemSize={3} />}
+               {transparency && <bufferAttribute attach={"attributes-pointD"} args={[val.fd, 3]} />}
             </bufferGeometry>
             {val.materials.map((matProps, i) => (
                <shaderMaterial key={i + pkey} attach={`material-${i}`} {...matProps} />
