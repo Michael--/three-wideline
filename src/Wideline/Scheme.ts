@@ -1,4 +1,4 @@
-import { ShaderMaterialProps } from "@react-three/fiber"
+import { ThreeElements } from "@react-three/fiber"
 import { Color, IUniform, DoubleSide, FrontSide } from "three"
 import vertexSimple from "./shader/simple.vs"
 import vertexStrip from "./shader/strip.vs"
@@ -8,6 +8,8 @@ import vertexRoundJoin from "./shader/roundJoin.vs"
 import vertexBevel from "./shader/bevel.vs"
 import vertexMiter from "./shader/miter.vs"
 import * as THREE from "three"
+
+type ShaderMaterialProps = ThreeElements["shaderMaterial"]
 
 /** @internal Create vertices only at start or end of the line */
 export type Where = "Start" | "End"
