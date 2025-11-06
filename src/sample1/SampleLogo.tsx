@@ -50,9 +50,9 @@ export function SampleLogo() {
          <Paragraph>Wideline Logo drawn itself in a tiny 3D world. Some directional lights are enabled.</Paragraph>
          <Box align="center">
             <ThreeCanvas width={"400px"} height={"200px"}>
-               <ambientLight intensity={0.2} />
-               <pointLight position={[0, -2, 3]} intensity={0.4} color={"yellow"} />
-               <spotLight intensity={1.2} position={[2, 2, 10]} angle={0.2} penumbra={1} color={"lightblue"} />
+               <ambientLight intensity={0.5} />
+               <pointLight position={[0, -2, 3]} intensity={5.0} color={"yellow"} />
+               <spotLight intensity={500.0} position={[2, 2, 10]} angle={0.35} penumbra={1} color={"lightblue"} />
 
                <MeshBox position={[1, 0, -1]} scale={[2, 2, 2]} />
                <MovingLogo position={[0, 0, 2]} scale={[2, 2, 1]} />

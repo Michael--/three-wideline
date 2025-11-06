@@ -27,7 +27,7 @@ export function CustomLineParts() {
          <Paragraph>2. Custom element only.</Paragraph>
          <Box align="center">
             <ThreeCanvas scale={2} width={"400px"} height={"200px"}>
-               <ambientLight intensity={1} />
+               <ambientLight intensity={3} />
                <Wideline
                   position={[0, 0.75, 0]}
                   points={points}

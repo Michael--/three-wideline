@@ -126,7 +126,7 @@ export function SampleConstruction() {
             />
          </Box>
          <ThreeCanvas scale={4} width={"600px"} height={"200px"}>
-            <ambientLight intensity={1} />
+            <ambientLight intensity={3} />
             <Wideline
                points={points}
                attr={attr}

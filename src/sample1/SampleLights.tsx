@@ -49,7 +49,7 @@ function MovingSpot() {
          ref.current.position.y = p.current * 20
       }
    })
-   return <spotLight ref={ref} intensity={15} position={[10, 10, 25]} angle={0.12} penumbra={0.1} color={"white"} />
+   return <spotLight ref={ref} intensity={1500} position={[10, 10, 25]} angle={0.12} penumbra={0.1} color={"white"} />
 }
 
 export function Plane(
@@ -72,8 +72,8 @@ export function SampleLights() {
          <Paragraph>Some lights used to show the correctness of face normal calculation.</Paragraph>
          <Box align="center">
             <ThreeCanvas width={"400px"} height={"200px"}>
-               <ambientLight intensity={0.5} />
-               <pointLight position={[3, -5, 3]} intensity={0.5} color={"yellow"} />
+               <ambientLight intensity={1.0} />
+               <pointLight position={[3, -5, 3]} intensity={50} color={"yellow"} />
                <MovingSpot />
                <TiltLogo position={[-2.8, 0, 0.8]} scale={[5, 5, 3]} />
                <TiltLogo position={[2.8, 0, 0.85]} scale={[5, 5, 3]} />

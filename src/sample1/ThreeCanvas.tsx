@@ -1,5 +1,6 @@
 import React from "react"
 import { Canvas } from "@react-three/fiber"
+import * as THREE from "three"
 
 export function ThreeCanvas(props: {
    width?: number | string
@@ -20,6 +21,7 @@ export function ThreeCanvas(props: {
             powerPreference: "high-performance",
             preserveDrawingBuffer: true,
             failIfMajorPerformanceCaveat: false,
+            toneMapping: THREE.ACESFilmicToneMapping,
          }}
       >
          <group scale={[props.scale ?? 1, props.scale ?? 1, props.scale ?? 1]}>{props.children}</group>

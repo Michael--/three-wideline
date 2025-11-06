@@ -21,7 +21,7 @@ export function SampleRaycast() {
             Raycast the line geometry. OnPointerEnter/Leave adjust the color, onClick rotate the figure.
          </Paragraph>
          <ThreeCanvas width={"400px"} height={"200px"}>
-            <ambientLight intensity={0.75} />
+            <ambientLight intensity={2.5} />
             <Wideline
                scale={4}
                rotation={[0, 0, rotation]}
