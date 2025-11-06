@@ -1,3 +1,7 @@
+#ifndef HAS_POSITION
+attribute vec3 position; // editor-only to silence linter
+#endif
+
 attribute vec3 pointA;
 attribute vec3 pointB;
 attribute vec3 pointC;

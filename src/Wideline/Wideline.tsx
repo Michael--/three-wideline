@@ -482,7 +482,7 @@ export function Wideline(props: IWidelineProps) {
                {transparency && <bufferAttribute attach={"attributes-pointD"} args={[val.fd, 3]} />}
             </bufferGeometry>
             {val.materials.map((matProps, i) => (
-               <shaderMaterial key={i + pkey} attach={`material-${i}`} {...matProps} />
+               <shaderMaterial key={i + pkey} attach={`material-${i}`} {...matProps} defines={{ HAS_POSITION: 1 }} />
             ))}
          </mesh>
          {sphere}
