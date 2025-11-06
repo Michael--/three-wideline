@@ -18,13 +18,13 @@ export function SampleFallback() {
                   attr={{ color: "green", width: 0.1 }}
                />
                {/* Invalid: missing attr prop - using type assertion to bypass TypeScript */}
-               <Wideline position={[1, 0.5, 0]} points={[-0.5, 0, 0, 0.5, 0, 0]} attr={undefined as any} />
+               <Wideline position={[1, 0.5, 0]} points={[-0.5, 0, 0, 0.5, 0, 0]} attr={undefined as never} />
                {/* Invalid: invalid join - using type assertion */}
                <Wideline
                   position={[-1, -0.5, 0]}
                   points={[-0.5, 0, 0, 0.5, 0, 0]}
                   attr={{ color: "blue", width: 0.1 }}
-                  join={"InvalidJoin" as any}
+                  join={"InvalidJoin" as never}
                />
                {/* Invalid: opacity out of range */}
                <Wideline
