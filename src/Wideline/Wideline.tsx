@@ -259,52 +259,55 @@ export function Wideline(props: IWidelineProps) {
    const mref = React.useRef<Mesh>(null)
    const [sphere, setSphere] = React.useState<JSX.Element | undefined>(undefined)
 
-   const onUpdate = (geometry: BufferGeometry) => {
-      const plength = aPoints.length
-      const px = new Vector3()
-      const ax: Vector3[] = []
-      for (let i = 0; i < plength; i++) {
-         px.fromArray(aPoints[i], 0)
-         ax.push(px.clone())
-      }
+   const onUpdate = React.useCallback(
+      (geometry: BufferGeometry) => {
+         const plength = aPoints.length
+         const px = new Vector3()
+         const ax: Vector3[] = []
+         for (let i = 0; i < plength; i++) {
+            px.fromArray(aPoints[i], 0)
+            ax.push(px.clone())
+         }
 
-      const cSphere = () => {
-         if (mref.current !== null) {
-            const mesh = mref.current
-            geometry.boundingSphere = new Sphere()
-            geometry.boundingSphere.setFromPoints(ax)
-            geometry.boundingSphere.applyMatrix4(mesh.matrix)
+         const cSphere = () => {
+            if (mref.current !== null) {
+               const mesh = mref.current
+               geometry.boundingSphere = new Sphere()
+               geometry.boundingSphere.setFromPoints(ax)
+               geometry.boundingSphere.applyMatrix4(mesh.matrix)
 
-            if (props.boundingSphere) {
-               const bs = geometry.boundingSphere
-               const s = (
-                  <mesh position={bs?.center}>
-                     <sphereGeometry attach="geometry" args={[bs?.radius, 15, 15]} />
-                     <meshStandardMaterial
-                        attach="material"
-                        color={props.boundingSphere.color}
-                        transparent={true}
-                        opacity={props.boundingSphere.opacity}
-                     />
-                  </mesh>
-               )
-               setSphere(s)
+               if (props.boundingSphere) {
+                  const bs = geometry.boundingSphere
+                  const s = (
+                     <mesh position={bs?.center}>
+                        <sphereGeometry attach="geometry" args={[bs?.radius, 15, 15]} />
+                        <meshStandardMaterial
+                           attach="material"
+                           color={props.boundingSphere.color}
+                           transparent={true}
+                           opacity={props.boundingSphere.opacity}
+                        />
+                     </mesh>
+                  )
+                  setSphere(s)
+               }
             }
          }
-      }
 
-      const cBox = () => {
-         if (mref.current !== null) {
-            const mesh = mref.current
-            geometry.boundingBox = new Box3()
-            geometry.boundingBox.setFromPoints(ax)
-            geometry.boundingBox.applyMatrix4(mesh.matrix)
+         const cBox = () => {
+            if (mref.current !== null) {
+               const mesh = mref.current
+               geometry.boundingBox = new Box3()
+               geometry.boundingBox.setFromPoints(ax)
+               geometry.boundingBox.applyMatrix4(mesh.matrix)
+            }
          }
-      }
 
-      geometry.computeBoundingSphere = cSphere
-      geometry.computeBoundingBox = cBox
-   }
+         geometry.computeBoundingSphere = cSphere
+         geometry.computeBoundingBox = cBox
+      },
+      [aPoints, props.boundingSphere],
+   )
 
    let raycast: ((raycaster: Raycaster, intersects: Intersection[]) => void) | undefined = undefined
    if (props.noRaycast !== true)
