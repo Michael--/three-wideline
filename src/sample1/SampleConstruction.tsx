@@ -30,14 +30,26 @@ export function SampleConstruction() {
 
    React.useEffect(() => {
       if (vx.running) {
-         const t = setInterval(() => {
-            // Force a simple animation.
-            // As implemented it causes a lot of redraws with new geometry.
-            // I can accept as a demo.
-            setVx(v => ({ running: true, x: v.x + 0.025 }))
-         }, 50)
+         let animationId: number
+         let lastTime = 0
+         const targetFPS = 60
+         const frameTime = 1000 / targetFPS // ~16.67ms
+
+         const animate = (currentTime: number) => {
+            if (currentTime - lastTime >= frameTime) {
+               // Time-based animation: ensure consistent speed regardless of frame rate
+               const deltaTime = (currentTime - lastTime) / 1000 // Convert to seconds
+               const speed = 0.15 // Units per second (was 0.5, now smoother)
+               setVx(v => ({ running: true, x: v.x + speed * deltaTime }))
+               lastTime = currentTime
+            }
+            animationId = requestAnimationFrame(animate)
+         }
+
+         animationId = requestAnimationFrame(animate)
+
          return () => {
-            clearInterval(t)
+            cancelAnimationFrame(animationId)
          }
       }
    }, [vx.running])

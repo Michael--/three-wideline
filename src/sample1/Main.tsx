@@ -7,10 +7,11 @@ import { SampleConstruction } from "./SampleConstruction"
 import { SampleLogo } from "./SampleLogo"
 import { SampleLights } from "./SampleLights"
 import { SampleRaycast } from "./SampleRaycast"
-import { SampleFallback } from "./SampleFallback"
+import { SamplePerformanceAnalysis } from "./SamplePerformanceAnalysis"
 import { Box, Text, Heading, Anchor, Sidebar, Nav, RadioButton } from "grommet"
 import { name as pname, version } from "../../package.json"
 import { useLocation } from "wouter"
+import { SampleFallback } from "./SampleFallback"
 
 function Title() {
    const npmlink = "https://www.npmjs.com/package/three-wideline"
@@ -41,6 +42,7 @@ const pages: IPage[] = [
    { route: "Lights", page: <SampleLights /> },
    { route: "Multiple", page: <SampleMultiple /> },
    { route: "Raycast", page: <SampleRaycast /> },
+   { route: "Performance", page: <SamplePerformanceAnalysis /> },
    { route: "Fallback", page: <SampleFallback /> },
 ]
 
