@@ -37,7 +37,7 @@ export interface IScheme {
 
 /**
  * @public
- * Geometry definition on excatly one line part, which can be a line segment,
+ * Geometry definition on exactly one line part, which can be a line segment,
  * or for example a cap or join.
  */
 export interface IGeometry {
