@@ -34,6 +34,23 @@ describe("Performance Utilities", () => {
          const result = getMemoryUsage()
          expect(result).toBeNull()
       })
+
+      it("should return null when window is undefined (SSR)", () => {
+         const originalWindow = global.window
+         delete (global as unknown as { window?: typeof window }).window
+
+         const result = getMemoryUsage()
+         expect(result).toBeNull()
+
+         global.window = originalWindow
+      })
+
+      it("should calculate MB values correctly", () => {
+         const result = getMemoryUsage()
+         expect(result?.usedMB).toBe("0.95") // 1000000 / 1024 / 1024 ≈ 0.95
+         expect(result?.totalMB).toBe("1.91") // 2000000 / 1024 / 1024 ≈ 1.91
+         expect(result?.limitMB).toBe("4.77") // 5000000 / 1024 / 1024 ≈ 4.77
+      })
    })
 
    describe("benchmark", () => {
@@ -46,6 +63,20 @@ describe("Performance Utilities", () => {
          expect(result.minTime).toBeGreaterThanOrEqual(0)
          expect(result.maxTime).toBeGreaterThanOrEqual(result.minTime)
          expect(mockFn).toHaveBeenCalledTimes(15) // 5 warmup + 10 iterations
+      })
+
+      it("should work with default parameters", () => {
+         const mockFn = vi.fn(() => "test")
+         const result = benchmark("test", mockFn)
+
+         expect(result.result).toBe("test")
+         expect(result.avgTime).toBeGreaterThan(0)
+         expect(mockFn).toHaveBeenCalledTimes(110) // 10 warmup + 100 iterations
+      })
+
+      it("should handle zero iterations", () => {
+         const mockFn = vi.fn(() => "test")
+         expect(() => benchmark("test", mockFn, 0, 0)).toThrow("Benchmark failed")
       })
 
       it("should throw error if iterations don't complete", () => {
