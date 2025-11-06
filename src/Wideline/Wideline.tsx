@@ -16,7 +16,7 @@ import {
    Mesh,
 } from "three"
 import { Scheme, IGeometry, roundCapGeometry, squareCapGeometry, topCapGeometry, IScheme } from "./Scheme"
-import { normalizeShape, createMaterialGroups, MaterialGroup } from "./internal-utils"
+import { normalizeShape, createMaterialGroups, MaterialGroup, LineGeometryData, buildLine } from "./internal-utils"
 import { EventHandlers } from "@react-three/fiber/dist/declarations/src/core/events"
 
 /**
@@ -221,85 +221,10 @@ export function Wideline(props: IWidelineProps) {
       return scheme.getScheme()
    }, [pkey, attr])
 
-   const val = React.useMemo(() => {
+   const val: LineGeometryData = React.useMemo(() => {
       scheme.transparency = transparency
 
-      let position: number[][] = []
-
-      const buildLine = (points: number[][]) => {
-         // intermediate points to access current position (pointA) and next position (pointB), etc.
-         const pointA: number[][] = []
-         const pointB: number[][] = []
-         const pointC: number[][] = []
-         const pointD: number[][] = []
-         // index is aleady an index array of number, to avoid number[][][] use a type instead
-         type IndexAll = number[][]
-         const indexAll: IndexAll[] = []
-         const plength = points.length
-         /** current index offset */
-         let ofx = 0
-
-         /** get a point at given index */
-         const getPoint = (i: number) => {
-            return points[Math.min(i, plength - 1)]
-         }
-
-         // loop vertices groups (body, caps, joins, custom)
-         for (let ix = 0; ix < geo.vertices.length; ix++) {
-            // prepare next index for current group
-            const index: number[][] = []
-            const vtx = geo.vertices[ix]
-            const countPositions = vtx.position.length
-
-            // add only one line part (body, etc.)
-            const add = (i: number) => {
-               if (i < plength - 1) {
-                  position = position.concat(vtx.position)
-                  vtx.index.forEach(e => index.push([e[0] + ofx, e[1] + ofx, e[2] + ofx]))
-                  ofx += countPositions
-                  // add much points as needed
-                  for (let n = 0; n < countPositions; n++) {
-                     pointA.push(getPoint(i))
-                     pointB.push(getPoint(i + 1))
-                     pointC.push(getPoint(i + 2))
-                     pointD.push(getPoint(i + 3))
-                  }
-               }
-            }
-
-            // loop over all points, add needed line parts (for any segment, or only for start/end)
-            for (let i = 0; i < plength; i++) {
-               switch (vtx.limited) {
-                  case "Start": {
-                     const atStart = i === 0 || (i > 0 && getPoint(i - 1)[0] === undefined)
-                     if (atStart) add(i)
-                     break
-                  }
-
-                  case "End": {
-                     const atEnd = i === plength - 2 || (i < plength - 2 && getPoint(i + 2)[0] === undefined)
-                     if (atEnd) add(i)
-                     break
-                  }
-
-                  default:
-                     add(i)
-                     break
-               }
-            }
-            indexAll.push(index)
-         }
-
-         return {
-            pA: pointA,
-            pB: pointB,
-            pC: pointC,
-            pD: pointD,
-            idx: indexAll,
-         }
-      }
-
-      const line = buildLine(aPoints)
+      const { result: line, position } = buildLine(aPoints, geo.vertices)
 
       const materials = geo.shader
       const idx = line.idx
