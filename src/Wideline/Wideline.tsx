@@ -25,6 +25,7 @@ import {
    validateWidelineProps,
 } from "./internal-utils"
 import { EventHandlers } from "@react-three/fiber/dist/declarations/src/core/events"
+import { usePerformanceMonitor } from "./performance-utils"
 
 /**
  * @public
@@ -144,6 +145,9 @@ const p0 = [[undefined, undefined, undefined]] as unknown as number[]
  * ```
  */
 export function Wideline(props: IWidelineProps) {
+   // Performance monitoring
+   usePerformanceMonitor("Wideline", process.env.NODE_ENV === "development")
+
    // Validate props and handle errors gracefully
    const validation = validateWidelineProps(props)
 
