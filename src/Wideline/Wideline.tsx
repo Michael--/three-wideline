@@ -20,7 +20,6 @@ import {
    normalizeShape,
    createMaterialGroups,
    MaterialGroup,
-   BuildLineResult,
    LineGeometryData,
    buildLine,
    validateWidelineProps,
@@ -145,8 +144,13 @@ const p0 = [[undefined, undefined, undefined]] as unknown as number[]
  * ```
  */
 export function Wideline(props: IWidelineProps) {
-   // Validate props early
-   validateWidelineProps(props)
+   // Validate props and handle errors gracefully
+   const validation = validateWidelineProps(props)
+
+   // If validation fails, render fallback component
+   if (!validation.isValid) {
+      return <WidelineFallback warnings={validation.warnings} />
+   }
 
    const attr = React.useMemo(() => {
       return props.attr instanceof Array ? props.attr : [props.attr]
@@ -408,6 +412,36 @@ export function Wideline(props: IWidelineProps) {
             ))}
          </mesh>
          {sphere}
+      </group>
+   )
+}
+
+/**
+ * @internal
+ * Fallback component shown when Wideline props are invalid
+ */
+function WidelineFallback({ warnings }: { warnings: string[] }) {
+   // Log warnings in development
+   React.useEffect(() => {
+      if (process.env.NODE_ENV === "development") {
+         console.warn("Wideline validation failed:", warnings)
+      }
+   }, [warnings])
+
+   return (
+      <group>
+         {/* Invisible placeholder to maintain scene structure */}
+         <mesh visible={false}>
+            <boxGeometry args={[0.1, 0.1, 0.1]} />
+            <meshBasicMaterial />
+         </mesh>
+         {/* Development warning overlay */}
+         {process.env.NODE_ENV === "development" && (
+            <mesh position={[0, 0, 0.01]}>
+               <planeGeometry args={[2, 1]} />
+               <meshBasicMaterial color="red" transparent opacity={0.8} />
+            </mesh>
+         )}
       </group>
    )
 }

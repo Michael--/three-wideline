@@ -184,7 +184,8 @@ export interface LineGeometryData {
 
 /**
  * @internal
- * Validates Wideline props and throws errors for invalid configurations
+ * Validates Wideline props and returns validation status with warnings
+ * @returns Object with isValid flag and array of warning messages
  */
 export const validateWidelineProps = (props: {
    points: Shape | Shape[]
@@ -193,46 +194,48 @@ export const validateWidelineProps = (props: {
    join?: string
    capsStart?: string | IGeometry
    capsEnd?: string | IGeometry
-}) => {
+}): { isValid: boolean; warnings: string[] } => {
+   const warnings: string[] = []
+
    // Validate points
    if (!props.points) {
-      throw new Error("Wideline: points prop is required")
-   }
-
-   const pointsArray = Array.isArray(props.points) ? props.points : [props.points]
-   if (pointsArray.length === 0) {
-      throw new Error("Wideline: points array cannot be empty")
+      warnings.push("Wideline: points prop is required")
+   } else {
+      const pointsArray = Array.isArray(props.points) ? props.points : [props.points]
+      if (pointsArray.length === 0) {
+         warnings.push("Wideline: points array cannot be empty")
+      }
    }
 
    // Validate attributes
    if (!props.attr) {
-      throw new Error("Wideline: attr prop is required")
+      warnings.push("Wideline: attr prop is required")
    }
-
-   // Allow empty attr arrays - they disable main line rendering (same as opacity=0)
-   // const attrArray = Array.isArray(props.attr) ? props.attr : [props.attr]
-   // if (attrArray.length === 0) {
-   //    throw new Error("Wideline: attr array cannot be empty")
-   // }
+   // Note: Empty attr arrays are allowed - they disable main line rendering
 
    // Validate opacity
    if (props.opacity !== undefined && (props.opacity < 0 || props.opacity > 1)) {
-      throw new Error("Wideline: opacity must be between 0 and 1")
+      warnings.push("Wideline: opacity must be between 0 and 1")
    }
 
    // Validate join
    const validJoins = ["None", "Bevel", "Miter", "Round"]
    if (props.join && !validJoins.includes(props.join)) {
-      throw new Error(`Wideline: invalid join "${props.join}". Must be one of: ${validJoins.join(", ")}`)
+      warnings.push(`Wideline: invalid join "${props.join}". Must be one of: ${validJoins.join(", ")}`)
    }
 
    // Validate caps
    const validCaps = ["Butt", "Round", "Square", "Top"]
    const validateCap = (cap: string | IGeometry | undefined, capName: string) => {
       if (typeof cap === "string" && !validCaps.includes(cap)) {
-         throw new Error(`Wideline: invalid ${capName} "${cap}". Must be one of: ${validCaps.join(", ")}`)
+         warnings.push(`Wideline: invalid ${capName} "${cap}". Must be one of: ${validCaps.join(", ")}`)
       }
    }
    validateCap(props.capsStart, "capsStart")
    validateCap(props.capsEnd, "capsEnd")
+
+   return {
+      isValid: warnings.length === 0,
+      warnings,
+   }
 }
