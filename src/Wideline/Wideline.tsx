@@ -16,7 +16,15 @@ import {
    Mesh,
 } from "three"
 import { Scheme, IGeometry, roundCapGeometry, squareCapGeometry, topCapGeometry, IScheme } from "./Scheme"
-import { normalizeShape, createMaterialGroups, MaterialGroup, LineGeometryData, buildLine } from "./internal-utils"
+import {
+   normalizeShape,
+   createMaterialGroups,
+   MaterialGroup,
+   BuildLineResult,
+   LineGeometryData,
+   buildLine,
+   validateWidelineProps,
+} from "./internal-utils"
 import { EventHandlers } from "@react-three/fiber/dist/declarations/src/core/events"
 
 /**
@@ -137,6 +145,9 @@ const p0 = [[undefined, undefined, undefined]] as unknown as number[]
  * ```
  */
 export function Wideline(props: IWidelineProps) {
+   // Validate props early
+   validateWidelineProps(props)
+
    const attr = React.useMemo(() => {
       return props.attr instanceof Array ? props.attr : [props.attr]
    }, [props.attr])
@@ -167,92 +178,104 @@ export function Wideline(props: IWidelineProps) {
    const scheme = React.useMemo(() => new Scheme(), [])
 
    const geo = React.useMemo(() => {
-      scheme.reset()
-      const mainColor = (a: IAttribute) => new Color(a.color)
-      const altColor = (a: IAttribute) => (a.offals === undefined ? mainColor(a) : new Color(a.offals))
+      try {
+         scheme.reset()
+         const mainColor = (a: IAttribute) => new Color(a.color)
+         const altColor = (a: IAttribute) => (a.offals === undefined ? mainColor(a) : new Color(a.offals))
 
-      if (props.opacity !== undefined && props.opacity < 1)
-         scheme.strip(attr.map(e => ({ color: mainColor(e), width: e.width, opacity: props.opacity })))
-      else scheme.simple(attr.map(e => ({ color: mainColor(e), width: e.width })))
+         if (props.opacity !== undefined && props.opacity < 1)
+            scheme.strip(attr.map(e => ({ color: mainColor(e), width: e.width, opacity: props.opacity })))
+         else scheme.simple(attr.map(e => ({ color: mainColor(e), width: e.width })))
 
-      const capgeo = (c: Caps | IGeometry): IGeometry | undefined => {
-         if (typeof c !== "string") return c
-         switch (c) {
-            case "Round":
-               return roundCapGeometry(10)
-            case "Square":
-               return squareCapGeometry()
-            case "Top":
-               return topCapGeometry()
+         const capgeo = (c: Caps | IGeometry): IGeometry | undefined => {
+            if (typeof c !== "string") return c
+            switch (c) {
+               case "Round":
+                  return roundCapGeometry(10)
+               case "Square":
+                  return squareCapGeometry()
+               case "Top":
+                  return topCapGeometry()
+            }
+
+            return undefined
          }
 
-         return undefined
-      }
+         if (props.capsStart !== undefined && props.opacity !== 0) {
+            const s = attr.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
+            scheme.addCap(s, capgeo(props.capsStart), "Start")
+         }
+         if (props.capsEnd !== undefined && props.opacity !== 0) {
+            const s = attr.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
+            scheme.addCap(s, capgeo(props.capsEnd), "End")
+         }
 
-      if (props.capsStart !== undefined && props.opacity !== 0) {
-         const s = attr.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
-         scheme.addCap(s, capgeo(props.capsStart), "Start")
-      }
-      if (props.capsEnd !== undefined && props.opacity !== 0) {
-         const s = attr.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
-         scheme.addCap(s, capgeo(props.capsEnd), "End")
-      }
-
-      if (props.opacity !== 0) {
-         switch (props.join) {
-            case "Bevel": {
-               const s = attr.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
-               scheme.bevel(s)
-               break
-            }
-            case "Miter": {
-               const s = attr.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
-               scheme.miter(s)
-               break
-            }
-            case "Round": {
-               const s = attr.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
-               scheme.roundJoin(s, 10)
-               break
+         if (props.opacity !== 0) {
+            switch (props.join) {
+               case "Bevel": {
+                  const s = attr.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
+                  scheme.bevel(s)
+                  break
+               }
+               case "Miter": {
+                  const s = attr.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
+                  scheme.miter(s)
+                  break
+               }
+               case "Round": {
+                  const s = attr.map(e => ({ color: altColor(e), width: e.width, opacity: props.opacity }))
+                  scheme.roundJoin(s, 10)
+                  break
+               }
             }
          }
+         props.custom?.forEach(e => scheme.custom(e.scheme, e.geometry))
+         return scheme.getScheme()
+      } catch (error) {
+         throw new Error(
+            `Wideline: Failed to create geometry scheme: ${error instanceof Error ? error.message : String(error)}`,
+         )
       }
-      props.custom?.forEach(e => scheme.custom(e.scheme, e.geometry))
-      return scheme.getScheme()
    }, [pkey, attr])
 
    const val: LineGeometryData = React.useMemo(() => {
-      scheme.transparency = transparency
+      try {
+         scheme.transparency = transparency
 
-      const { result: line, position } = buildLine(aPoints, geo.vertices)
+         const { result: line, position } = buildLine(aPoints, geo.vertices)
 
-      const materials = geo.shader
-      const idx = line.idx
-      if (idx.length !== materials.length) throw new Error("Vertices vs. Shader count error")
+         const materials = geo.shader
+         const idx = line.idx
+         if (idx.length !== materials.length) throw new Error("Vertices vs. Shader count error")
 
-      // create material groups in the right order
-      const groups: MaterialGroup[] = createMaterialGroups(idx, materials)
+         // create material groups in the right order
+         const groups: MaterialGroup[] = createMaterialGroups(idx, materials)
 
-      // concatenate all indices
-      let cx: number[][] = []
-      for (let i = 0; i < idx.length; i++) {
-         cx = cx.concat(idx[i])
-      }
+         // concatenate all indices
+         let cx: number[][] = []
+         for (let i = 0; i < idx.length; i++) {
+            cx = cx.concat(idx[i])
+         }
 
-      const fa = new Float32Array(line.pA.flat())
-      const fb = new Float32Array(line.pB.flat())
-      const fc = new Float32Array(line.pC.flat())
-      const fd = new Float32Array(line.pD.flat())
-      return {
-         anyUpdate: Math.random(),
-         position: position.flat(),
-         cx: cx.flat(),
-         fa,
-         fb,
-         fc,
-         fd,
-         groups,
-         materials: materials.flat(),
+         const fa = new Float32Array(line.pA.flat())
+         const fb = new Float32Array(line.pB.flat())
+         const fc = new Float32Array(line.pC.flat())
+         const fd = new Float32Array(line.pD.flat())
+         return {
+            anyUpdate: Math.random(),
+            position: position.flat(),
+            cx: cx.flat(),
+            fa,
+            fb,
+            fc,
+            fd,
+            groups,
+            materials: materials.flat(),
+         }
+      } catch (error) {
+         throw new Error(
+            `Wideline: Failed to build geometry: ${error instanceof Error ? error.message : String(error)}`,
+         )
       }
    }, [geo, aPoints])
 
