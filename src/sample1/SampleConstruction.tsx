@@ -20,7 +20,8 @@ export function SampleConstruction() {
    const [second, setSecond] = React.useState(false)
    const [color1, setColor1] = React.useState<RGBColor>({ a: 1.0, r: 255, g: 0, b: 0 })
    const [color2, setColor2] = React.useState<RGBColor>({ a: 1.0, r: 255, g: 255, b: 0 })
-   const [vx, setVx] = React.useState({ running: true, x: 0, geometryX: 0 })
+   const [running, setRunning] = React.useState(true)
+   const [geometryX, setGeometryX] = React.useState(0)
 
    const joinlist = React.useMemo(() => JoinsList.map(e => e), [])
    const capslist = React.useMemo(() => CapsList.map(e => e), [])
@@ -29,36 +30,25 @@ export function SampleConstruction() {
    const [capsEnd, setCapsEnd] = React.useState(capslist[0])
 
    React.useEffect(() => {
-      if (vx.running) {
+      if (running) {
          let animationId: number
          let lastTime = 0
          let frameCounter = 0
-         const targetFPS = 60
-         const frameTime = 1000 / targetFPS // ~16.67ms
          const geometryUpdateInterval = 3 // Update geometry every 3 frames (~20 FPS geometry updates)
 
          const animate = (currentTime: number) => {
-            if (currentTime - lastTime >= frameTime) {
-               // Time-based animation: ensure consistent speed regardless of frame rate
-               const deltaTime = (currentTime - lastTime) / 1000 // Convert to seconds
-               const speed = 0.15 // Units per second (was 0.5, now smoother)
+            if (!lastTime) lastTime = currentTime
+            const deltaTime = (currentTime - lastTime) / 1000 // Convert to seconds
+            const speed = 0.15 // Units per second
 
-               frameCounter++
+            frameCounter++
 
-               setVx(v => {
-                  const newX = v.x + speed * deltaTime
-                  // Update geometry only every N frames to reduce expensive calculations
-                  const newGeometryX = frameCounter % geometryUpdateInterval === 0 ? newX : v.geometryX
-
-                  return {
-                     running: true,
-                     x: newX,
-                     geometryX: newGeometryX,
-                  }
-               })
-
-               lastTime = currentTime
+            // Update geometry only every N frames to reduce expensive calculations
+            if (frameCounter % geometryUpdateInterval === 0) {
+               setGeometryX(prev => prev + speed * deltaTime * geometryUpdateInterval)
             }
+
+            lastTime = currentTime
             animationId = requestAnimationFrame(animate)
          }
 
@@ -68,11 +58,11 @@ export function SampleConstruction() {
             cancelAnimationFrame(animationId)
          }
       }
-   }, [vx.running])
+   }, [running])
 
    const points = React.useMemo(
-      () => generatePointsInterleaved(edges + 1, Math.cos(vx.geometryX) * 5, Math.cos(vx.geometryX / 2.5)),
-      [edges, vx.geometryX],
+      () => generatePointsInterleaved(edges + 1, Math.cos(geometryX) * 5, Math.cos(geometryX / 2.5)),
+      [edges, geometryX],
    )
    const attr = React.useMemo(() => {
       const attr: IAttribute[] = [
@@ -147,11 +137,7 @@ export function SampleConstruction() {
                </Box>
             )}
             <Text>Opacity: {(color1.a ?? 1.0).toFixed(1)}</Text>
-            <CheckBox
-               checked={vx.running}
-               label="Animation"
-               onChange={event => setVx({ ...vx, running: event.target.checked })}
-            />
+            <CheckBox checked={running} label="Animation" onChange={event => setRunning(event.target.checked)} />
          </Box>
          <ThreeCanvas scale={4} width={"600px"} height={"200px"}>
             <ambientLight intensity={3} />

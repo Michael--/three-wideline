@@ -171,7 +171,6 @@ export const buildLine = (
  * Geometry data returned by useMemo in Wideline component
  */
 export interface LineGeometryData {
-   anyUpdate: number
    position: number[]
    cx: number[]
    fa: Float32Array

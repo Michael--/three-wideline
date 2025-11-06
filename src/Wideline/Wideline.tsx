@@ -162,20 +162,6 @@ export function Wideline(props: IWidelineProps) {
 
    const transparency = React.useMemo(() => (props.opacity !== undefined ? props.opacity < 1 : false), [props.opacity])
 
-   const pkey = React.useMemo(() => {
-      // Create a more stable key that doesn't change on every animation frame
-      // Only include structural changes, not animation values
-      return (
-         props.points.length.toString() +
-         attr.map(e => `${e.width}${e.color}${e.offals}`).join("") +
-         props.join +
-         props.capsStart +
-         props.capsEnd +
-         props.custom?.length +
-         (props.opacity !== undefined ? Math.round(props.opacity * 100) / 100 : "") // Round opacity to reduce changes
-      )
-   }, [props.points.length, props.join, props.capsStart, props.capsEnd, props.custom?.length, props.opacity, attr])
-
    // get an array of points (multiple line with one set of attrbibutes)
    const aPoints = React.useMemo(() => {
       // props.points consists of: Shape | Shape[]
@@ -184,6 +170,20 @@ export function Wideline(props: IWidelineProps) {
 
       return props.points.map(p => normalizeShape(p as Shape).concat(p0)).flat()
    }, [props.points])
+
+   const pkey = React.useMemo(() => {
+      // Create a stable key for geometry structure (not animated values)
+      // Only recreate geometry when structure changes
+      return (
+         aPoints.length.toString() +
+         attr.map(e => `${e.width}`).join("") + // Removed color from key - color changes don't need geometry rebuild
+         props.join +
+         props.capsStart +
+         props.capsEnd +
+         props.custom?.length +
+         transparency.toString()
+      )
+   }, [aPoints.length, props.join, props.capsStart, props.capsEnd, props.custom?.length, transparency, attr])
 
    const scheme = React.useMemo(() => new Scheme(), [])
 
@@ -246,8 +246,9 @@ export function Wideline(props: IWidelineProps) {
             `Wideline: Failed to create geometry scheme: ${error instanceof Error ? error.message : String(error)}`,
          )
       }
-   }, [pkey, attr])
+   }, [pkey])
 
+   // Build line data (updated when points change)
    const val: LineGeometryData = React.useMemo(() => {
       try {
          scheme.transparency = transparency
@@ -272,7 +273,6 @@ export function Wideline(props: IWidelineProps) {
          const fc = new Float32Array(line.pC.flat())
          const fd = new Float32Array(line.pD.flat())
          return {
-            anyUpdate: Math.random(),
             position: position.flat(),
             cx: cx.flat(),
             fa,
@@ -287,10 +287,61 @@ export function Wideline(props: IWidelineProps) {
             `Wideline: Failed to build geometry: ${error instanceof Error ? error.message : String(error)}`,
          )
       }
-   }, [geo, aPoints])
+   }, [geo, aPoints, transparency])
 
    const mref = React.useRef<Mesh>(null)
+   const geoRef = React.useRef<BufferGeometry>(null)
    const [sphere, setSphere] = React.useState<JSX.Element | undefined>(undefined)
+
+   // Update geometry attributes when val changes
+   React.useEffect(() => {
+      if (geoRef.current) {
+         const geometry = geoRef.current
+
+         // Update position attribute
+         const posAttr = geometry.getAttribute("position")
+         if (posAttr && posAttr.array.length === val.position.length) {
+            ;(posAttr.array as Float32Array).set(new Float32Array(val.position))
+            posAttr.needsUpdate = true
+         }
+
+         // Update index
+         const indexAttr = geometry.getIndex()
+         if (indexAttr && indexAttr.array.length === val.cx.length) {
+            ;(indexAttr.array as Uint16Array).set(new Uint16Array(val.cx))
+            indexAttr.needsUpdate = true
+         }
+
+         // Update point attributes
+         const pointA = geometry.getAttribute("pointA")
+         if (pointA && pointA.array.length === val.fa.length) {
+            ;(pointA.array as Float32Array).set(val.fa)
+            pointA.needsUpdate = true
+         }
+
+         const pointB = geometry.getAttribute("pointB")
+         if (pointB && pointB.array.length === val.fb.length) {
+            ;(pointB.array as Float32Array).set(val.fb)
+            pointB.needsUpdate = true
+         }
+
+         const pointC = geometry.getAttribute("pointC")
+         if (pointC && pointC.array.length === val.fc.length) {
+            ;(pointC.array as Float32Array).set(val.fc)
+            pointC.needsUpdate = true
+         }
+
+         if (transparency) {
+            const pointD = geometry.getAttribute("pointD")
+            if (pointD && pointD.array.length === val.fd.length) {
+               ;(pointD.array as Float32Array).set(val.fd)
+               pointD.needsUpdate = true
+            }
+         }
+
+         geometry.computeBoundingSphere()
+      }
+   }, [val, transparency])
 
    const onUpdate = React.useCallback(
       (geometry: BufferGeometry) => {
@@ -404,7 +455,7 @@ export function Wideline(props: IWidelineProps) {
             raycast={raycast}
             {...props.events}
          >
-            <bufferGeometry key={val.anyUpdate} attach="geometry" groups={val.groups} onUpdate={onUpdate}>
+            <bufferGeometry ref={geoRef} attach="geometry" groups={val.groups} onUpdate={onUpdate}>
                <bufferAttribute attach={"attributes-position"} args={[new Float32Array(val.position), 3]} />
                <bufferAttribute attach="index" args={[new Uint16Array(val.cx), 1]} />
                <bufferAttribute attach={"attributes-pointA"} args={[val.fa, 3]} />
