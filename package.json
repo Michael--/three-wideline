@@ -43,6 +43,8 @@
       "dist": "rollup --config rollup.config.mjs && npm run apidoc",
       "prepack": "npm run lint && npm run dist",
       "lint": "eslint .",
+      "format": "prettier --write .",
+      "format:check": "prettier --check .",
       "spellcheck": "cspell .",
       "module-update-info": "ncu --interactive --format group",
       "prepare": "husky"

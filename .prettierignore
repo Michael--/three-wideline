@@ -1,0 +1,19 @@
+# Generated files and folders
+markdown/
+temp/
+dist/
+build/
+node_modules/
+
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+
+# Config files that shouldn't be formatted
+*.config.js
+*.config.mjs
+rollup.config.mjs
+vite.config.js
+api-extractor.json
+cspell.json
+commitlint.config.js
