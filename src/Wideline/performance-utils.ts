@@ -11,8 +11,11 @@ interface ExtendedPerformance extends Performance {
 }
 
 /**
+ * @internal
  * Performance monitoring hook for React components
  * Measures render time and detects performance regressions
+ * @param componentName - Name of the component being monitored
+ * @param enabled - Whether monitoring is enabled (default: true)
  */
 export function usePerformanceMonitor(componentName: string, enabled = true) {
    const renderCountRef = useRef(0)
@@ -90,7 +93,9 @@ export function usePerformanceMonitor(componentName: string, enabled = true) {
 }
 
 /**
+ * @internal
  * Memory usage monitoring utility
+ * @returns Memory usage information or null if not available
  */
 export function getMemoryUsage() {
    if (typeof window === "undefined") return null
@@ -109,7 +114,13 @@ export function getMemoryUsage() {
 }
 
 /**
+ * @internal
  * Benchmark utility for measuring function performance
+ * @param name - Name of the benchmark
+ * @param fn - Function to benchmark
+ * @param iterations - Number of iterations to run (default: 100)
+ * @param warmupIterations - Number of warmup iterations (default: 10)
+ * @returns Benchmark results including result, average time, min time, and max time
  */
 export function benchmark<T>(
    name: string,

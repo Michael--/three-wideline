@@ -125,7 +125,7 @@ export class Scheme {
       this.addUniforms("simple", vertexSimple, [props])
    }
 
-   /** Add bevil joins. */
+   /** Add bevel joins. */
    public bevel = (props: IScheme[]) => {
       const geometry: IGeometry = {
          positions: [

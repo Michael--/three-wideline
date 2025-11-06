@@ -42,7 +42,7 @@ export interface IAttribute {
    color?: ColorRepresentation
    /** Show some inner parts with an alternative color, e.g. miter, bevel ... */
    offals?: ColorRepresentation
-   /** The with of the line */
+   /** The width of the line */
    width?: number
 }
 
