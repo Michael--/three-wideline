@@ -4,7 +4,7 @@
 
 ## IGeometry interface
 
-Geometry definition on excatly one line part, which can be a line segment, or for example a cap or join.
+Geometry definition on exactly one line part, which can be a line segment, or for example a cap or join.
 
 **Signature:**
 

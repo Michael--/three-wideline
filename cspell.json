@@ -56,7 +56,8 @@
       "raycaster",
       "preapproved",
       "codesandbox",
-      "avaiable"
+      "verfügbar",
+    "Komponenten"
    ],
    "ignorePaths": ["node_modules", "dist", "build", ".git", "*.min.js", "*.map", "package-lock.json", "pnpm-lock.yaml"],
    "overrides": [

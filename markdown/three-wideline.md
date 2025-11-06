@@ -18,7 +18,7 @@
 |  --- | --- |
 |  [IAttribute](./three-wideline.iattribute.md) | Appearing of the line, mainly width and color. |
 |  [ICustom](./three-wideline.icustom.md) | Custom element definition |
-|  [IGeometry](./three-wideline.igeometry.md) | Geometry definition on excatly one line part, which can be a line segment, or for example a cap or join. |
+|  [IGeometry](./three-wideline.igeometry.md) | Geometry definition on exactly one line part, which can be a line segment, or for example a cap or join. |
 |  [IScheme](./three-wideline.ischeme.md) | Scheme/Attribute of a shader segment. |
 |  [IWidelineProps](./three-wideline.iwidelineprops.md) | Line properties. |
 
