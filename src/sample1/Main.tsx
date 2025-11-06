@@ -1,6 +1,6 @@
 import React, { JSX, lazy, Suspense } from "react"
 import svglogo from "./logo.svg"
-import { Box, Text, Heading, Anchor, Sidebar, Nav, Button } from "grommet"
+import { Box, Text, Heading, Anchor, Sidebar, Nav, Button, TextInput } from "grommet"
 import { Moon, Sun, Image, StatusGood, Tools, Configure, Group, Cursor, Analytics, Alert } from "grommet-icons"
 import { name as pname, version } from "../../package.json"
 import { useLocation } from "wouter"
@@ -57,6 +57,12 @@ const pages: IPage[] = [
 export function Main() {
    const [location, setLocation] = useLocation()
    const { isDark } = useTheme()
+   const [searchTerm, setSearchTerm] = React.useState("")
+
+   const filteredPages = React.useMemo(
+      () => pages.filter(p => p.route.toLowerCase().includes(searchTerm.toLowerCase())),
+      [searchTerm],
+   )
 
    React.useEffect(() => {
       if (!location.includes(pages[0].route)) setLocation(pages[0].route)
@@ -73,8 +79,13 @@ export function Main() {
                round="small"
                header={<Heading level={3}>Samples</Heading>}
             >
+               <TextInput
+                  placeholder="Search samples..."
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+               />
                <Nav gap="small">
-                  {pages.map((e, i) => (
+                  {filteredPages.map((e, i) => (
                      <Box
                         key={i}
                         direction="row"
