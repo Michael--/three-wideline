@@ -14,9 +14,83 @@ export interface IScheme
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [color?](./three-wideline.ischeme.color.md) |  | Color | _(Optional)_ Color |
-|  [opacity?](./three-wideline.ischeme.opacity.md) |  | number | _(Optional)_ Opacity |
-|  [width?](./three-wideline.ischeme.width.md) |  | number | _(Optional)_ Width |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[color?](./three-wideline.ischeme.color.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Color
+
+
+</td><td>
+
+_(Optional)_ Color
+
+
+</td></tr>
+<tr><td>
+
+[opacity?](./three-wideline.ischeme.opacity.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ Opacity
+
+
+</td></tr>
+<tr><td>
+
+[width?](./three-wideline.ischeme.width.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ Width
+
+
+</td></tr>
+</tbody></table>
 

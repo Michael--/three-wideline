@@ -6,34 +6,204 @@
 
 ## Functions
 
-|  Function | Description |
-|  --- | --- |
-|  [generatePointsInterleaved(count, width, height)](./three-wideline.generatepointsinterleaved.md) | Generate a Zig-Zag line. First points is left top. The last point is right bottom for even count, or right top for odd count. |
-|  [Logo(props)](./three-wideline.logo.md) | Display the three-wideline logo as line drawn by itself. |
-|  [Wideline(props)](./three-wideline.wideline.md) | Displayed a 2D-Line as indexed mesh, whereby the mesh consists of the determined line options. A geometry is calculated which are drawn by several vertex shader. |
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[generatePointsInterleaved(count, width, height)](./three-wideline.generatepointsinterleaved.md)
+
+
+</td><td>
+
+Generate a Zig-Zag line. First points is left top. The last point is right bottom for even count, or right top for odd count.
+
+
+</td></tr>
+<tr><td>
+
+[Logo(props)](./three-wideline.logo.md)
+
+
+</td><td>
+
+Display the three-wideline logo as line drawn by itself.
+
+
+</td></tr>
+<tr><td>
+
+[Wideline(props)](./three-wideline.wideline.md)
+
+
+</td><td>
+
+Displayed a 2D-Line as indexed mesh, whereby the mesh consists of the determined line options. A geometry is calculated which are drawn by several vertex shader.
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [IAttribute](./three-wideline.iattribute.md) | Appearing of the line, mainly width and color. |
-|  [ICustom](./three-wideline.icustom.md) | Custom element definition |
-|  [IGeometry](./three-wideline.igeometry.md) | Geometry definition on exactly one line part, which can be a line segment, or for example a cap or join. |
-|  [IScheme](./three-wideline.ischeme.md) | Scheme/Attribute of a shader segment. |
-|  [IWidelineProps](./three-wideline.iwidelineprops.md) | Line properties. |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[IAttribute](./three-wideline.iattribute.md)
+
+
+</td><td>
+
+Appearing of the line, mainly width and color.
+
+
+</td></tr>
+<tr><td>
+
+[ICustom](./three-wideline.icustom.md)
+
+
+</td><td>
+
+Custom element definition
+
+
+</td></tr>
+<tr><td>
+
+[IGeometry](./three-wideline.igeometry.md)
+
+
+</td><td>
+
+Geometry definition on exactly one line part, which can be a line segment, or for example a cap or join.
+
+
+</td></tr>
+<tr><td>
+
+[IScheme](./three-wideline.ischeme.md)
+
+
+</td><td>
+
+Scheme/Attribute of a shader segment.
+
+
+</td></tr>
+<tr><td>
+
+[IWidelineProps](./three-wideline.iwidelineprops.md)
+
+
+</td><td>
+
+Line properties.
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [CapsList](./three-wideline.capslist.md) | Line cap representation. |
-|  [JoinsList](./three-wideline.joinslist.md) | Line join representation. |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[CapsList](./three-wideline.capslist.md)
+
+
+</td><td>
+
+Line cap representation.
+
+
+</td></tr>
+<tr><td>
+
+[JoinsList](./three-wideline.joinslist.md)
+
+
+</td><td>
+
+Line join representation.
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [Caps](./three-wideline.caps.md) | Line cap representation. |
-|  [Joins](./three-wideline.joins.md) | Line join representation. |
-|  [Shape](./three-wideline.shape.md) | Shape point definition. |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[Caps](./three-wideline.caps.md)
+
+
+</td><td>
+
+Line cap representation.
+
+
+</td></tr>
+<tr><td>
+
+[Joins](./three-wideline.joins.md)
+
+
+</td><td>
+
+Line join representation.
+
+
+</td></tr>
+<tr><td>
+
+[Shape](./three-wideline.shape.md)
+
+
+</td><td>
+
+Shape point definition.
+
+
+</td></tr>
+</tbody></table>
 

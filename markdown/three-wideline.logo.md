@@ -9,16 +9,46 @@ Display the three-wideline logo as line drawn by itself.
 **Signature:**
 
 ```typescript
-export declare function Logo(props?: GroupProps): JSX.Element;
+export declare function Logo(props?: GroupProps): React.JSX.Element;
 ```
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  props | GroupProps | _(Optional)_ all possible three js group properties |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+props
+
+
+</td><td>
+
+GroupProps
+
+
+</td><td>
+
+_(Optional)_ all possible three js group properties
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-JSX.Element
+React.JSX.Element
 

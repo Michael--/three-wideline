@@ -14,9 +14,83 @@ export interface IAttribute
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [color?](./three-wideline.iattribute.color.md) |  | ColorRepresentation | _(Optional)_ The main color of the line |
-|  [offals?](./three-wideline.iattribute.offals.md) |  | ColorRepresentation | _(Optional)_ Show some inner parts with an alternative color, e.g. miter, bevel ... |
-|  [width?](./three-wideline.iattribute.width.md) |  | number | _(Optional)_ The with of the line |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[color?](./three-wideline.iattribute.color.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ColorRepresentation
+
+
+</td><td>
+
+_(Optional)_ The main color of the line
+
+
+</td></tr>
+<tr><td>
+
+[offals?](./three-wideline.iattribute.offals.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ColorRepresentation
+
+
+</td><td>
+
+_(Optional)_ Show some inner parts with an alternative color, e.g. miter, bevel ...
+
+
+</td></tr>
+<tr><td>
+
+[width?](./three-wideline.iattribute.width.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ The with of the line
+
+
+</td></tr>
+</tbody></table>
 

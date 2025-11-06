@@ -14,19 +14,273 @@ export interface IWidelineProps
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [attr](./three-wideline.iwidelineprops.attr.md) |  | [IAttribute](./three-wideline.iattribute.md) \| [IAttribute](./three-wideline.iattribute.md)<!-- -->\[\] | The line attribute, use an array to draw multiple lines with same geometry. |
-|  [boundingSphere?](./three-wideline.iwidelineprops.boundingsphere.md) |  | { color: ColorRepresentation; opacity: number; } | _(Optional)_ show for debugging purpose the bounding sphere of the line |
-|  [capsEnd?](./three-wideline.iwidelineprops.capsend.md) |  | [Caps](./three-wideline.caps.md) \| [IGeometry](./three-wideline.igeometry.md) | _(Optional)_ The end cap of the line |
-|  [capsStart?](./three-wideline.iwidelineprops.capsstart.md) |  | [Caps](./three-wideline.caps.md) \| [IGeometry](./three-wideline.igeometry.md) | _(Optional)_ The start cap of the line |
-|  [custom?](./three-wideline.iwidelineprops.custom.md) |  | [ICustom](./three-wideline.icustom.md)<!-- -->\[\] | **_(BETA)_** _(Optional)_ A user defined custom element for any segment of the line |
-|  [events?](./three-wideline.iwidelineprops.events.md) |  | EventHandlers | _(Optional)_ some core event handler like onClick() |
-|  [join?](./three-wideline.iwidelineprops.join.md) |  | [Joins](./three-wideline.joins.md) | _(Optional)_ Which joins are used |
-|  [noRaycast?](./three-wideline.iwidelineprops.noraycast.md) |  | boolean | _(Optional)_ disable raycast options, could be useful for busy scenes to optimize cpu footprint (tons of lines) |
-|  [opacity?](./three-wideline.iwidelineprops.opacity.md) |  | number | _(Optional)_ Line opacity, is less than 1, the line is transparent. Optimized shader are used in that case. |
-|  [points](./three-wideline.iwidelineprops.points.md) |  | [Shape](./three-wideline.shape.md) \| [Shape](./three-wideline.shape.md)<!-- -->\[\] | The shape of the line, some points. |
-|  [position?](./three-wideline.iwidelineprops.position.md) |  | FiberVector3 | _(Optional)_ Line local position. |
-|  [rotation?](./three-wideline.iwidelineprops.rotation.md) |  | Euler | _(Optional)_ Line rotation |
-|  [scale?](./three-wideline.iwidelineprops.scale.md) |  | FiberVector3 | _(Optional)_ Line scale |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[attr](./three-wideline.iwidelineprops.attr.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[IAttribute](./three-wideline.iattribute.md) \| [IAttribute](./three-wideline.iattribute.md)<!-- -->\[\]
+
+
+</td><td>
+
+The line attribute, use an array to draw multiple lines with same geometry.
+
+
+</td></tr>
+<tr><td>
+
+[boundingSphere?](./three-wideline.iwidelineprops.boundingsphere.md)
+
+
+</td><td>
+
+
+</td><td>
+
+{ color: ColorRepresentation; opacity: number; }
+
+
+</td><td>
+
+_(Optional)_ show for debugging purpose the bounding sphere of the line
+
+
+</td></tr>
+<tr><td>
+
+[capsEnd?](./three-wideline.iwidelineprops.capsend.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[Caps](./three-wideline.caps.md) \| [IGeometry](./three-wideline.igeometry.md)
+
+
+</td><td>
+
+_(Optional)_ The end cap of the line
+
+
+</td></tr>
+<tr><td>
+
+[capsStart?](./three-wideline.iwidelineprops.capsstart.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[Caps](./three-wideline.caps.md) \| [IGeometry](./three-wideline.igeometry.md)
+
+
+</td><td>
+
+_(Optional)_ The start cap of the line
+
+
+</td></tr>
+<tr><td>
+
+[custom?](./three-wideline.iwidelineprops.custom.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[ICustom](./three-wideline.icustom.md)<!-- -->\[\]
+
+
+</td><td>
+
+**_(BETA)_** _(Optional)_ A user defined custom element for any segment of the line
+
+
+</td></tr>
+<tr><td>
+
+[events?](./three-wideline.iwidelineprops.events.md)
+
+
+</td><td>
+
+
+</td><td>
+
+EventHandlers
+
+
+</td><td>
+
+_(Optional)_ some core event handler like onClick()
+
+
+</td></tr>
+<tr><td>
+
+[join?](./three-wideline.iwidelineprops.join.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[Joins](./three-wideline.joins.md)
+
+
+</td><td>
+
+_(Optional)_ Which joins are used
+
+
+</td></tr>
+<tr><td>
+
+[noRaycast?](./three-wideline.iwidelineprops.noraycast.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ disable raycast options, could be useful for busy scenes to optimize cpu footprint (tons of lines)
+
+
+</td></tr>
+<tr><td>
+
+[opacity?](./three-wideline.iwidelineprops.opacity.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ Line opacity, is less than 1, the line is transparent. Optimized shader are used in that case.
+
+
+</td></tr>
+<tr><td>
+
+[points](./three-wideline.iwidelineprops.points.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[Shape](./three-wideline.shape.md) \| [Shape](./three-wideline.shape.md)<!-- -->\[\]
+
+
+</td><td>
+
+The shape of the line, some points.
+
+
+</td></tr>
+<tr><td>
+
+[position?](./three-wideline.iwidelineprops.position.md)
+
+
+</td><td>
+
+
+</td><td>
+
+FiberVector3
+
+
+</td><td>
+
+_(Optional)_ Line local position.
+
+
+</td></tr>
+<tr><td>
+
+[rotation?](./three-wideline.iwidelineprops.rotation.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Euler
+
+
+</td><td>
+
+_(Optional)_ Line rotation
+
+
+</td></tr>
+<tr><td>
+
+[scale?](./three-wideline.iwidelineprops.scale.md)
+
+
+</td><td>
+
+
+</td><td>
+
+FiberVector3
+
+
+</td><td>
+
+_(Optional)_ Line scale
+
+
+</td></tr>
+</tbody></table>
 

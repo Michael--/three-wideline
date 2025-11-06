@@ -6,11 +6,11 @@ import { CustomLineParts } from "./CustomLineParts"
 import { SampleConstruction } from "./SampleConstruction"
 import { SampleLogo } from "./SampleLogo"
 import { SampleLights } from "./SampleLights"
+import { SampleRaycast } from "./SampleRaycast"
 import { SampleFallback } from "./SampleFallback"
 import { Box, Text, Heading, Anchor, Sidebar, Nav, RadioButton } from "grommet"
 import { name as pname, version } from "../../package.json"
 import { useLocation } from "wouter"
-import { SampleRaycast } from "./SampleRaycast"
 
 function Title() {
    const npmlink = "https://www.npmjs.com/package/three-wideline"
