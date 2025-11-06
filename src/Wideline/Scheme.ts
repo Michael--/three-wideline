@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import { ShaderMaterialProps } from "@react-three/fiber"
 import { Color, IUniform, DoubleSide, FrontSide } from "three"
 import vertexSimple from "./shader/simple.vs"

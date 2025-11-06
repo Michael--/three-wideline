@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from "react"
 import { Wideline, generatePointsInterleaved } from "../Wideline"
 import { ThreeCanvas } from "./ThreeCanvas"
