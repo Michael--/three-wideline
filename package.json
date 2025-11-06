@@ -46,6 +46,7 @@
       "format": "prettier --write .",
       "format:check": "prettier --check .",
       "spellcheck": "cspell .",
+      "test": "vitest",
       "module-update-info": "ncu --interactive --format group",
       "prepare": "husky"
    },
@@ -96,6 +97,7 @@
       "eslint-plugin-react": "^7.37.5",
       "grommet": "^2.50.0",
       "husky": "^9.1.7",
+      "jsdom": "^27.1.0",
       "lint-staged": "^16.2.6",
       "polished": "^4.3.1",
       "prettier": "^3.6.2",
@@ -114,6 +116,7 @@
       "typescript": "^5.9.3",
       "vite": "^7.2.1",
       "vite-raw-plugin": "^1.0.2",
+      "vitest": "^4.0.7",
       "wouter": "^3.7.1"
    },
    "peerDependencies": {
