@@ -1,4 +1,4 @@
-import React from "react"
+import React, { JSX } from "react"
 import svglogo from "./logo.svg"
 import { SampleParts } from "./SampleParts"
 import { SampleMultiple } from "./SampleMultiple"
