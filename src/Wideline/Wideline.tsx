@@ -25,7 +25,6 @@ import {
    validateWidelineProps,
 } from "./internal-utils"
 import { EventHandlers } from "@react-three/fiber/dist/declarations/src/core/events"
-import { usePerformanceMonitor } from "./performance-utils"
 
 /**
  * @public
@@ -145,9 +144,6 @@ const p0 = [[undefined, undefined, undefined]] as unknown as number[]
  * ```
  */
 export function Wideline(props: IWidelineProps) {
-   // Performance monitoring
-   usePerformanceMonitor("Wideline", process.env.NODE_ENV === "development")
-
    // Validate props and handle errors gracefully
    const validation = validateWidelineProps(props)
 
@@ -248,7 +244,6 @@ export function Wideline(props: IWidelineProps) {
       }
    }, [pkey])
 
-   // Build line data (updated when points change)
    const val: LineGeometryData = React.useMemo(() => {
       try {
          scheme.transparency = transparency
@@ -272,6 +267,7 @@ export function Wideline(props: IWidelineProps) {
          const fb = new Float32Array(line.pB.flat())
          const fc = new Float32Array(line.pC.flat())
          const fd = new Float32Array(line.pD.flat())
+
          return {
             position: position.flat(),
             cx: cx.flat(),
@@ -290,58 +286,7 @@ export function Wideline(props: IWidelineProps) {
    }, [geo, aPoints, transparency])
 
    const mref = React.useRef<Mesh>(null)
-   const geoRef = React.useRef<BufferGeometry>(null)
    const [sphere, setSphere] = React.useState<JSX.Element | undefined>(undefined)
-
-   // Update geometry attributes when val changes
-   React.useEffect(() => {
-      if (geoRef.current) {
-         const geometry = geoRef.current
-
-         // Update position attribute
-         const posAttr = geometry.getAttribute("position")
-         if (posAttr && posAttr.array.length === val.position.length) {
-            ;(posAttr.array as Float32Array).set(new Float32Array(val.position))
-            posAttr.needsUpdate = true
-         }
-
-         // Update index
-         const indexAttr = geometry.getIndex()
-         if (indexAttr && indexAttr.array.length === val.cx.length) {
-            ;(indexAttr.array as Uint16Array).set(new Uint16Array(val.cx))
-            indexAttr.needsUpdate = true
-         }
-
-         // Update point attributes
-         const pointA = geometry.getAttribute("pointA")
-         if (pointA && pointA.array.length === val.fa.length) {
-            ;(pointA.array as Float32Array).set(val.fa)
-            pointA.needsUpdate = true
-         }
-
-         const pointB = geometry.getAttribute("pointB")
-         if (pointB && pointB.array.length === val.fb.length) {
-            ;(pointB.array as Float32Array).set(val.fb)
-            pointB.needsUpdate = true
-         }
-
-         const pointC = geometry.getAttribute("pointC")
-         if (pointC && pointC.array.length === val.fc.length) {
-            ;(pointC.array as Float32Array).set(val.fc)
-            pointC.needsUpdate = true
-         }
-
-         if (transparency) {
-            const pointD = geometry.getAttribute("pointD")
-            if (pointD && pointD.array.length === val.fd.length) {
-               ;(pointD.array as Float32Array).set(val.fd)
-               pointD.needsUpdate = true
-            }
-         }
-
-         geometry.computeBoundingSphere()
-      }
-   }, [val, transparency])
 
    const onUpdate = React.useCallback(
       (geometry: BufferGeometry) => {
@@ -455,7 +400,7 @@ export function Wideline(props: IWidelineProps) {
             raycast={raycast}
             {...props.events}
          >
-            <bufferGeometry ref={geoRef} attach="geometry" groups={val.groups} onUpdate={onUpdate}>
+            <bufferGeometry attach="geometry" groups={val.groups} onUpdate={onUpdate}>
                <bufferAttribute attach={"attributes-position"} args={[new Float32Array(val.position), 3]} />
                <bufferAttribute attach="index" args={[new Uint16Array(val.cx), 1]} />
                <bufferAttribute attach={"attributes-pointA"} args={[val.fa, 3]} />
