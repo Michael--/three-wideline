@@ -1,29 +1,36 @@
-import React, { JSX } from "react"
+import React, { JSX, lazy, Suspense } from "react"
 import svglogo from "./logo.svg"
-import { SampleParts } from "./SampleParts"
-import { SampleMultiple } from "./SampleMultiple"
-import { CustomLineParts } from "./CustomLineParts"
-import { SampleConstruction } from "./SampleConstruction"
-import { SampleLogo } from "./SampleLogo"
-import { SampleLights } from "./SampleLights"
-import { SampleRaycast } from "./SampleRaycast"
-import { SamplePerformanceAnalysis } from "./SamplePerformanceAnalysis"
-import { Box, Text, Heading, Anchor, Sidebar, Nav, RadioButton } from "grommet"
+import { Box, Text, Heading, Anchor, Sidebar, Nav, Button } from "grommet"
+import { Moon, Sun, Image, StatusGood, Tools, Configure, Group, Cursor, Analytics, Alert } from "grommet-icons"
 import { name as pname, version } from "../../package.json"
 import { useLocation } from "wouter"
-import { SampleFallback } from "./SampleFallback"
+import { useTheme } from "./App"
+
+const SampleParts = lazy(() => import("./SampleParts").then(m => ({ default: m.SampleParts })))
+const SampleMultiple = lazy(() => import("./SampleMultiple").then(m => ({ default: m.SampleMultiple })))
+const CustomLineParts = lazy(() => import("./CustomLineParts").then(m => ({ default: m.CustomLineParts })))
+const SampleConstruction = lazy(() => import("./SampleConstruction").then(m => ({ default: m.SampleConstruction })))
+const SampleLogo = lazy(() => import("./SampleLogo").then(m => ({ default: m.SampleLogo })))
+const SampleLights = lazy(() => import("./SampleLights").then(m => ({ default: m.SampleLights })))
+const SampleRaycast = lazy(() => import("./SampleRaycast").then(m => ({ default: m.SampleRaycast })))
+const SamplePerformanceAnalysis = lazy(() =>
+   import("./SamplePerformanceAnalysis").then(m => ({ default: m.SamplePerformanceAnalysis })),
+)
+const SampleFallback = lazy(() => import("./SampleFallback").then(m => ({ default: m.SampleFallback })))
 
 function Title() {
+   const { isDark, toggleTheme } = useTheme()
    const npmlink = "https://www.npmjs.com/package/three-wideline"
    return (
-      <Box align="center" round="small" background={{ color: "brand", size: "large" }}>
-         <Box direction="row" pad={"medium"} align="center" gap="medium">
+      <Box align="center" round="small" background={isDark ? "dark-1" : { color: "brand", size: "large" }} pad="medium">
+         <Box direction="row" align="center" gap="medium">
             <img src={svglogo} className="App-logo" />
             <Box>
                <Heading>{`${pname}`}</Heading>
                <Text>{`Version: ${version}`}</Text>
                <Anchor href={npmlink}>{npmlink}</Anchor>
             </Box>
+            <Button icon={isDark ? <Sun /> : <Moon />} onClick={toggleTheme} tip="Toggle Dark Mode" />
          </Box>
       </Box>
    )
@@ -31,48 +38,63 @@ function Title() {
 
 interface IPage {
    route: string
-   page: JSX.Element
+   component: React.ComponentType
+   icon: JSX.Element
 }
 
 const pages: IPage[] = [
-   { route: "Logo", page: <SampleLogo /> },
-   { route: "Parts", page: <SampleParts /> },
-   { route: "Construction", page: <SampleConstruction /> },
-   { route: "Custom", page: <CustomLineParts /> },
-   { route: "Lights", page: <SampleLights /> },
-   { route: "Multiple", page: <SampleMultiple /> },
-   { route: "Raycast", page: <SampleRaycast /> },
-   { route: "Performance", page: <SamplePerformanceAnalysis /> },
-   { route: "Fallback", page: <SampleFallback /> },
+   { route: "Logo", component: SampleLogo, icon: <Image /> },
+   { route: "Parts", component: SampleParts, icon: <StatusGood /> },
+   { route: "Construction", component: SampleConstruction, icon: <Tools /> },
+   { route: "Custom", component: CustomLineParts, icon: <Configure /> },
+   { route: "Lights", component: SampleLights, icon: <Sun /> },
+   { route: "Multiple", component: SampleMultiple, icon: <Group /> },
+   { route: "Raycast", component: SampleRaycast, icon: <Cursor /> },
+   { route: "Performance", component: SamplePerformanceAnalysis, icon: <Analytics /> },
+   { route: "Fallback", component: SampleFallback, icon: <Alert /> },
 ]
 
 export function Main() {
    const [location, setLocation] = useLocation()
+   const { isDark } = useTheme()
 
    React.useEffect(() => {
       if (!location.includes(pages[0].route)) setLocation(pages[0].route)
    }, [])
 
-   const page = React.useMemo(() => pages.find(e => location.endsWith(e.route))?.page, [location])
+   const Component = React.useMemo(() => pages.find(e => location.endsWith(e.route))?.component, [location])
 
    return (
-      <Box gap="small">
+      <Box gap="small" pad="medium">
          <Title />
          <Box direction="row" gap="small">
-            <Sidebar background="brand" round="small" header={<Heading level={3}>Samples</Heading>}>
+            <Sidebar
+               background={isDark ? "dark-2" : "brand"}
+               round="small"
+               header={<Heading level={3}>Samples</Heading>}
+            >
                <Nav gap="small">
                   {pages.map((e, i) => (
-                     <RadioButton
+                     <Box
                         key={i}
-                        name={e.route}
-                        label={e.route}
-                        checked={location.includes(e.route)}
-                        onChange={() => setLocation(e.route ?? "")}
-                     />
+                        direction="row"
+                        align="center"
+                        gap="small"
+                        pad="small"
+                        round="small"
+                        background={location.includes(e.route) ? "brand" : undefined}
+                        onClick={() => setLocation(e.route ?? "")}
+                        hoverIndicator
+                     >
+                        {e.icon}
+                        <Text>{e.route}</Text>
+                     </Box>
                   ))}
                </Nav>
             </Sidebar>
-            <Box border={{ color: "dark-3", size: "medium" }}>{page}</Box>
+            <Box border={{ color: "dark-3", size: "medium" }} background="background">
+               <Suspense fallback={<Box pad="medium">Loading...</Box>}>{Component && <Component />}</Suspense>
+            </Box>
          </Box>
       </Box>
    )

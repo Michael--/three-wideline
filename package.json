@@ -131,6 +131,7 @@
    "dependencies": {
       "@eslint/js": "^9.39.1",
       "@react-three/drei": "^10.7.6",
-      "globals": "^16.5.0"
+      "globals": "^16.5.0",
+      "grommet-icons": "^4.14.0"
    }
 }
