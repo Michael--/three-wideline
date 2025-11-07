@@ -168,12 +168,12 @@ export const SampleStreets = () => {
 
       // Define hierarchy for sorting (lower index = drawn first, higher on top)
       const hierarchy = [
+         "unclassified",
          "path",
          "footway",
          "cycleway",
          "service",
          "residential",
-         "unclassified",
          "tertiary",
          "secondary",
          "primary",
@@ -186,8 +186,8 @@ export const SampleStreets = () => {
          const indexA = hierarchy.indexOf(a)
          const indexB = hierarchy.indexOf(b)
          // If type is in hierarchy, use its index, otherwise put at end
-         const orderA = indexA >= 0 ? indexA : 999
-         const orderB = indexB >= 0 ? indexB : 999
+         const orderA = indexA >= 0 ? indexA : -999
+         const orderB = indexB >= 0 ? indexB : -999
          return orderA - orderB
       })
    }, [geojson])
@@ -351,12 +351,12 @@ export const SampleStreets = () => {
                                     key={`${hwType}-${feature.properties.id}`}
                                     points={points}
                                     attr={[
-                                       { color: style.colorA, width: width * 1 },
-                                       { color: style.colorB, width: width * 0.8 },
+                                       { color: style.colorA, width: width * 1.2 },
+                                       { color: style.colorB, width: width * 1 },
                                     ]}
-                                    join="Miter"
-                                    capsStart="Butt"
-                                    capsEnd="Butt"
+                                    join="Round"
+                                    capsStart="Round"
+                                    capsEnd="Round"
                                  />
                               </group>
                            )
