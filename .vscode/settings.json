@@ -48,6 +48,9 @@
    "git.autofetch": true,
    "git.confirmSync": false,
 
+   // Debug settings - suppress source map warnings from node_modules
+   "debug.javascript.unmapMissingSources": true,
+
    // Terminal settings
    "terminal.integrated.shell.osx": "/bin/zsh",
 
