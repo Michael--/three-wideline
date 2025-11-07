@@ -1,7 +1,7 @@
 import React, { JSX, Suspense } from "react"
 import svglogo from "./logo.svg"
 import { Box, Text, Heading, Anchor, Sidebar, Nav, Button, TextInput } from "grommet"
-import { Moon, Sun, Image, StatusGood, Tools, Configure, Group, Cursor, Analytics, Alert } from "grommet-icons"
+import { Moon, Sun, Image, StatusGood, Tools, Configure, Group, Cursor, Analytics, Alert, Map } from "grommet-icons"
 import { name as pname, version } from "../../package.json"
 import { useLocation } from "wouter"
 import { useTheme } from "./App"
@@ -52,7 +52,7 @@ const pages: IPage[] = [
    { route: "Custom", component: CustomLineParts, icon: <Configure /> },
    { route: "Lights", component: SampleLights, icon: <Sun /> },
    { route: "Multiple", component: SampleMultiple, icon: <Group /> },
-   { route: "Streets", component: SampleStreets, icon: <Group /> },
+   { route: "Streets", component: SampleStreets, icon: <Map /> },
    { route: "Raycast", component: SampleRaycast, icon: <Cursor /> },
    { route: "Performance", component: SamplePerformanceAnalysis, icon: <Analytics /> },
    { route: "Fallback", component: SampleFallback, icon: <Alert /> },
