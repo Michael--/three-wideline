@@ -6,12 +6,14 @@ export function ThreeCanvas(props: {
    width?: number | string
    height?: number | string
    scale?: number
+   camera?: any
    children?: React.ReactNode
 }) {
    const width = props.width ?? "400px"
    const height = props.height ?? width
    return (
       <Canvas
+         camera={props.camera}
          style={{
             backgroundColor: "#202020",
             width: width,

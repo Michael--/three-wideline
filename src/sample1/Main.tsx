@@ -6,17 +6,16 @@ import { name as pname, version } from "../../package.json"
 import { useLocation } from "wouter"
 import { useTheme } from "./App"
 
-const SampleParts = lazy(() => import("./SampleParts").then(m => ({ default: m.SampleParts })))
-const SampleMultiple = lazy(() => import("./SampleMultiple").then(m => ({ default: m.SampleMultiple })))
-const CustomLineParts = lazy(() => import("./CustomLineParts").then(m => ({ default: m.CustomLineParts })))
-const SampleConstruction = lazy(() => import("./SampleConstruction").then(m => ({ default: m.SampleConstruction })))
-const SampleLogo = lazy(() => import("./SampleLogo").then(m => ({ default: m.SampleLogo })))
-const SampleLights = lazy(() => import("./SampleLights").then(m => ({ default: m.SampleLights })))
-const SampleRaycast = lazy(() => import("./SampleRaycast").then(m => ({ default: m.SampleRaycast })))
-const SamplePerformanceAnalysis = lazy(() =>
-   import("./SamplePerformanceAnalysis").then(m => ({ default: m.SamplePerformanceAnalysis })),
-)
-const SampleFallback = lazy(() => import("./SampleFallback").then(m => ({ default: m.SampleFallback })))
+import { SampleParts } from "./SampleParts"
+import { SampleMultiple } from "./SampleMultiple"
+import { CustomLineParts } from "./CustomLineParts"
+import { SampleConstruction } from "./SampleConstruction"
+import { SampleLogo } from "./SampleLogo"
+import { SampleLights } from "./SampleLights"
+import { SampleRaycast } from "./SampleRaycast"
+import { SamplePerformanceAnalysis } from "./SamplePerformanceAnalysis"
+import { SampleStreets } from "./SampleStreets"
+import { SampleFallback } from "./SampleFallback"
 
 function Title() {
    const { isDark, toggleTheme } = useTheme()
@@ -49,6 +48,7 @@ const pages: IPage[] = [
    { route: "Custom", component: CustomLineParts, icon: <Configure /> },
    { route: "Lights", component: SampleLights, icon: <Sun /> },
    { route: "Multiple", component: SampleMultiple, icon: <Group /> },
+   { route: "Streets", component: SampleStreets, icon: <Group /> },
    { route: "Raycast", component: SampleRaycast, icon: <Cursor /> },
    { route: "Performance", component: SamplePerformanceAnalysis, icon: <Analytics /> },
    { route: "Fallback", component: SampleFallback, icon: <Alert /> },
