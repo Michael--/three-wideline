@@ -9,7 +9,7 @@ export function SampleFallback() {
          <Paragraph>Demonstration of graceful error handling with fallback component.</Paragraph>
          <Paragraph>Invalid props will show a red overlay in development mode.</Paragraph>
          <Box align="center">
-            <ThreeCanvas scale={2} width={"400px"} height={"200px"}>
+            <ThreeCanvas scale={2} height={"200px"}>
                <ambientLight intensity={3} />
                {/* Valid line */}
                <Wideline

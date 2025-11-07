@@ -139,7 +139,7 @@ export function SampleConstruction() {
             <Text>Opacity: {(color1.a ?? 1.0).toFixed(1)}</Text>
             <CheckBox checked={running} label="Animation" onChange={event => setRunning(event.target.checked)} />
          </Box>
-         <ThreeCanvas scale={4} width={"600px"} height={"200px"}>
+         <ThreeCanvas scale={4} height={"200px"}>
             <ambientLight intensity={3} />
             <Wideline
                points={points}

@@ -21,7 +21,7 @@ function Title() {
    const { isDark, toggleTheme } = useTheme()
    const npmlink = "https://www.npmjs.com/package/three-wideline"
    return (
-      <Box align="center" round="small" background={isDark ? "dark-1" : { color: "brand", size: "large" }} pad="medium">
+      <Box align="left" round="small" background={isDark ? "dark-1" : { color: "brand", size: "large" }} pad="medium">
          <Box direction="row" align="center" gap="medium">
             <img src={svglogo} className="App-logo" />
             <Box>
@@ -29,7 +29,11 @@ function Title() {
                <Text>{`Version: ${version}`}</Text>
                <Anchor href={npmlink}>{npmlink}</Anchor>
             </Box>
-            <Button icon={isDark ? <Sun /> : <Moon />} onClick={toggleTheme} tip="Toggle Dark Mode" />
+            <Button
+               icon={isDark ? <Sun size="large" /> : <Moon size="large" />}
+               onClick={toggleTheme}
+               tip="Toggle Dark Mode"
+            />
          </Box>
       </Box>
    )
@@ -78,6 +82,7 @@ export function Main() {
                background={isDark ? "dark-2" : "brand"}
                round="small"
                header={<Heading level={3}>Samples</Heading>}
+               style={{ minWidth: "200px" }}
             >
                <TextInput
                   placeholder="Search samples..."

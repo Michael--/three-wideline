@@ -11,7 +11,7 @@ export function SampleParts() {
       <Box direction="column" pad="small">
          <Paragraph>Show line, joins and caps in different color. Interesting for debugging the shader.</Paragraph>
          <Box align="center">
-            <ThreeCanvas scale={2} width={"400px"} height={"200px"}>
+            <ThreeCanvas scale={2} height={"200px"}>
                <ambientLight intensity={3} />
                <group onClick={e => console.log(`Bam2: distance=${e.distance} index=${e.index}`)}>
                   <Wideline

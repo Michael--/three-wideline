@@ -26,7 +26,7 @@ export function CustomLineParts() {
          <Paragraph>1. Custom element on each line segment, custom caps.</Paragraph>
          <Paragraph>2. Custom element only.</Paragraph>
          <Box align="center">
-            <ThreeCanvas scale={2} width={"400px"} height={"200px"}>
+            <ThreeCanvas scale={2} height={"200px"}>
                <ambientLight intensity={3} />
                <Wideline
                   position={[0, 0.75, 0]}

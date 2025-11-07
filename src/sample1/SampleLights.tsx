@@ -71,7 +71,7 @@ export function SampleLights() {
       <Box direction="column" pad="small">
          <Paragraph>Some lights used to show the correctness of face normal calculation.</Paragraph>
          <Box align="center">
-            <ThreeCanvas width={"400px"} height={"200px"}>
+            <ThreeCanvas height={"200px"}>
                <ambientLight intensity={1.0} />
                <pointLight position={[3, -5, 3]} intensity={50} color={"yellow"} />
                <MovingSpot />

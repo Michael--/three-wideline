@@ -7,17 +7,18 @@ export function ThreeCanvas(props: {
    height?: number | string
    scale?: number
    camera?: CameraProps
+   backgroundColor?: string
    children?: React.ReactNode
 }) {
-   const width = props.width ?? "400px"
-   const height = props.height ?? width
+   const width = props.width
+   const height = props.height // ?? "400px"
    return (
       <Canvas
          camera={props.camera}
          style={{
-            backgroundColor: "#202020",
-            width: width,
-            height: height,
+            backgroundColor: props.backgroundColor ?? "#202020",
+            ...(width !== undefined && { width }),
+            ...(height !== undefined && { height }),
          }}
          gl={{
             powerPreference: "high-performance",

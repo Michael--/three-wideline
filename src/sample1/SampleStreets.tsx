@@ -1,6 +1,7 @@
 import React from "react"
 import { Wideline } from "../Wideline"
-import { Canvas, useFrame } from "@react-three/fiber"
+import { ThreeCanvas } from "./ThreeCanvas"
+import { useFrame } from "@react-three/fiber"
 import { OrbitControls } from "@react-three/drei"
 import { Box, Paragraph, Text, Button, Spinner } from "grommet"
 import { styleForHighway, type RoadGeoJSON, loadRoadsFromOverpass } from "./OsmLoader"
@@ -290,17 +291,14 @@ export const SampleStreets = () => {
          )}
 
          <Box align="center">
-            <Canvas
+            <ThreeCanvas
+               height="500px"
                camera={{
                   position: [-cameraDistance * 0.7, -cameraDistance, cameraDistance * 0.35],
                   up: [0, 0, 1],
                   fov: 50,
                }}
-               style={{
-                  backgroundColor: "#1A1A1A",
-                  width: "800px",
-                  height: "600px",
-               }}
+               backgroundColor="#1A1A1A"
             >
                <ambientLight intensity={0.5} />
                <directionalLight position={[10, -10, 10]} intensity={2.0} />
@@ -366,7 +364,7 @@ export const SampleStreets = () => {
                      })}
                   </group>
                )}
-            </Canvas>
+            </ThreeCanvas>
          </Box>
 
          {geojson && (
