@@ -40,6 +40,7 @@ function FlightControls() {
          enableRotate={true}
          minDistance={3}
          maxDistance={20}
+         maxPolarAngle={Math.PI / 2.2}
          target={[0, 0, 0]}
       />
    )
