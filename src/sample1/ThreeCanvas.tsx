@@ -1,12 +1,12 @@
 import React from "react"
-import { Canvas } from "@react-three/fiber"
+import { Canvas, type CameraProps } from "@react-three/fiber"
 import * as THREE from "three"
 
 export function ThreeCanvas(props: {
    width?: number | string
    height?: number | string
    scale?: number
-   camera?: any
+   camera?: CameraProps
    children?: React.ReactNode
 }) {
    const width = props.width ?? "400px"
