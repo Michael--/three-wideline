@@ -153,13 +153,6 @@ export const SampleStreets = () => {
       if (!geojson) return { center: [0, 0] as [number, number], scale: 1 }
       const result = calculateCenterAndScale(geojson)
 
-      // Debug output
-      console.warn("Bounds and scale:", {
-         center: result.center,
-         scale: result.scale,
-         sampleWidth: 10 * result.scale, // What a 10m road becomes
-      })
-
       return result
    }, [geojson])
 
@@ -225,12 +218,6 @@ export const SampleStreets = () => {
             radius: preset.radius,
             // Don't specify highway types - load all roads
             timeoutSec: 25,
-         })
-
-         console.warn("Loaded data:", {
-            features: data.features.length,
-            city: preset.name,
-            radius: preset.radius,
          })
 
          // Convert to same format as static data (already in WebMercator, but center it)

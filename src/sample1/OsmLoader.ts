@@ -121,7 +121,6 @@ export async function loadRoadsFromOverpass(
    const cacheKey = getCacheKey(params)
    const cached = overpassCache.get(cacheKey)
    if (cached) {
-      console.warn("Cache hit for:", cacheKey)
       return cached
    }
 
@@ -191,7 +190,6 @@ export async function loadRoadsFromOverpass(
 
    // Store in cache (only after successful response)
    overpassCache.set(cacheKey, result)
-   console.warn("Cached result for:", cacheKey)
 
    return result
 }
