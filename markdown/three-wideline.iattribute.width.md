@@ -4,7 +4,7 @@
 
 ## IAttribute.width property
 
-The with of the line
+The width of the line
 
 **Signature:**
 

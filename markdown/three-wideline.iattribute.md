@@ -88,7 +88,7 @@ number
 
 </td><td>
 
-_(Optional)_ The with of the line
+_(Optional)_ The width of the line
 
 
 </td></tr>

@@ -1,76 +1,78 @@
 # three-wideline
 
-A three js line implementation.
+<p align="center">
+  <img src="./public/logo192.png" width="200" alt="three-wideline">
+</p>
+
+A powerful Three.js library for rendering wide lines with customizable attributes, joins, caps, and advanced features. Built for React Three Fiber, it provides an easy-to-use component for creating high-quality 2D lines in 3D space.
+
+## Features
+
+- **Customizable Attributes**: Set color, width, and opacity per segment
+- **Line Joins**: Choose from Round, Bevel, Miter, or custom joins
+- **Caps**: Start and end caps with options like Butt, Round, Square, Top
+- **Transparency**: Optimized shaders for transparent lines
+- **Custom Geometry**: Beta support for user-defined custom elements
+- **Raycasting**: Optional raycasting for interaction
+- **React Integration**: Seamless integration with React Three Fiber
+- **TypeScript**: Full TypeScript support with strict typing
 
 ## Install
 
+```bash
+npm install three-wideline
 ```
-npm install three-wideline -S
-```
 
-## Documentation
+## Quick Start
 
-The basic idea is very well documented here [Instanced Line Rendering Part I](https://wwwtyro.net/2019/11/18/instanced-lines.html) and here [Instanced Line Rendering Part II](https://wwwtyro.net/2021/10/01/instanced-lines-part-2.html).
-
-This implementation get this idea and provide a class to use together with three js.
-Most of the shader are reused here with small adjustments.
-
-[API Reference](./markdown/three-wideline.wideline.md)
-
-## Todo
-
-- raycast
-- check/adjust uv mapping
-- multiple lines with one attribute set
-
-## Repository
-
-Github: [three-wideline](https://github.com/Michael--/three-wideline)
-
-## Example
-
-An running demo example from the repository is available here [Wideline example](https://www.number10.de/sample1).
-
-Samples at codesandbox:
-
-- [logo](https://codesandbox.io/s/three-wideline-logo-u19je)
-- [animated](https://codesandbox.io/s/three-wideline-animated-tue8d)
-
-How to draw the Wideline Logo as a three js line using typescript and react.
-
-```ts
-import React from "react"
-import ReactDOM from "react-dom"
+```tsx
 import { Canvas } from "@react-three/fiber"
 import { Wideline } from "three-wideline"
 
-function Logo() {
+function MyLine() {
    return (
       <Wideline
-         scale={[5, 5, 1]}
-         points={[-0.5, 0.5, -0.25, -0.5, 0, 0.5, 0.25, -0.5, 0.5, 0.5]}
-         attr={[
-            { color: "black", width: 0.25 },
-            { color: "yellow", width: 0.2 },
-            { color: "red", width: 0.15 },
-         ]}
-         join={"Round"}
-         capsStart={"Round"}
-         capsEnd={"Top"}
+         points={[-1, -1, 0, 1, 1, -1]}
+         attr={{ color: "red", width: 0.2 }}
+         join="Round"
+         capsStart="Round"
+         capsEnd="Square"
       />
    )
 }
 
-ReactDOM.render(
-   <Canvas style={{ backgroundColor: "grey", height: "400px" }}>
-      <ambientLight intensity={0.75} />
-      <Logo />
-   </Canvas>,
-   document.getElementById('root'),
-)
+function App() {
+   return (
+      <Canvas>
+         <MyLine />
+      </Canvas>
+   )
+}
 ```
 
-Enjoy !
+## Documentation
+
+The core concept is based on instanced line rendering, well-documented in:
+
+- [Instanced Line Rendering Part I](https://wwwtyro.net/2019/11/18/instanced-lines.html)
+- [Instanced Line Rendering Part II](https://wwwtyro.net/2021/10/01/instanced-lines-part-2.html)
+
+This library adapts these ideas into a reusable Three.js component with enhanced features.
+
+[API Reference](./markdown/three-wideline.wideline.md)
+
+## Examples
+
+Live demo: [Wideline Example](https://www.number10.de/sample1)
+
+CodeSandbox samples:
+
+- [Logo Example](https://codesandbox.io/s/three-wideline-logo-u19je)
+- [Animated Example](https://codesandbox.io/s/three-wideline-animated-tue8d)
+
+## Repository
+
+[GitHub: three-wideline](https://github.com/Michael--/three-wideline)
 
 ## Development
 
