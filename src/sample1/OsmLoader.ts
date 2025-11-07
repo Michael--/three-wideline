@@ -42,6 +42,22 @@ export type LoadRoadsParams = {
    timeoutSec?: number
 }
 
+// ---- cache ---------------------------------------------------------------
+
+/**
+ * Simple in-memory cache for Overpass API responses
+ */
+const overpassCache = new Map<string, { geojson: RoadGeoJSON; triplets: Triplet[] }>()
+
+/**
+ * Generate cache key from request parameters
+ */
+function getCacheKey(params: LoadRoadsParams): string {
+   const { center, radius, highway } = params
+   const hwKey = highway?.sort().join(",") || "all"
+   return `${center[0].toFixed(4)},${center[1].toFixed(4)},${radius},${hwKey}`
+}
+
 // ---- utils ---------------------------------------------------------------
 
 // Simple WebMercator projection (lon/lat -> meters)
@@ -74,7 +90,7 @@ export function styleForHighway(h: string) {
       case "footway":
          return { width: 3, colorA: "#ffffff", colorB: "#77dd77" }
       default:
-         return { width: 6, colorA: "#ffffff", colorB: "#aaaaaa" }
+         return { width: 2, colorA: "#aaaaaa", colorB: "#555555" }
    }
 }
 
@@ -101,6 +117,14 @@ export function lineToTriplets(coords: XY[], highway: string, name: string | nul
 export async function loadRoadsFromOverpass(
    params: LoadRoadsParams,
 ): Promise<{ geojson: RoadGeoJSON; triplets: Triplet[] }> {
+   // Check cache first
+   const cacheKey = getCacheKey(params)
+   const cached = overpassCache.get(cacheKey)
+   if (cached) {
+      console.warn("Cache hit for:", cacheKey)
+      return cached
+   }
+
    const { center, radius, highway, timeoutSec = 25 } = params
 
    // Calculate bbox from center and radius
@@ -163,7 +187,13 @@ export async function loadRoadsFromOverpass(
       triplets.push(...lineToTriplets(f.geometry.coordinates, f.properties.highway, f.properties.name))
    }
 
-   return { geojson, triplets }
+   const result = { geojson, triplets }
+
+   // Store in cache (only after successful response)
+   overpassCache.set(cacheKey, result)
+   console.warn("Cached result for:", cacheKey)
+
+   return result
 }
 
 export async function sampleUsage() {

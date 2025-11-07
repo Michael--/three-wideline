@@ -1,4 +1,4 @@
-import React, { JSX, lazy, Suspense } from "react"
+import React, { JSX, Suspense } from "react"
 import svglogo from "./logo.svg"
 import { Box, Text, Heading, Anchor, Sidebar, Nav, Button, TextInput } from "grommet"
 import { Moon, Sun, Image, StatusGood, Tools, Configure, Group, Cursor, Analytics, Alert } from "grommet-icons"

@@ -164,6 +164,52 @@ export const SampleStreets = () => {
    }, [geojson])
 
    /**
+    * Get unique highway types from loaded data, sorted by hierarchy
+    */
+   const highwayTypes = React.useMemo(() => {
+      if (!geojson) return []
+
+      // Extract unique highway types
+      const uniqueTypes = new Set(geojson.features.map(f => f.properties.highway))
+
+      // Define hierarchy for sorting (lower index = drawn first, higher on top)
+      const hierarchy = [
+         "path",
+         "footway",
+         "cycleway",
+         "service",
+         "residential",
+         "unclassified",
+         "tertiary",
+         "secondary",
+         "primary",
+         "trunk",
+         "motorway",
+      ]
+
+      // Sort by hierarchy, but include all types found in data
+      return Array.from(uniqueTypes).sort((a, b) => {
+         const indexA = hierarchy.indexOf(a)
+         const indexB = hierarchy.indexOf(b)
+         // If type is in hierarchy, use its index, otherwise put at end
+         const orderA = indexA >= 0 ? indexA : 999
+         const orderB = indexB >= 0 ? indexB : 999
+         return orderA - orderB
+      })
+   }, [geojson])
+
+   /**
+    * Get Z-offset for a highway type based on its position in the hierarchy
+    */
+   const getZOffset = React.useCallback(
+      (hwType: string) => {
+         const index = highwayTypes.indexOf(hwType)
+         return index >= 0 ? index * 0.001 : 0
+      },
+      [highwayTypes],
+   )
+
+   /**
     * Load city data from Overpass API
     */
    const loadCity = React.useCallback(async (city: keyof typeof CITY_PRESETS) => {
@@ -177,7 +223,7 @@ export const SampleStreets = () => {
          const { geojson: data } = await loadRoadsFromOverpass({
             center: preset.center,
             radius: preset.radius,
-            highway: ["motorway", "trunk", "primary", "secondary", "tertiary", "residential", "service"],
+            // Don't specify highway types - load all roads
             timeoutSec: 25,
          })
 
@@ -285,63 +331,52 @@ export const SampleStreets = () => {
                {geojson && (
                   <group>
                      {/* Draw in reverse hierarchy order so motorways appear on top */}
-                     {["service", "residential", "tertiary", "secondary", "primary", "trunk", "motorway"].map(
-                        hwType => {
-                           const filtered = geojson.features.filter(f => f.properties.highway === hwType)
-                           return filtered.map(feature => {
-                              const style = styleForHighway(feature.properties.highway)
+                     {highwayTypes.map(hwType => {
+                        const filtered = geojson.features.filter(f => f.properties.highway === hwType)
+                        return filtered.map(feature => {
+                           const style = styleForHighway(feature.properties.highway)
 
-                              // Skip streets with too few points
-                              if (feature.geometry.coordinates.length < 2) return null
+                           // Skip streets with too few points
+                           if (feature.geometry.coordinates.length < 2) return null
 
-                              // First, convert WebMercator coords to scene coords
-                              const sceneCoords: [number, number][] = feature.geometry.coordinates.map(([x, y]) => [
-                                 (x - centerAndScale.center[0]) * centerAndScale.scale,
-                                 (y - centerAndScale.center[1]) * centerAndScale.scale,
-                              ])
+                           // First, convert WebMercator coords to scene coords
+                           const sceneCoords: [number, number][] = feature.geometry.coordinates.map(([x, y]) => [
+                              (x - centerAndScale.center[0]) * centerAndScale.scale,
+                              (y - centerAndScale.center[1]) * centerAndScale.scale,
+                           ])
 
-                              // Then apply Douglas-Peucker simplification on scene coordinates
-                              // Epsilon in scene units (not meters!)
-                              const epsilon = 0.02
-                              const simplified = douglasPeucker(sceneCoords, epsilon)
+                           // Then apply Douglas-Peucker simplification on scene coordinates
+                           // Epsilon in scene units (not meters!)
+                           const epsilon = 0.02
+                           const simplified = douglasPeucker(sceneCoords, epsilon)
 
-                              // Convert to flat array without Z coordinate
-                              const zOffsets: Record<string, number> = {
-                                 service: 0,
-                                 residential: 0.001,
-                                 tertiary: 0.002,
-                                 secondary: 0.003,
-                                 primary: 0.004,
-                                 trunk: 0.005,
-                                 motorway: 0.006,
-                              }
-                              const z = zOffsets[feature.properties.highway] || 0
-                              const points = simplified.flatMap(([x, y]) => [x, y])
+                           // Get Z-offset based on highway hierarchy
+                           const z = getZOffset(feature.properties.highway)
+                           const points = simplified.flatMap(([x, y]) => [x, y])
 
-                              // Need at least 2 points after simplification
-                              if (points.length < 4) return null
+                           // Need at least 2 points after simplification
+                           if (points.length < 4) return null
 
-                              // Width: style.width is in meters (3-14), scale it appropriately
-                              const width = style.width * centerAndScale.scale
+                           // Width: style.width is in meters (3-14), scale it appropriately
+                           const width = style.width * centerAndScale.scale
 
-                              return (
-                                 <group position={[0, 0, z]}>
-                                    <Wideline
-                                       key={`${hwType}-${feature.properties.id}`}
-                                       points={points}
-                                       attr={[
-                                          { color: style.colorA, width: width * 1 },
-                                          { color: style.colorB, width: width * 0.8 },
-                                       ]}
-                                       join="Miter"
-                                       capsStart="Butt"
-                                       capsEnd="Butt"
-                                    />
-                                 </group>
-                              )
-                           })
-                        },
-                     )}
+                           return (
+                              <group position={[0, 0, z]}>
+                                 <Wideline
+                                    key={`${hwType}-${feature.properties.id}`}
+                                    points={points}
+                                    attr={[
+                                       { color: style.colorA, width: width * 1 },
+                                       { color: style.colorB, width: width * 0.8 },
+                                    ]}
+                                    join="Miter"
+                                    capsStart="Butt"
+                                    capsEnd="Butt"
+                                 />
+                              </group>
+                           )
+                        })
+                     })}
                   </group>
                )}
             </Canvas>
@@ -358,7 +393,7 @@ export const SampleStreets = () => {
                   ).toFixed(1)}
                </Text>
                <Box direction="row" gap="medium" wrap>
-                  {["motorway", "trunk", "primary", "secondary", "tertiary", "residential", "service"].map(hwType => {
+                  {highwayTypes.map(hwType => {
                      const count = geojson.features.filter(f => f.properties.highway === hwType).length
                      if (count === 0) return null
                      const style = styleForHighway(hwType)
