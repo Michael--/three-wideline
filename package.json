@@ -1,7 +1,11 @@
 {
    "name": "three-wideline",
    "version": "0.7.0",
-   "description": "A three js line implementation",
+   "description": "A Three.js library for rendering wide lines with customizable attributes in React Three Fiber",
+   "homepage": "https://github.com/Michael--/three-wideline",
+   "bugs": {
+      "url": "https://github.com/Michael--/three-wideline/issues"
+   },
    "keywords": [
       "line",
       "width",
@@ -13,7 +17,7 @@
       "react",
       "react-three-fiber"
    ],
-   "author": "michael--",
+   "author": "Michael Rieck (Michael--) <mr@number10.de>",
    "repository": {
       "type": "git",
       "url": "git+https://github.com/Michael--/three-wideline.git"
@@ -23,15 +27,16 @@
    },
    "license": "MIT",
    "private": false,
-   "packageManager": "pnpm@9",
+   "packageManager": "pnpm@9.0.0",
    "engines": {
       "node": ">=18"
    },
    "main": "dist/index.js",
    "types": "dist/index.d.ts",
    "files": [
-      "dist/index.js",
-      "dist/index.d.ts"
+      "dist/**/*",
+      "README.md",
+      "LICENSE"
    ],
    "scripts": {
       "prep-sample1": "echo 'import start from \"./sample1/index\"\nstart()' > src/index.tsx",
@@ -120,7 +125,11 @@
       "vite": "^7.2.1",
       "vite-raw-plugin": "^1.0.2",
       "vitest": "^4.0.7",
-      "wouter": "^3.7.1"
+      "wouter": "^3.7.1",
+      "@eslint/js": "^9.39.1",
+      "globals": "^16.5.0",
+      "grommet-icons": "^4.14.0",
+      "@react-three/drei": "^10.7.6"
    },
    "peerDependencies": {
       "@react-three/fiber": ">=8.0",
@@ -128,10 +137,5 @@
       "react-dom": ">=18.0.0",
       "three": ">=0.147"
    },
-   "dependencies": {
-      "@eslint/js": "^9.39.1",
-      "@react-three/drei": "^10.7.6",
-      "globals": "^16.5.0",
-      "grommet-icons": "^4.14.0"
-   }
+   "dependencies": {}
 }
