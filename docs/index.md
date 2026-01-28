@@ -31,6 +31,20 @@ features:
      details: Full TypeScript support with comprehensive API documentation
 ---
 
+## Architecture Overview
+
+Here's how `three-wideline` integrates into your Three.js and React Three Fiber setup:
+
+```mermaid
+graph TD
+    A[React Component] --> B[Wideline Props: points, attr, join, caps]
+    B --> C[Geometry Generation]
+    C --> D[Instanced Mesh]
+    D --> E[Custom Shader]
+    E --> F[Three.js Scene Rendering]
+    F --> G[Wide Lines with Joins/Caps]
+```
+
 ## Guide Overview
 
 - [Getting Started](getting-started) — Installation and sample usage

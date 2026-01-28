@@ -36,6 +36,15 @@ function Scene() {
 }
 ```
 
+```mermaid
+graph TD
+    A[React App] --> B["&lt;Canvas&gt; from @react-three/fiber"]
+    B --> C[Wideline Component]
+    C --> D[Props: points, attr, join, caps]
+    D --> E[Geometry & Shader Processing]
+    E --> F[Rendered Wide Line in Scene]
+```
+
 Adjust `attr`, `join`, and cap settings to control the geometry that is rendered. The component builds instanced geometry under the hood, keeping draw calls tight even for long polyline paths.
 
 ## Samples

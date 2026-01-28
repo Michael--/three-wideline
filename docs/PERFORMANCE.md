@@ -18,6 +18,22 @@ function MyComponent() {
 }
 ```
 
+```mermaid
+sequenceDiagram
+    participant C as Component
+    participant H as usePerformanceMonitor
+    participant T as Timer
+    participant L as Logger
+
+    C->>H: Mount/Render
+    H->>T: Start Timer
+    C->>H: Render Complete
+    H->>T: Stop Timer
+    H->>H: Calculate Stats (avg, min, max)
+    H->>L: Log Warnings if >16.67ms
+    H->>H: Store last 100 measurements
+```
+
 **Features:**
 
 - Tracks render count and timing

@@ -12,9 +12,32 @@ The `attr` object can define color, width, opacity, and other per-segment metada
 
 Choose from built-in joins (`Round`, `Bevel`, `Miter`) and caps (`Butt`, `Round`, `Square`, `Top`). The shader computes the right vertices for each combination, so you can mimic SVG-style polylines inside Three.js scenes.
 
+```mermaid
+graph TD
+    A[Line Segment] --> B{Join Type}
+    B -->|Round| C[Curved Connection]
+    B -->|Bevel| D[Flat Cut]
+    B -->|Miter| E[Sharp Point]
+    A --> F{Cap Type}
+    F -->|Butt| G[Flat End]
+    F -->|Round| H[Curved End]
+    F -->|Square| I[Extended Flat]
+    F -->|Top| J[Pointed End]
+```
+
 ## Transparency and shader quality
 
 Shaders are optimized for transparent strokes. Depth sorting and blending behave consistently across segments, letting you build layered canvases with crisp antialiased edges.
+
+```mermaid
+graph LR
+    A[Input Points & Attr] --> B[Vertex Generation]
+    B --> C[Instancing for Segments]
+    C --> D[Shader Application]
+    D --> E[Depth Sorting]
+    E --> F[Blending & Antialiasing]
+    F --> G[Rendered Wide Lines]
+```
 
 ## Custom geometry and raycasting
 
