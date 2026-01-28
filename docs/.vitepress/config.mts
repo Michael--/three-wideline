@@ -14,7 +14,10 @@ export default defineConfig({
             text: "Guide",
             items: [
                { text: "Overview", link: "/" },
+               { text: "Getting Started", link: "/getting-started" },
+               { text: "Features", link: "/features" },
                { text: "Performance Monitoring", link: "/PERFORMANCE" },
+               { text: "Development", link: "/development" },
             ],
          },
          {

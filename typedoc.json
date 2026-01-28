@@ -2,6 +2,18 @@
    "entryFileName": "index",
    "readme": "none",
    "disableSources": true,
+   "formatWithPrettier": true,
+   "hideBreadcrumbs": true,
+   "hidePageHeader": true,
+   "hidePageTitle": true,
+   "indexFormat": "table",
+   "parametersFormat": "table",
+   "tableColumnSettings": {
+      "hideSources": true,
+      "hideValues": true,
+      "leftAlignHeaders": true
+   },
+   "useHTMLEncodedBrackets": true,
    "entryPoints": ["src/Wideline/index.tsx"],
    "entryPointStrategy": "resolve",
    "tsconfig": "tsconfig-dist.json",

@@ -6,37 +6,21 @@ title: three-wideline
 
 Wide line rendering for Three.js and React Three Fiber.
 
-## Getting started
+## Guide overview
 
-Install the package with your preferred package manager, then render a line with the `Wideline` component:
+Find installation, feature, and workflow details inside the guide pages:
 
-```bash
-pnpm add three-wideline
-```
+- [Getting Started](getting-started) for installation and sample usage code
+- [Features](features) for an overview of rendering, caps, joins, and shader highlights
+- [Performance Monitoring](PERFORMANCE.md) for render/memory diagnostics
+- [Development](development) for tests, linting, docs, and build commands
 
-```tsx
-import { Canvas } from "@react-three/fiber"
-import { Wideline } from "three-wideline"
+## API Reference
 
-function Scene() {
-   const points = [-1, -1, 0, 1, 1, -1]
-   const attr = { color: "red", width: 0.2 }
+The API reference is generated with TypeDoc and lives under `docs/api`. The markdown is tailored for VitePress and hides the raw source links we do not expose on the published site.
 
-   return (
-      <Canvas>
-         <Wideline points={points} attr={attr} join="Round" capsStart="Round" capsEnd="Square" />
-      </Canvas>
-   )
-}
-```
-
-## Documentation
-
-The docs site lives under VitePress; the API reference is generated with TypeDoc and shipped inside `docs/api`.
-
-- [Performance Monitoring](PERFORMANCE.md)
 - [Open API Reference](/api/)
 
 ## Samples & demos
 
-Run `pnpm start` to serve the local sample (`build/sample1`). The live demo and Codesandbox examples in the README demonstrate the animated and logo galleries.
+Run `pnpm start` to serve the local sample (`build/sample1`). The README also lists the live `Wideline` example plus CodeSandbox links for the logo and animated demos.
