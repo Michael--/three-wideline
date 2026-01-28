@@ -1,12 +1,16 @@
 import { defineConfig } from "vitepress"
 import { withMermaid } from "vitepress-plugin-mermaid"
 
+const repoName = process.env.GITHUB_REPOSITORY?.split("/")[1]
+const base = repoName ? `/${repoName}/` : "/"
+
 export default withMermaid(
    defineConfig({
+      base,
       title: "three-wideline",
       description: "Wide line rendering for Three.js and React Three Fiber",
       ignoreDeadLinks: true,
-      head: [["link", { rel: "icon", href: "/favicon.ico" }]],
+      head: [["link", { rel: "icon", href: `${base}favicon.ico` }]],
       markdown: {
          // @ts-expect-error VitePress supports this, but TS picks wrong types
          mermaid: true,
@@ -19,7 +23,7 @@ export default withMermaid(
          },
       },
       themeConfig: {
-         logo: "/logo.svg",
+         logo: `${base}logo.svg`,
          nav: [
             { text: "Guide", link: "/" },
             { text: "API", link: "/api/" },
