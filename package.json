@@ -54,7 +54,7 @@
       "format": "prettier --write .",
       "format:check": "prettier --check .",
       "spellcheck": "cspell .",
-      "test": "vitest",
+      "test": "vitest run",
       "test:coverage": "vitest run --coverage",
       "module-update-info": "ncu --interactive --format group",
       "prepare": "husky"
