@@ -52,6 +52,14 @@ Adjust `attr`, `join`, and cap settings to control the geometry that is rendered
 - `pnpm start` boots the local sample app located under `src/sample1`; browse the `build/sample1` output to see 2D and animated line variations.
 - The README includes sandbox links (Logo and animated examples) that illustrate more complex setups.
 
+## Interactive Example
+
+Here's an interactive example using CodeSandbox – you can view and edit the code live:
+
+<ExampleWideline />
+
+This demonstrates the Wideline component rendering a logo with wide lines.
+
 ## Building documentation and code
 
 - `pnpm docs:api` regenerates the TypeDoc output under `docs/api`.

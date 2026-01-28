@@ -88,12 +88,15 @@
       "node_modules",
       "dist",
       "build",
+      "coverage",
       ".git",
       "*.min.js",
       "*.map",
       "package-lock.json",
       "pnpm-lock.yaml",
-      "src/sample1/SampleMapData.json"
+      "src/sample1/SampleMapData.json",
+      "docs/api/",
+      "docs/public/",
    ],
    "overrides": [
       {

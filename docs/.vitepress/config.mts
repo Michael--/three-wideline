@@ -44,7 +44,15 @@ export default withMermaid(
       vite: {
          ssr: { noExternal: ["mermaid"] },
          optimizeDeps: {
-            include: ["mermaid", "@braintree/sanitize-url", "dayjs", "debug", "cytoscape-cose-bilkent", "cytoscape"],
+            include: [
+               "mermaid",
+               "@braintree/sanitize-url",
+               "dayjs",
+               "debug",
+               "cytoscape-cose-bilkent",
+               "cytoscape",
+               "three",
+            ],
          },
       },
    }),
