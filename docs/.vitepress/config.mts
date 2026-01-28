@@ -4,7 +4,9 @@ export default defineConfig({
    title: "three-wideline",
    description: "Wide line rendering for Three.js and React Three Fiber",
    ignoreDeadLinks: true,
+   head: [["link", { rel: "icon", href: "/favicon.ico" }]],
    themeConfig: {
+      logo: "/logo.svg",
       nav: [
          { text: "Guide", link: "/" },
          { text: "API", link: "/api/" },
