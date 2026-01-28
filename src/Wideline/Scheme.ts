@@ -204,6 +204,9 @@ export class Scheme {
       const shader = THREE.ShaderLib["standard"]
       const uniforms = THREE.UniformsUtils.merge([shader.uniforms])
 
+      // Material should be transparent if global transparency is enabled OR if this specific scheme has opacity < 1
+      const isTransparent = this.transparency || (props.opacity !== undefined && props.opacity < 1)
+
       return {
          uniforms: {
             ...uniforms,
@@ -222,7 +225,7 @@ export class Scheme {
          customProgramCacheKey: () => uname,
          vertexShader: shader.vertexShader,
          fragmentShader: shader.fragmentShader,
-         transparent: this.transparency,
+         transparent: isTransparent,
          side: zlevel !== undefined && zlevel > 0 ? FrontSide : DoubleSide,
          lights: true,
          //defines: { STANDARD: "", PHYSICAL: "" },

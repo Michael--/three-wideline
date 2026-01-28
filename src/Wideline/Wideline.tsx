@@ -288,6 +288,27 @@ export function Wideline(props: IWidelineProps) {
    const mref = React.useRef<Mesh>(null)
    const [sphere, setSphere] = React.useState<JSX.Element | undefined>(undefined)
 
+   // Update opacity uniforms and transparency when opacity prop changes
+   React.useEffect(() => {
+      if (mref.current) {
+         const mesh = mref.current
+         const shouldBeTransparent = props.opacity !== undefined && props.opacity < 1
+
+         if (Array.isArray(mesh.material)) {
+            mesh.material.forEach(mat => {
+               if ("uniforms" in mat && mat.uniforms && typeof mat.uniforms === "object") {
+                  const uniforms = mat.uniforms as Record<string, { value: unknown }>
+                  if ("opacity" in uniforms) {
+                     uniforms.opacity.value = props.opacity ?? 1
+                  }
+                  mat.transparent = shouldBeTransparent
+                  mat.needsUpdate = true
+               }
+            })
+         }
+      }
+   }, [props.opacity])
+
    const onUpdate = React.useCallback(
       (geometry: BufferGeometry) => {
          const plength = aPoints.length
