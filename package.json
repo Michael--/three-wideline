@@ -39,6 +39,7 @@
       "LICENSE"
    ],
    "scripts": {
+      "clean": "rimraf dist build && shx rm -rf *.tsbuildinfo",
       "debug-sample1": "vite --config src/sample1/vite.config.mjs",
       "build-sample1": "vite build --config src/sample1/vite.config.mjs --base=./",
       "start": "npm run debug-sample1",
@@ -56,6 +57,7 @@
       "spellcheck": "cspell .",
       "test": "vitest run",
       "test:coverage": "vitest run --coverage",
+      "ci": "node ci.js",
       "module-update-info": "ncu --interactive --format group",
       "prepare": "husky"
    },
@@ -82,6 +84,8 @@
    "devDependencies": {
       "@commitlint/cli": "^20.3.1",
       "@commitlint/config-conventional": "^20.3.1",
+      "@eslint/js": "^9.39.2",
+      "@react-three/drei": "^10.7.7",
       "@react-three/fiber": "^9.5.0",
       "@rollup/plugin-commonjs": "^29.0.0",
       "@rollup/plugin-terser": "^0.4.4",
@@ -105,10 +109,13 @@
       "eslint-config-react-app": "^7.0.1",
       "eslint-plugin-prettier": "^5.5.5",
       "eslint-plugin-react": "^7.37.5",
+      "globals": "^17.2.0",
       "grommet": "^2.52.0",
+      "grommet-icons": "^4.14.0",
       "husky": "^9.1.7",
       "jsdom": "^27.4.0",
       "lint-staged": "^16.2.7",
+      "mermaid": "^11.12.2",
       "polished": "^4.3.1",
       "prettier": "^3.8.1",
       "react": "^19.2.4",
@@ -125,16 +132,11 @@
       "typedoc-plugin-markdown": "^4.9.0",
       "typescript": "^5.9.3",
       "vite": "^5.4.0",
-      "mermaid": "^11.12.2",
+      "vite-raw-plugin": "^1.0.2",
       "vitepress": "^1.6.4",
       "vitepress-plugin-mermaid": "^2.0.17",
-      "vite-raw-plugin": "^1.0.2",
       "vitest": "^4.0.18",
-      "wouter": "^3.9.0",
-      "@eslint/js": "^9.39.2",
-      "globals": "^17.2.0",
-      "grommet-icons": "^4.14.0",
-      "@react-three/drei": "^10.7.7"
+      "wouter": "^3.9.0"
    },
    "peerDependencies": {
       "@react-three/fiber": ">=8.0",
@@ -142,5 +144,8 @@
       "react-dom": ">=18.0.0",
       "three": ">=0.147"
    },
-   "dependencies": {}
+   "dependencies": {
+      "rimraf": "^6.1.2",
+      "shx": "^0.4.0"
+   }
 }
