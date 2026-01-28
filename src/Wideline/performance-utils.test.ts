@@ -1,4 +1,6 @@
+import React from "react"
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
+import { render, cleanup } from "@testing-library/react"
 import { usePerformanceMonitor, getMemoryUsage, benchmark } from "./performance-utils"
 
 // Mock performance.memory API
@@ -14,9 +16,44 @@ beforeEach(() => {
 
 afterEach(() => {
    delete (window.performance as unknown as { memory?: typeof mockMemory }).memory
+   cleanup()
+   vi.restoreAllMocks()
 })
 
 describe("Performance Utilities", () => {
+   const originalNodeEnv = process.env.NODE_ENV
+
+   const Probe = ({ active }: { active: boolean }) => {
+      const metrics = usePerformanceMonitor("Probe", active)
+      return React.createElement("div", {
+         "data-render-count": metrics.renderCount,
+         "data-avg": metrics.averageRenderTime,
+         "data-last": metrics.lastRenderTime,
+      })
+   }
+
+   const renderProbe = (enabled: boolean) => render(React.createElement(Probe, { active: enabled }))
+
+   const mockNowIncrement = (initialStep: number) => {
+      let time = 0
+      let step = initialStep
+      const nowSpy = vi.spyOn(performance, "now")
+      nowSpy.mockImplementation(() => {
+         time += step
+         return time
+      })
+      return {
+         nowSpy,
+         setStep: (nextStep: number) => {
+            step = nextStep
+         },
+      }
+   }
+
+   const flushEffects = async () => {
+      await new Promise(resolve => setTimeout(resolve, 0))
+   }
+
    describe("getMemoryUsage", () => {
       it("should return memory usage when available", () => {
          const result = getMemoryUsage()
@@ -93,7 +130,92 @@ describe("Performance Utilities", () => {
          expect(usePerformanceMonitor).toBeDefined()
       })
 
-      // Note: Hook testing would require React Testing Library
-      // This is a basic smoke test for now
+      it("should skip when disabled", () => {
+         const { container, unmount } = renderProbe(false)
+         const node = container.querySelector("div")
+         expect(node?.getAttribute("data-render-count")).toBe("0")
+         unmount()
+      })
+
+      it("should log very slow renders in development", async () => {
+         process.env.NODE_ENV = "development"
+         const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined)
+         mockNowIncrement(50)
+
+         const { rerender, unmount } = renderProbe(true)
+         await flushEffects()
+         rerender(React.createElement(Probe, { active: true }))
+         await flushEffects()
+         unmount()
+
+         expect(warnSpy).toHaveBeenCalled()
+      })
+
+      it("should log first slow renders under the threshold", async () => {
+         process.env.NODE_ENV = "development"
+         const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined)
+         mockNowIncrement(20)
+
+         const { rerender, unmount } = renderProbe(true)
+         await flushEffects()
+         rerender(React.createElement(Probe, { active: true }))
+         await flushEffects()
+         unmount()
+
+         expect(warnSpy).toHaveBeenCalled()
+      })
+
+      it("should warn every 10 slow renders", async () => {
+         process.env.NODE_ENV = "development"
+         const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined)
+         mockNowIncrement(20)
+
+         const { rerender, unmount } = renderProbe(true)
+         await flushEffects()
+         for (let i = 0; i < 9; i++) {
+            rerender(React.createElement(Probe, { active: true }))
+            await flushEffects()
+         }
+         unmount()
+
+         expect(warnSpy).toHaveBeenCalled()
+      })
+
+      it("should log every 30 renders", async () => {
+         process.env.NODE_ENV = "development"
+         const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined)
+         mockNowIncrement(1)
+
+         const { rerender, unmount } = renderProbe(true)
+         await flushEffects()
+         for (let i = 0; i < 29; i++) {
+            rerender(React.createElement(Probe, { active: true }))
+            await flushEffects()
+         }
+         unmount()
+
+         expect(warnSpy).toHaveBeenCalled()
+      })
+
+      it("should reduce slow render counter after fast render", async () => {
+         process.env.NODE_ENV = "development"
+         const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined)
+         const { setStep } = mockNowIncrement(20)
+
+         const { rerender, unmount } = renderProbe(true)
+         await flushEffects()
+         rerender(React.createElement(Probe, { active: true }))
+         await flushEffects()
+         setStep(1)
+         rerender(React.createElement(Probe, { active: true }))
+         await flushEffects()
+         unmount()
+
+         expect(warnSpy).toHaveBeenCalled()
+      })
+   })
+
+   afterEach(() => {
+      process.env.NODE_ENV = originalNodeEnv
    })
 })
