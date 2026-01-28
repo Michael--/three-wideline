@@ -61,6 +61,7 @@ interface IPage {
 
 const pages: IPage[] = [
    { route: "Logo", component: SampleLogo, icon: <Image /> },
+   { route: "Common Issues", component: SampleCommonIssues, icon: <Info /> },
    { route: "Parts", component: SampleParts, icon: <StatusGood /> },
    { route: "Construction", component: SampleConstruction, icon: <Tools /> },
    { route: "Custom", component: CustomLineParts, icon: <Configure /> },
@@ -70,7 +71,6 @@ const pages: IPage[] = [
    { route: "Raycast", component: SampleRaycast, icon: <Cursor /> },
    { route: "Performance", component: SamplePerformanceAnalysis, icon: <Analytics /> },
    { route: "Fallback", component: SampleFallback, icon: <Alert /> },
-   { route: "Common Issues", component: SampleCommonIssues, icon: <Info /> },
 ]
 
 export function Main() {

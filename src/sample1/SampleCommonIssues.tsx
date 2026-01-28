@@ -43,6 +43,41 @@ function WidelineExample() {
    )
 }
 
+function AnimatedWaves() {
+   const groupRef = React.useRef<Group>(null)
+   const [time, setTime] = React.useState(0)
+
+   useFrame((_, delta) => {
+      setTime(t => t + delta)
+      if (groupRef.current) {
+         groupRef.current.rotation.y = Math.sin(time * 0.3) * 0.2
+      }
+   })
+
+   const lineCount = 20
+   const lines = Array.from({ length: lineCount }, (_, i) => {
+      const phase = (i / lineCount) * Math.PI * 2
+      const yOffset = Math.sin(time * 2 + phase) * 0.3
+      const opacity = 0.3 + Math.sin(time * 1.5 + phase) * 0.4
+      const hue = (i * 30 + time * 20) % 360
+
+      return (
+         <Wideline
+            key={i}
+            position={[0, 0 + yOffset, i * 0.25 - 2.5]}
+            points={[-5, 0, 0, -2, 0, 0, 2, 0, 2, 2, 6, 0]}
+            join="Round"
+            capsStart="Round"
+            capsEnd="Round"
+            attr={{ color: `hsl(${hue}, 80%, 60%)`, width: 0.5 }}
+            opacity={Math.max(0.1, Math.min(1, opacity))}
+         />
+      )
+   })
+
+   return <group ref={groupRef}>{lines}</group>
+}
+
 export function SampleCommonIssues() {
    return (
       <Box direction="column" pad="small" gap="small">
@@ -74,11 +109,14 @@ export function SampleCommonIssues() {
                </Box>
             </Box>
          </Box>
-         <Box align="center">
-            <ThreeCanvas height={"300px"}>
+         <Box direction="column" gap="small" margin={{ top: "medium" }}>
+            <Text weight="bold">2.5D Geometry Examples</Text>
+            <Text size="small" color="dark-3">
+               Different cap styles and joins with transparency.
+            </Text>
+            <ThreeCanvas height={"250px"}>
                <ambientLight intensity={1} />
                <pointLight position={[5, 5, 5]} />
-               {/* Example 2.5D-Nature: Line on flat */}
                <Wideline
                   points={[-2, 0, 0, 0, 0, -2, 2, 0, 0]}
                   attr={{ color: "yellow", width: 0.5 }}
@@ -86,17 +124,29 @@ export function SampleCommonIssues() {
                   capsStart="Square"
                   capsEnd="Top"
                />
-               {/* Some Lines performance */}
-               {Array.from({ length: 10 }, (_, i) => (
+               {Array.from({ length: 8 }, (_, i) => (
                   <Wideline
                      key={i}
-                     position={[0, 1, i * 0.2]}
+                     position={[0, 1, i * 0.3]}
                      points={[-5, 0, 0, 1, 0, 0, 5, 0, 0]}
                      join="Miter"
-                     attr={{ color: `hsl(${i * 36}, 70%, 50%)`, width: 0.3 }}
-                     opacity={0.4}
+                     attr={{ color: `hsl(${i * 45}, 70%, 50%)`, width: 0.3 }}
+                     opacity={0.5}
                   />
                ))}
+            </ThreeCanvas>
+         </Box>
+         <Box direction="column" gap="small" margin={{ top: "medium" }}>
+            <Text weight="bold">Animated Transparency Demo</Text>
+            <Text size="small" color="dark-3">
+               Multiple lines with dynamic opacity and wave animation, demonstrating smooth transparency and
+               performance.
+            </Text>
+            <ThreeCanvas height={"250px"}>
+               <ambientLight intensity={0.8} />
+               <pointLight position={[5, 8, 5]} intensity={0.6} />
+               <pointLight position={[-5, 3, -5]} intensity={0.4} color="#4080ff" />
+               <AnimatedWaves />
             </ThreeCanvas>
          </Box>
       </Box>
