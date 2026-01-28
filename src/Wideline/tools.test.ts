@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest"
-import { generatePointsInterleaved } from "../tools"
+import { generatePointsInterleaved } from "./tools"
 
 describe("generatePointsInterleaved", () => {
    it("should generate correct points for count 2", () => {
