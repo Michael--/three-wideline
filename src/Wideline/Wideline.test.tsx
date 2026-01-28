@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest"
-import { validateWidelineProps, normalizeShape } from "./internal-utils"
+import { validateWidelineProps, normalizeShape, createMaterialGroups } from "./internal-utils"
 import { Vector2, Vector3 } from "three"
 import { IAttribute } from "./Wideline"
 
@@ -148,5 +148,35 @@ describe("normalizeShape", () => {
    it("should handle single point", () => {
       const result = normalizeShape([1, 2])
       expect(result).toEqual([[1, 2, 0]])
+   })
+})
+
+describe("createMaterialGroups", () => {
+   it("should create material groups from indices and materials", () => {
+      const idx = [
+         [
+            [0, 1, 2],
+            [3, 4, 5],
+         ],
+         [[6, 7, 8]],
+      ]
+      const materials = [[{}, {}], [{}]]
+      const result = createMaterialGroups(idx, materials)
+      expect(result).toEqual([
+         { start: 0, count: 6, materialIndex: 0, seq: 0 },
+         { start: 6, count: 3, materialIndex: 2, seq: 0 },
+         { start: 0, count: 6, materialIndex: 1, seq: 1 },
+      ])
+   })
+
+   it("should sort groups by sequence and start", () => {
+      const idx = [[[0, 1, 2]], [[3, 4, 5]]]
+      const materials = [[{}], [{}, {}]]
+      const result = createMaterialGroups(idx, materials)
+      expect(result).toEqual([
+         { start: 0, count: 3, materialIndex: 0, seq: 0 },
+         { start: 3, count: 3, materialIndex: 1, seq: 0 },
+         { start: 3, count: 3, materialIndex: 2, seq: 1 },
+      ])
    })
 })
