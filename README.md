@@ -1,7 +1,7 @@
 # three-wideline
 
 <p align="center">
-  <img src="./public/logo192.png" width="200" alt="three-wideline">
+  <img src="./docs/public/logo192.png" width="200" alt="three-wideline">
 </p>
 
 A powerful Three.js library for rendering wide lines with customizable attributes, joins, caps, and advanced features. Built for React Three Fiber, it provides an easy-to-use component for creating high-quality 2D lines in 3D space.
