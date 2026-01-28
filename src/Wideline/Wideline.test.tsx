@@ -1,7 +1,8 @@
 import { describe, it, expect } from "vitest"
-import { validateWidelineProps, normalizeShape, createMaterialGroups } from "./internal-utils"
+import { validateWidelineProps, normalizeShape, createMaterialGroups, buildLine } from "./internal-utils"
 import { Vector2, Vector3 } from "three"
 import { IAttribute } from "./Wideline"
+import type { IVertices } from "./Scheme"
 
 describe("Wideline Validation", () => {
    it("validates correct props successfully", () => {
@@ -177,6 +178,111 @@ describe("createMaterialGroups", () => {
          { start: 0, count: 3, materialIndex: 0, seq: 0 },
          { start: 3, count: 3, materialIndex: 1, seq: 0 },
          { start: 3, count: 3, materialIndex: 2, seq: 1 },
+      ])
+   })
+})
+
+describe("buildLine", () => {
+   it("should accumulate point data for unlimited vertex groups", () => {
+      const points = [
+         [0, 0, 0],
+         [1, 0, 0],
+         [2, 0, 0],
+      ]
+
+      const vertices: IVertices[] = [
+         {
+            position: [
+               [0, 0, 0],
+               [1, 0, 0],
+            ],
+            index: [[0, 1, 1]],
+         },
+      ]
+
+      const { result, position } = buildLine(points, vertices)
+
+      expect(position).toEqual([
+         [0, 0, 0],
+         [1, 0, 0],
+         [0, 0, 0],
+         [1, 0, 0],
+      ])
+      expect(result.idx).toEqual([
+         [
+            [0, 1, 1],
+            [2, 3, 3],
+         ],
+      ])
+      expect(result.pA).toEqual([
+         [0, 0, 0],
+         [0, 0, 0],
+         [1, 0, 0],
+         [1, 0, 0],
+      ])
+      expect(result.pB).toEqual([
+         [1, 0, 0],
+         [1, 0, 0],
+         [2, 0, 0],
+         [2, 0, 0],
+      ])
+      expect(result.pC).toEqual([
+         [2, 0, 0],
+         [2, 0, 0],
+         [2, 0, 0],
+         [2, 0, 0],
+      ])
+      expect(result.pD).toEqual([
+         [2, 0, 0],
+         [2, 0, 0],
+         [2, 0, 0],
+         [2, 0, 0],
+      ])
+   })
+
+   it("should respect limited start and end vertex constraints", () => {
+      const points = [
+         [0, 0, 0],
+         [1, 0, 0],
+         [2, 0, 0],
+         [3, 0, 0],
+      ]
+
+      const vertices: IVertices[] = [
+         {
+            position: [[0, 0, 0]],
+            index: [[0, 0, 0]],
+            limited: "Start",
+         },
+         {
+            position: [[0, 0, 0]],
+            index: [[0, 0, 0]],
+            limited: "End",
+         },
+      ]
+
+      const { result, position } = buildLine(points, vertices)
+
+      expect(position).toEqual([
+         [0, 0, 0],
+         [0, 0, 0],
+      ])
+      expect(result.idx).toEqual([[[0, 0, 0]], [[1, 1, 1]]])
+      expect(result.pA).toEqual([
+         [0, 0, 0],
+         [2, 0, 0],
+      ])
+      expect(result.pB).toEqual([
+         [1, 0, 0],
+         [3, 0, 0],
+      ])
+      expect(result.pC).toEqual([
+         [2, 0, 0],
+         [3, 0, 0],
+      ])
+      expect(result.pD).toEqual([
+         [3, 0, 0],
+         [3, 0, 0],
       ])
    })
 })
