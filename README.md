@@ -59,11 +59,11 @@ The core concept is based on instanced line rendering, well-documented in:
 
 This library adapts these ideas into a reusable Three.js component with enhanced features.
 
-[API Reference](./markdown/three-wideline.wideline.md)
+- [📚 Complete Documentation](https://michael--.github.io/three-wideline/) - Full guides, examples, and API reference
 
 ## Examples
 
-Live demo: [Wideline Example](https://www.number10.de/sample1)
+Live demo: [Wideline Example](https://www.number10.de/wideline/sample1)
 
 CodeSandbox samples:
 
