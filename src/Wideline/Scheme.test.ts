@@ -1,6 +1,16 @@
 import { describe, it, expect } from "vitest"
+import type { ThreeElements } from "@react-three/fiber"
 import { Color } from "three"
 import { Scheme, boxGeometry, roundCapGeometry, squareCapGeometry, topCapGeometry } from "./Scheme"
+
+type ShaderMaterialProps = ThreeElements["shaderMaterial"]
+
+const getUniforms = (shader: ShaderMaterialProps): NonNullable<ShaderMaterialProps["uniforms"]> => {
+   if (!shader.uniforms) {
+      throw new Error("Expected shader uniforms to be defined")
+   }
+   return shader.uniforms
+}
 
 describe("roundCapGeometry", () => {
    it("should generate correct geometry for resolution 4", () => {
@@ -69,8 +79,9 @@ describe("Scheme class", () => {
       expect(data.vertices).toHaveLength(1)
       expect(data.shader).toHaveLength(1)
       const shader = data.shader[0][0]
-      expect(shader.uniforms.width.value).toBe(2)
-      expect(shader.uniforms.opacity.value).toBe(1)
+      const uniforms = getUniforms(shader)
+      expect(uniforms.width.value).toBe(2)
+      expect(uniforms.opacity.value).toBe(1)
       expect(shader.transparent).toBe(false)
    })
 
@@ -121,8 +132,10 @@ describe("Scheme class", () => {
       scheme.addCap([{ color: new Color("white") }], squareCapGeometry(), "Start")
       scheme.addCap([{ color: new Color("white") }], squareCapGeometry(), "End")
       const shaders = scheme.getScheme().shader
-      expect(shaders[0][0].uniforms.dir.value).toBe(-1)
-      expect(shaders[1][0].uniforms.dir.value).toBe(1)
+      const startUniforms = getUniforms(shaders[0][0])
+      const endUniforms = getUniforms(shaders[1][0])
+      expect(startUniforms.dir.value).toBe(-1)
+      expect(endUniforms.dir.value).toBe(1)
    })
 
    it("should build round joins with resolution uniform", () => {
@@ -130,7 +143,8 @@ describe("Scheme class", () => {
       scheme.roundJoin([{ color: new Color("green") }], 3)
       const data = scheme.getScheme()
       expect(data.vertices[0].position).toHaveLength(5)
-      expect(data.shader[0][0].uniforms.resolution.value).toBe(3)
+      const uniforms = getUniforms(data.shader[0][0])
+      expect(uniforms.resolution.value).toBe(3)
    })
 
    it("should reset stored scheme data", () => {
