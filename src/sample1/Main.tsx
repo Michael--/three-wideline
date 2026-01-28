@@ -1,7 +1,20 @@
 import React, { JSX, Suspense } from "react"
 import svglogo from "./logo.svg"
 import { Box, Text, Heading, Anchor, Sidebar, Nav, Button, TextInput } from "grommet"
-import { Moon, Sun, Image, StatusGood, Tools, Configure, Group, Cursor, Analytics, Alert, Map } from "grommet-icons"
+import {
+   Moon,
+   Sun,
+   Image,
+   StatusGood,
+   Tools,
+   Configure,
+   Group,
+   Cursor,
+   Analytics,
+   Alert,
+   Map,
+   Info,
+} from "grommet-icons"
 import { name as pname, version } from "../../package.json"
 import { useLocation } from "wouter"
 import { useTheme } from "./App"
@@ -16,6 +29,7 @@ import { SampleRaycast } from "./SampleRaycast"
 import { SamplePerformanceAnalysis } from "./SamplePerformanceAnalysis"
 import { SampleStreets } from "./SampleStreets"
 import { SampleFallback } from "./SampleFallback"
+import { SampleCommonIssues } from "./SampleCommonIssues"
 
 function Title() {
    const { isDark, toggleTheme } = useTheme()
@@ -56,6 +70,7 @@ const pages: IPage[] = [
    { route: "Raycast", component: SampleRaycast, icon: <Cursor /> },
    { route: "Performance", component: SamplePerformanceAnalysis, icon: <Analytics /> },
    { route: "Fallback", component: SampleFallback, icon: <Alert /> },
+   { route: "Common Issues", component: SampleCommonIssues, icon: <Info /> },
 ]
 
 export function Main() {
