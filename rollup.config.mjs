@@ -1,7 +1,6 @@
 import { defineConfig } from "rollup"
 import typescript from "@rollup/plugin-typescript"
 import { string } from "rollup-plugin-string"
-import { apiExtractor } from "rollup-plugin-api-extractor"
 // import commonjs from "@rollup/plugin-commonjs"
 import external from "rollup-plugin-peer-deps-external"
 import terser from "@rollup/plugin-terser"
@@ -27,10 +26,6 @@ const config = defineConfig({
             drop_debugger: true,
          },
          mangle: true,
-      }),
-      apiExtractor({
-         local: true,
-         configFile: "./api-extractor.json",
       }),
       visualizer({
          title: "Statistics",

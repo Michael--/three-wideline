@@ -1,0 +1,14 @@
+{
+   "entryFileName": "index",
+   "readme": "none",
+   "disableSources": true,
+   "entryPoints": ["src/Wideline/index.tsx"],
+   "entryPointStrategy": "resolve",
+   "tsconfig": "tsconfig-dist.json",
+   "out": "docs/api",
+   "plugin": ["typedoc-plugin-markdown"],
+   "excludePrivate": true,
+   "excludeProtected": true,
+   "excludeInternal": true,
+   "includeVersion": true
+}

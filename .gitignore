@@ -8,6 +8,10 @@
 /dist
 /temp
 /coverage
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+docs/api
+
 
 *.tgz
 
