@@ -97,7 +97,7 @@
       "src/sample1/SampleMapData.json",
       "docs/api",
       "docs/public",
-      ".github",
+      ".github"
    ],
    "overrides": [
       {
