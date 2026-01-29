@@ -1,6 +1,6 @@
 {
    "name": "three-wideline",
-   "version": "0.7.0",
+   "version": "0.8.0",
    "description": "A Three.js library for rendering wide lines with customizable attributes in React Three Fiber",
    "homepage": "https://github.com/Michael--/three-wideline",
    "bugs": {
