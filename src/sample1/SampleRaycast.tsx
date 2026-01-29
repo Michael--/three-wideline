@@ -3,6 +3,7 @@ import { ThreeCanvas } from "./ThreeCanvas"
 import { Box, Paragraph } from "grommet"
 import { Logo, Wideline } from "../Wideline"
 import { EventHandlers } from "@react-three/fiber/dist/declarations/src/core/events"
+import { LineFeatureLabels } from "./LineFeatureLabels"
 
 export function SampleRaycast() {
    const [color, setColor] = React.useState("yellow")
@@ -54,6 +55,8 @@ export function SampleRaycast() {
          </Paragraph>
          <ThreeCanvas height={"200px"}>
             <ambientLight intensity={2.5} />
+            <LineFeatureLabels points={[-5, 2, -5, 1]} texts={["Click Line Parts", "to rotate"]} />
+
             <Wideline
                scale={4}
                rotation={[0, 0, rotation]}

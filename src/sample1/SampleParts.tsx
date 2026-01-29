@@ -3,6 +3,7 @@ import React from "react"
 import { Wideline, generatePointsInterleaved } from "../Wideline"
 import { ThreeCanvas } from "./ThreeCanvas"
 import { Box, Paragraph } from "grommet"
+import { LineFeatureLabels } from "./LineFeatureLabels"
 
 export function SampleParts() {
    const points = React.useMemo(() => generatePointsInterleaved(5, 5, 2), [])
@@ -14,6 +15,18 @@ export function SampleParts() {
             <ThreeCanvas scale={2} height={"200px"}>
                <ambientLight intensity={3} />
                <group onClick={e => console.log(`Bam2: distance=${e.distance} index=${e.index}`)}>
+                  <LineFeatureLabels
+                     points={[...points, 3, 0]} // Add extra Z for last point
+                     texts={["Start Cap", "Join", "Join", "Join", "End Cap", "Line Segments"]}
+                     offsets={[
+                        [-0.5, 0.6, 0.01],
+                        [0, -0.5, 0.01],
+                        [0, 0.5, 0.01],
+                        [0, -0.5, 0.01],
+                        [0.5, 0.6, 0.01],
+                        undefined,
+                     ]}
+                  />
                   <Wideline
                      events={{ onClick: e => console.log(`Bam1: distance=${e.distance} index=${e.index}`) }}
                      points={points}
