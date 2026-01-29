@@ -172,7 +172,7 @@ export function Wideline(props: IWidelineProps) {
       // Only recreate geometry when structure changes
       return (
          aPoints.length.toString() +
-         attr.map(e => `${e.width}`).join("") + // Removed color from key - color changes don't need geometry rebuild
+         attr.map(e => `${e.width}`).join("") +
          props.join +
          props.capsStart +
          props.capsEnd +
@@ -287,6 +287,60 @@ export function Wideline(props: IWidelineProps) {
 
    const mref = React.useRef<Mesh>(null)
    const [sphere, setSphere] = React.useState<JSX.Element | undefined>(undefined)
+
+   const materialColors = React.useMemo(() => {
+      const mainColors = attr.map(e => new Color(e.color ?? "white"))
+      const altColors = attr.map((e, index) => (e.offals !== undefined ? new Color(e.offals) : mainColors[index]))
+
+      const colors: Color[] = []
+      if (props.opacity !== undefined && props.opacity < 1) {
+         colors.push(...mainColors)
+         colors.push(...mainColors)
+      } else {
+         colors.push(...mainColors)
+      }
+
+      if (props.capsStart !== undefined && props.opacity !== 0) colors.push(...altColors)
+      if (props.capsEnd !== undefined && props.opacity !== 0) colors.push(...altColors)
+
+      if (props.opacity !== 0) {
+         switch (props.join) {
+            case "Bevel":
+            case "Miter":
+            case "Round":
+               colors.push(...altColors)
+               break
+         }
+      }
+
+      props.custom?.forEach(e => {
+         if (e.scheme.color !== undefined) colors.push(e.scheme.color)
+      })
+
+      return colors
+   }, [attr, props.capsEnd, props.capsStart, props.custom, props.join, props.opacity])
+
+   // Update colors via shader uniforms when attr colors change
+   React.useEffect(() => {
+      if (mref.current === null) return
+      const mesh = mref.current
+      if (!Array.isArray(mesh.material)) return
+
+      mesh.material.forEach((mat, index) => {
+         if (!("uniforms" in mat) || !mat.uniforms) return
+         const uniforms = mat.uniforms as Record<string, { value: unknown }>
+         const color = materialColors[index]
+         if (color === undefined) return
+
+         if ("diffuse" in uniforms) {
+            const diffuse = uniforms.diffuse.value
+            if (diffuse instanceof Color) diffuse.copy(color)
+            else uniforms.diffuse.value = color
+         }
+
+         if ("uniformsNeedUpdate" in mat) mat.uniformsNeedUpdate = true
+      })
+   }, [materialColors])
 
    // Update opacity uniforms and transparency when opacity prop changes
    React.useEffect(() => {
